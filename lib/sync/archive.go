@@ -91,21 +91,20 @@ func Untar(dst string, r io.Reader) error {
 // for multiple outputs (for example a file, or md5 hash)
 func Tar(src string, writers ...io.Writer) error {
 
+	avail := []string{
+		"design",
+		"seeds",
+		"pages",
+		"custom",
+		"funcs",
+	}
 	var paths []string
 	// ensure the src actually exists before trying to tar it
-	if _, err := os.Stat(filepath.Join(src, "design")); err == nil {
-		paths = append(paths, "design")
+	for _, path := range avail {
+		if _, err := os.Stat(filepath.Join(src, path)); err == nil {
+			paths = append(paths, path)
+		}
 	}
-	if _, err := os.Stat(filepath.Join(src, "pages")); err == nil {
-		paths = append(paths, "pages")
-	}
-	if _, err := os.Stat(filepath.Join(src, "custom")); err == nil {
-		paths = append(paths, "custom")
-	}
-	if _, err := os.Stat(filepath.Join(src, "funcs")); err == nil {
-		paths = append(paths, "funcs")
-	}
-	fmt.Println("paths: ", paths)
 
 	mw := io.MultiWriter(writers...)
 
@@ -117,7 +116,7 @@ func Tar(src string, writers ...io.Writer) error {
 
 	// walk path
 	walker := func(file string, fi os.FileInfo, err error) error {
-		fmt.Println("adding: ", file)
+		fmt.Println("+", file)
 
 		// return on any error
 		if err != nil {
