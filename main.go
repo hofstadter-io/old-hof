@@ -75,8 +75,4 @@ func config_logger() {
 	// set package loggers
 	commands.SetLogger(logger)
 
-	// IF using geb-engine dsl
-	// dotpath.SetLogger(logger)
-	// engine.SetLogger(logger)
-
 }
