@@ -1,17 +1,14 @@
-package commands
+package app
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.com/hofstadter-io/hof/commands/app"
-	"github.com/hofstadter-io/hof/commands/db"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config.commands.app.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -44,7 +41,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.hof")
+	lcfg := viper.GetStringMap("log-config.commands.app")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -77,6 +74,4 @@ func SetLogger(l log.Logger) {
 }
 
 func setSubLoggers(logger log.Logger) {
-	app.SetLogger(logger)
-	db.SetLogger(logger)
 }
