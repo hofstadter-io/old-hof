@@ -46,8 +46,6 @@ nfpm:
     netbsd: NetBSD
     freebsd: FreeBSD
     dragonfly: DragonFlyBSD
-  dependencies:
-    - diffutils
 
 
 archive:
@@ -69,8 +67,8 @@ archive:
     freebsd: FreeBSD
     dragonfly: DragonFlyBSD
   files:
-    - readme.md
-    - LICENSE.md
+    - README.md
+    - LICENSE
 
 brew:
   name: hof
@@ -90,6 +88,7 @@ dockers:
     tag_templates:
       - "{{ .Tag }}"
       - "{{ .Major }}.{{ .Minor }}"
+      - "{{ .Major }}"
       - latest
 
 
