@@ -82,7 +82,7 @@ brew:
     name: verdverm
     email: tony@hofstadter.io
   homepage: https://github.com/hofstadter-io/hof
-  description: 'designs + {{templates}} = anything'
+  description: 'Hofstadter Studios CLI'
 
 dockers:
   - image: hofstadter/hof
