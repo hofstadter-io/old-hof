@@ -25,6 +25,7 @@ var ValidateCmd = &cobra.Command{
 
 	Aliases: []string{
 		"valid",
+		"v",
 	},
 
 	Short: "Validate your application",

@@ -22,6 +22,10 @@ var AppCmd = &cobra.Command{
 
 	Use: "app",
 
+	Aliases: []string{
+		"a",
+	},
+
 	Short: "Work with your Studios App",
 
 	Long: AppLong,
@@ -34,6 +38,7 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
+	AppCmd.AddCommand(app.CreateCmd)
 	AppCmd.AddCommand(app.StatusCmd)
 	AppCmd.AddCommand(app.VersionCmd)
 	AppCmd.AddCommand(app.UpdateCmd)
