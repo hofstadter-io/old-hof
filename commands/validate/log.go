@@ -1,19 +1,14 @@
-package commands
+package validate
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.com/hofstadter-io/hof/commands/app"
-	"github.com/hofstadter-io/hof/commands/db"
-	"github.com/hofstadter-io/hof/commands/dsl"
-	"github.com/hofstadter-io/hof/commands/validate"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config.commands.validate.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -46,7 +41,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.hof")
+	lcfg := viper.GetStringMap("log-config.commands.validate")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -79,8 +74,4 @@ func SetLogger(l log.Logger) {
 }
 
 func setSubLoggers(logger log.Logger) {
-	app.SetLogger(logger)
-	db.SetLogger(logger)
-	dsl.SetLogger(logger)
-	validate.SetLogger(logger)
 }

@@ -34,6 +34,7 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
+	DbCmd.AddCommand(db.StatusCmd)
 	DbCmd.AddCommand(db.ResetCmd)
 	DbCmd.AddCommand(db.SeedCmd)
 	DbCmd.AddCommand(db.MigrateCmd)

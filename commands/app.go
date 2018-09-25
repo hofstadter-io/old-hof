@@ -34,6 +34,9 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
+	AppCmd.AddCommand(app.StatusCmd)
+	AppCmd.AddCommand(app.VersionCmd)
+	AppCmd.AddCommand(app.UpdateCmd)
 	AppCmd.AddCommand(app.ResetCmd)
 	AppCmd.AddCommand(app.DeployCmd)
 }

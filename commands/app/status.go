@@ -11,25 +11,25 @@ import (
 )
 
 // Tool:   hof
-// Name:   reset
-// Usage:  reset
+// Name:   status
+// Usage:  status
 // Parent: app
 
-var ResetLong = `Resets the App, because sometimes things get weird...`
+var StatusLong = `Get the status of your App`
 
-var ResetCmd = &cobra.Command{
+var StatusCmd = &cobra.Command{
 
-	Use: "reset",
+	Use: "status",
 
-	Short: "Reset the App",
+	Short: "Get the status of your App",
 
-	Long: ResetLong,
+	Long: StatusLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In resetCmd", "args", args)
+		logger.Debug("In statusCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app reset:")
+		fmt.Println("hof app status:")
 	},
 }
 
