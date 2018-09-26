@@ -1,12 +1,16 @@
 package app
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"fmt"
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -41,9 +45,18 @@ var CreateCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		fmt.Println("hof app create:",
-			name,
-		)
+		/*
+			fmt.Println("hof app create:",
+				name,
+			)
+		*/
+
+		err := app.CreateApp(name)
+		if err != nil {
+			fmt.Println("Error\n", err)
+			os.Exit(1)
+		}
+
 	},
 }
 
