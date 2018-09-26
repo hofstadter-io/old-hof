@@ -1,12 +1,15 @@
 package app
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +21,6 @@ import (
 var DeployLong = `Deploys the App to Production`
 
 var DeployCmd = &cobra.Command{
-	Hidden: true,
 
 	Use: "deploy",
 
@@ -30,7 +32,12 @@ var DeployCmd = &cobra.Command{
 		logger.Debug("In deployCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app deploy:")
+		// fmt.Println("hof app deploy:")
+
+		err := app.Deploy()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

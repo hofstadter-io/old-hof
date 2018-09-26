@@ -1,12 +1,15 @@
 package db
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/db"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,12 @@ var StatusCmd = &cobra.Command{
 		logger.Debug("In statusCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof db status:")
+		// fmt.Println("hof db status:")
+
+		err := db.Status()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

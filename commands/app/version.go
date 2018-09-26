@@ -1,12 +1,15 @@
 package app
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,11 @@ var VersionCmd = &cobra.Command{
 		logger.Debug("In versionCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app version:")
+		// fmt.Println("hof app version:")
+		err := app.Version()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

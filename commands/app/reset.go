@@ -1,12 +1,15 @@
 package app
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,12 @@ var ResetCmd = &cobra.Command{
 		logger.Debug("In resetCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app reset:")
+		// fmt.Println("hof app reset:")
+
+		err := app.Reset()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

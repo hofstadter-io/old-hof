@@ -2,11 +2,13 @@ package app
 
 import (
 	"fmt"
+	"os"
 
 	// custom imports
 
 	// infered imports
 
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -39,9 +41,17 @@ var UpdateCmd = &cobra.Command{
 			version = args[0]
 		}
 
-		fmt.Println("hof app update:",
-			version,
-		)
+		/*
+			fmt.Println("hof app update:",
+				version,
+			)
+		*/
+
+		err := app.Update(version)
+		if err != nil {
+			fmt.Println("Error\n", err)
+			os.Exit(1)
+		}
 	},
 }
 

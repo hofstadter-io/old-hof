@@ -21,7 +21,7 @@ host: "https://{{.AppName}}.live.hofstadter.io/studios"
 
 `
 
-func CreateApp(inputName string) error {
+func Create(inputName string) error {
 	var name string
 
 	dir, err := os.Getwd()

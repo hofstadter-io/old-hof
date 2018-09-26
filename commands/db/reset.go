@@ -1,12 +1,15 @@
 package db
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/db"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,12 @@ var ResetCmd = &cobra.Command{
 		logger.Debug("In resetCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof db reset:")
+		// fmt.Println("hof db reset:")
+
+		err := db.Reset()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

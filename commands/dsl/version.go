@@ -1,12 +1,15 @@
 package dsl
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/dsl"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,12 @@ var VersionCmd = &cobra.Command{
 		logger.Debug("In versionCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof dsl version:")
+		// fmt.Println("hof dsl version:")
+
+		err := dsl.Version()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

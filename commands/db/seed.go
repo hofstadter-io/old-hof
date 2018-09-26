@@ -1,12 +1,15 @@
 package db
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/db"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,12 @@ var SeedCmd = &cobra.Command{
 		logger.Debug("In seedCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof db seed:")
+		// fmt.Println("hof db seed:")
+
+		err := db.Seed()
+		if err != nil {
+			os.Exit(1)
+		}
 	},
 }
 

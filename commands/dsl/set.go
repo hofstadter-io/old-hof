@@ -1,13 +1,15 @@
 package dsl
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
+	"fmt"
 	"os"
 
+	"github.com/hofstadter-io/hof/lib/dsl"
 	"github.com/spf13/cobra"
 )
 
@@ -45,9 +47,17 @@ var SetCmd = &cobra.Command{
 			version = args[0]
 		}
 
-		fmt.Println("hof dsl set:",
-			version,
-		)
+		/*
+			fmt.Println("hof dsl set:",
+				version,
+			)
+		*/
+
+		err := dsl.Set(version)
+		if err != nil {
+			fmt.Println("Error\n", err)
+			os.Exit(1)
+		}
 	},
 }
 

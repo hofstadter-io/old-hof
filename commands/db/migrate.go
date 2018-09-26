@@ -1,12 +1,15 @@
 package db
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/db"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,13 @@ var MigrateCmd = &cobra.Command{
 		logger.Debug("In migrateCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof db migrate:")
+		// fmt.Println("hof db migrate:")
+
+		err := db.Migrate()
+		if err != nil {
+			os.Exit(1)
+		}
+
 	},
 }
 

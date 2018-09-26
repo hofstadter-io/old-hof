@@ -51,7 +51,7 @@ var CreateCmd = &cobra.Command{
 			)
 		*/
 
-		err := app.CreateApp(name)
+		err := app.Create(name)
 		if err != nil {
 			fmt.Println("Error\n", err)
 			os.Exit(1)
