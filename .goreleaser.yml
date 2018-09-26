@@ -96,4 +96,4 @@ git:
   short_hash: true
 
 release:
-  draft: true
+  draft: false
