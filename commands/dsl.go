@@ -19,6 +19,7 @@ import (
 var DslLong = `Work with your Studios DSL version`
 
 var DslCmd = &cobra.Command{
+	Hidden: true,
 
 	Use: "dsl",
 
