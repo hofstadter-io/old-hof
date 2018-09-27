@@ -12,7 +12,7 @@ func Update(version string) error {
 	host := viper.GetString("host") + "/app/update"
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
-		Query("{ version: '"+version+"' }").
+		Query("version="+version).
 		Set("Authorization", "Bearer "+apikey).
 		EndBytes()
 
