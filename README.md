@@ -11,6 +11,8 @@ __Stable__
 Install the appropriate release from
 the [Hof GitHub releases page](https://github.com/hofstadter-io/hof/releases).
 
+For MacOS, you can also `brew install hofstadter-io/homebrew-tap/hof`.
+
 __Unstable__
 
 ```
