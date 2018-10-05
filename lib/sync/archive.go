@@ -16,6 +16,21 @@ func Untar(dst string, r io.Reader) error {
 
 	fmt.Printf("Unpacking into %q\n", dst)
 
+	avail := []string{
+		"design",
+		"seeds",
+		"pages",
+		"custom",
+		"funcs",
+	}
+
+	for _, dir := range avail {
+		err := os.RemoveAll(dir)
+		if err != nil {
+			return err
+		}
+	}
+
 	gzr, err := gzip.NewReader(r)
 	if err != nil {
 		return err
