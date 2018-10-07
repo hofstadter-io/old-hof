@@ -22,6 +22,7 @@ func Untar(dst string, r io.Reader) error {
 		"pages",
 		"custom",
 		"funcs",
+		"translations",
 	}
 
 	for _, dir := range avail {
@@ -112,6 +113,7 @@ func Tar(src string, writers ...io.Writer) error {
 		"pages",
 		"custom",
 		"funcs",
+		"translations",
 	}
 	var paths []string
 	// ensure the src actually exists before trying to tar it
