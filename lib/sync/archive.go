@@ -10,20 +10,18 @@ import (
 	"strings"
 )
 
+var avail = []string{
+	"design",
+	"seeds",
+	"pages",
+	"custom",
+	"funcs",
+	"translations",
+}
+
 // Untar takes a destination path and a reader; a tar reader loops over the tarfile
 // creating the file structure at 'dst' along the way, and writing any files
 func Untar(dst string, r io.Reader) error {
-
-	fmt.Printf("Unpacking into %q\n", dst)
-
-	avail := []string{
-		"design",
-		"seeds",
-		"pages",
-		"custom",
-		"funcs",
-		"translations",
-	}
 
 	for _, dir := range avail {
 		err := os.RemoveAll(dir)
@@ -107,14 +105,6 @@ func Untar(dst string, r io.Reader) error {
 // for multiple outputs (for example a file, or md5 hash)
 func Tar(src string, writers ...io.Writer) error {
 
-	avail := []string{
-		"design",
-		"seeds",
-		"pages",
-		"custom",
-		"funcs",
-		"translations",
-	}
 	var paths []string
 	// ensure the src actually exists before trying to tar it
 	for _, path := range avail {
@@ -153,7 +143,6 @@ func Tar(src string, writers ...io.Writer) error {
 
 		// update the name to correctly reflect the desired destination when untaring
 		header.Name = strings.TrimPrefix(strings.Replace(file, src, "", -1), string(filepath.Separator))
-		fmt.Println("adding file", header.Name, header.Mode)
 
 		// write the header
 		if err := tw.WriteHeader(header); err != nil {
