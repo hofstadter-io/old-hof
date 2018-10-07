@@ -1,0 +1,34 @@
+package app
+
+import (
+	"fmt"
+	"io/ioutil"
+
+	"github.com/parnurzeal/gorequest"
+	"github.com/spf13/viper"
+)
+
+func Secrets() error {
+	apikey := viper.GetString("auth.apikey")
+	host := viper.GetString("host") + "/app/secrets"
+
+	secretsData, err := ioutil.ReadFile("./secrets/secrets.yaml")
+	if err != nil {
+		return err
+	}
+
+	resp, bodyBytes, errs := gorequest.New().Post(host).
+		Set("Authorization", "Bearer "+apikey).
+		Send(string(secretsData)).
+		EndBytes()
+
+	if len(errs) != 0 {
+		fmt.Println("errs:", errs)
+		fmt.Println("resp:", resp)
+		// arg
+		return nil
+	}
+
+	fmt.Println(string(bodyBytes))
+	return nil
+}
