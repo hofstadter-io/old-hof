@@ -15,27 +15,27 @@ import (
 )
 
 // Tool:   hof
-// Name:   secrets
-// Usage:  secrets
+// Name:   imports
+// Usage:  imports
 // Parent: app
 
-var SecretsLong = `Set the App Secrets`
+var ImportsLong = `Update the App imports when you add new imports to your app design`
 
-var SecretsCmd = &cobra.Command{
+var ImportsCmd = &cobra.Command{
 
-	Use: "secrets",
+	Use: "imports",
 
-	Short: "Set the App Secrets",
+	Short: "Update the App imports",
 
-	Long: SecretsLong,
+	Long: ImportsLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In secretsCmd", "args", args)
+		logger.Debug("In importsCmd", "args", args)
 		// Argument Parsing
 
-		// fmt.Println("hof app secrets:")
+		// fmt.Println("hof app imports:")
 
-		err := app.Secrets()
+		err := app.Imports()
 		if err != nil {
 			os.Exit(1)
 		}
