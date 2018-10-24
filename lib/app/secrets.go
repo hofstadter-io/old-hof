@@ -19,6 +19,7 @@ func Secrets() error {
 
 	resp, bodyBytes, errs := gorequest.New().Post(host).
 		Set("Authorization", "Bearer "+apikey).
+		Type("text").
 		Send(string(secretsData)).
 		EndBytes()
 
