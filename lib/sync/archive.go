@@ -3,6 +3,7 @@ package sync
 import (
 	"archive/tar"
 	"compress/gzip"
+	"compress/zlib"
 	"fmt"
 	"io"
 	"os"
@@ -32,7 +33,13 @@ func Untar(dst string, r io.Reader) error {
 
 	gzr, err := gzip.NewReader(r)
 	if err != nil {
-		return err
+		fmt.Println("Trying ZLib")
+
+		r, err := zlib.NewReader(&b)
+		if err != nil {
+			return err
+		}
+		gzr = r
 	}
 	defer gzr.Close()
 
