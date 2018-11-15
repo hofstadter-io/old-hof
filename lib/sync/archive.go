@@ -31,19 +31,24 @@ func Untar(dst string, r io.Reader) error {
 		}
 	}
 
+
+	var R io.ReadCloser
+
 	gzr, err := gzip.NewReader(r)
 	if err != nil {
 		fmt.Println("Trying ZLib")
 
-		r, err := zlib.NewReader(&b)
+		z, err := zlib.NewReader(r)
 		if err != nil {
 			return err
 		}
-		gzr = r
+		R = z
+	} else {
+		R = gzr
 	}
-	defer gzr.Close()
+	defer R.Close()
 
-	tr := tar.NewReader(gzr)
+	tr := tar.NewReader(R)
 
 	for {
 		header, err := tr.Next()
