@@ -18,7 +18,7 @@ import (
 // Usage:  migrate
 // Parent: db
 
-var MigrateLong = `Migrates the DB, making only the necessary changes. Note, this is not implemented yet. Please use reset in the mean time.`
+var MigrateLong = `Migrates the DB, making only the necessary changes to the schema.`
 
 var MigrateCmd = &cobra.Command{
 

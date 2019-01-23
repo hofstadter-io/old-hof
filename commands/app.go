@@ -45,5 +45,7 @@ func init() {
 	AppCmd.AddCommand(app.ResetCmd)
 	AppCmd.AddCommand(app.ImportsCmd)
 	AppCmd.AddCommand(app.SecretsCmd)
+	AppCmd.AddCommand(app.PullCmd)
+	AppCmd.AddCommand(app.PushCmd)
 	AppCmd.AddCommand(app.DeployCmd)
 }

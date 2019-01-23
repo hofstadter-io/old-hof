@@ -18,13 +18,13 @@ import (
 // Usage:  version
 // Parent: app
 
-var VersionLong = `Get the status of your App`
+var VersionLong = `Get the runtime version of your App`
 
 var VersionCmd = &cobra.Command{
 
 	Use: "version",
 
-	Short: "Get the status of your App",
+	Short: "Get the runtime version of your App",
 
 	Long: VersionLong,
 

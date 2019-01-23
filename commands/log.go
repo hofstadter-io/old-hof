@@ -7,6 +7,7 @@ import (
 	"github.com/hofstadter-io/hof/commands/app"
 	"github.com/hofstadter-io/hof/commands/db"
 	"github.com/hofstadter-io/hof/commands/dsl"
+	"github.com/hofstadter-io/hof/commands/function"
 	"github.com/hofstadter-io/hof/commands/validate"
 )
 
@@ -82,5 +83,6 @@ func setSubLoggers(logger log.Logger) {
 	app.SetLogger(logger)
 	db.SetLogger(logger)
 	dsl.SetLogger(logger)
+	function.SetLogger(logger)
 	validate.SetLogger(logger)
 }
