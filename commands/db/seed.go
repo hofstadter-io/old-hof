@@ -18,7 +18,7 @@ import (
 // Usage:  seed
 // Parent: db
 
-var SeedLong = `Reseeds the DB, dropping all current data and refilling with your seed data.`
+var SeedLong = `Reseeds the DB, dropping all current data and refilling with your seed data. Note, this will also run any pending migrations.`
 
 var SeedCmd = &cobra.Command{
 

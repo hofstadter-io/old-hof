@@ -16,7 +16,6 @@ var avail = []string{
 	"seeds",
 	"pages",
 	"custom",
-	"funcs",
 	"translations",
 }
 
