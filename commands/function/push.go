@@ -2,37 +2,42 @@ package function
 
 import (
 	"fmt"
-	"os"
 
 	// custom imports
 
 	// infered imports
+	"os"
 
 	"github.com/hofstadter-io/hof/lib/fns"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   status
-// Usage:  status <name>
+// Name:   push
+// Usage:  push <name>
 // Parent: function
 
-var StatusLong = `Get the status of your functions`
+var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
 
-var StatusCmd = &cobra.Command{
+var PushCmd = &cobra.Command{
 
-	Use: "status <name>",
+	Use: "push <name>",
 
-	Short: "Get the status of your functions",
+	Short: "Send and make the latest version on Studios",
 
-	Long: StatusLong,
+	Long: PushLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In statusCmd", "args", args)
+		logger.Debug("In pushCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
-		//     req'd:
+		//     req'd:  true
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'name'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
 		var name string
 
@@ -42,12 +47,12 @@ var StatusCmd = &cobra.Command{
 		}
 
 		/*
-		fmt.Println("hof function status:",
+		fmt.Println("hof function push:",
 			name,
 		)
 		*/
 
-		err := fns.Status(name)
+		err := fns.Push(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

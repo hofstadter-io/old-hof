@@ -1,4 +1,4 @@
-package app
+package fns
 
 import (
 	"fmt"
@@ -7,12 +7,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Update(version string) error {
+var FuncFiles = []string {
+	".",
+}
+
+func simpleGet(host, name string) error {
 	apikey := viper.GetString("auth.apikey")
-	host := viper.GetString("host") + "/app/update"
 
 	resp, body, errs := gorequest.New().Get(host).
-		Query("version="+version).
+		Query("name="+name).
 		Set("Authorization", "Bearer "+apikey).
 		End()
 
@@ -25,4 +28,6 @@ func Update(version string) error {
 
 	fmt.Println(body)
 	return nil
+
 }
+

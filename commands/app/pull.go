@@ -7,7 +7,7 @@ import (
 
 	// infered imports
 
-	"github.com/hofstadter-io/hof/lib/sync"
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ var PullCmd = &cobra.Command{
 		// Argument Parsing
 
 		// fmt.Println("hof app pull:")
-		sync.Pull()
+		app.Pull()
 	},
 }
 

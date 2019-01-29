@@ -1,15 +1,16 @@
-package sync
+package app
 
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/parnurzeal/gorequest"
 	"github.com/spf13/viper"
+
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Pull() {
+func Pull() error {
 	apikey := viper.GetString("auth.apikey")
 	host := viper.GetString("host") + "/latest"
 
@@ -20,12 +21,15 @@ func Pull() {
 	if len(errs) != 0 {
 		fmt.Println("errs:", errs)
 		fmt.Println("resp:", resp)
-		return
+		return errs[0]
 	}
 
-	err := Untar(".", bytes.NewReader(bodyBytes))
+	err := util.UntarFiles(AppFiles, ".", bytes.NewReader(bodyBytes))
 	if err != nil {
 		fmt.Println("err", err)
-		os.Exit(1)
+		return err
 	}
+
+	fmt.Println("success")
+	return nil
 }

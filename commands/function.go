@@ -27,7 +27,7 @@ var FunctionCmd = &cobra.Command{
 		"funcs",
 		"func",
 		"fns",
-		"fns",
+		"fn",
 	},
 
 	Short: "Work with your Studios Functions",
@@ -46,4 +46,6 @@ func init() {
 	FunctionCmd.AddCommand(function.DeployCmd)
 	FunctionCmd.AddCommand(function.CallCmd)
 	FunctionCmd.AddCommand(function.DeleteCmd)
+	FunctionCmd.AddCommand(function.PullCmd)
+	FunctionCmd.AddCommand(function.PushCmd)
 }
