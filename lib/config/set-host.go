@@ -4,12 +4,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-func SetAccount(account string) {
+func SetHost(host string) {
 
 	C := Config{
-		Account: account,
+		Account: viper.GetString("Account"),
 		APIKey: viper.GetString("APIKey"),
-		Host: viper.GetString("Host"),
+		Host: host,
 	}
 
 	Write(C)

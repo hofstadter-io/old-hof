@@ -9,6 +9,7 @@ func SetAPIKey(apikey string) {
 	C := Config{
 		Account: viper.GetString("Account"),
 		APIKey:  apikey,
+		Host: viper.GetString("Host"),
 	}
 
 	Write(C)
