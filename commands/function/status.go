@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   status
-// Usage:  status <name>
+// Usage:  status
 // Parent: function
 
 var StatusLong = `Get the status of your functions`
 
 var StatusCmd = &cobra.Command{
 
-	Use: "status <name>",
+	Use: "status",
 
 	Short: "Get the status of your functions",
 
@@ -30,28 +30,15 @@ var StatusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In statusCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   name
-		//     help:
-		//     req'd:
 
-		var name string
+		// fmt.Println("hof function status:")
 
-		if 0 < len(args) {
-
-			name = args[0]
-		}
-
-		/*
-		fmt.Println("hof function status:",
-			name,
-		)
-		*/
-
-		err := fns.Status(name)
+		err := fns.Status()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

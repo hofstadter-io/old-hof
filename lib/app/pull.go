@@ -12,7 +12,7 @@ import (
 
 func Pull() error {
 	apikey := viper.GetString("auth.apikey")
-	host := viper.GetString("host") + "/latest"
+	host := util.ServerURL() + "/app/latest"
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
 		Set("Authorization", "Bearer "+apikey).

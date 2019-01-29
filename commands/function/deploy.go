@@ -2,11 +2,11 @@ package function
 
 import (
 	"fmt"
+	"os"
 
 	// custom imports
 
 	// infered imports
-	"os"
 
 	"github.com/hofstadter-io/hof/lib/fns"
 	"github.com/spf13/cobra"
@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   deploy
-// Usage:  deploy <name>
+// Usage:  deploy
 // Parent: function
 
 var DeployLong = `Deploy the function <name> from the dir "funcs/<name>"`
 
 var DeployCmd = &cobra.Command{
 
-	Use: "deploy <name>",
+	Use: "deploy",
 
 	Short: "Deploys the function <name>",
 
@@ -30,32 +30,15 @@ var DeployCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deployCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   name
-		//     help:
-		//     req'd:  true
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'name'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
 
-		var name string
+		// fmt.Println("hof function deploy:")
 
-		if 0 < len(args) {
-
-			name = args[0]
-		}
-
-		/*
-		fmt.Println("hof function deploy:",
-			name,
-		)
-		*/
-		err := fns.Deploy(name)
+		err := fns.Deploy()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

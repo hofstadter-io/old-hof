@@ -3,6 +3,7 @@ package fns
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
@@ -11,10 +12,13 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push(name string) error {
+func Push() error {
 
 	apikey := viper.GetString("auth.apikey")
-	host := viper.GetString("host") + "/fns/push"
+	host := util.ServerURL() + "/fns/push"
+
+	dir, _ := os.Getwd()
+	name := filepath.Base(dir)
 
 	// package
 	var buf bytes.Buffer

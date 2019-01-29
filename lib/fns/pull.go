@@ -3,6 +3,7 @@ package fns
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
@@ -11,10 +12,13 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Pull(name string) error {
+func Pull() error {
 
 	apikey := viper.GetString("auth.apikey")
-	host := viper.GetString("host") + "/fns/pull"
+	host := util.ServerURL() + "/fns/pull"
+
+	dir, _ := os.Getwd()
+	name := filepath.Base(dir)
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
 		Query("name="+name).

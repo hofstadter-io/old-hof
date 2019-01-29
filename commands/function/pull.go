@@ -2,11 +2,11 @@ package function
 
 import (
 	"fmt"
+	"os"
 
 	// custom imports
 
 	// infered imports
-	"os"
 
 	"github.com/hofstadter-io/hof/lib/fns"
 	"github.com/spf13/cobra"
@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   pull
-// Usage:  pull <name>
+// Usage:  pull
 // Parent: function
 
 var PullLong = `Replaces the local copy with the latest copy in Studios`
 
 var PullCmd = &cobra.Command{
 
-	Use: "pull <name>",
+	Use: "pull",
 
 	Short: "Get the latest version from Studios",
 
@@ -30,33 +30,15 @@ var PullCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In pullCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   name
-		//     help:
-		//     req'd:  true
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'name'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
 
-		var name string
+		// fmt.Println("hof function pull:")
 
-		if 0 < len(args) {
-
-			name = args[0]
-		}
-
-		/*
-		fmt.Println("hof function pull:",
-			name,
-		)
-		*/
-
-		err := fns.Pull(name)
+		err := fns.Pull()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

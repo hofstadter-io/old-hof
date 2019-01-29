@@ -20,7 +20,7 @@ func Push() error {
 	}
 
 	apikey := viper.GetString("auth.apikey")
-	host := viper.GetString("host") + "/upload"
+	host := util.ServerURL() + "/app/latest"
 
 	resp, body, errs := gorequest.New().Get(host).
 		Set("Authorization", "Bearer "+apikey).

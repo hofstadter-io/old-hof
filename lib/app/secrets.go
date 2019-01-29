@@ -6,11 +6,13 @@ import (
 
 	"github.com/parnurzeal/gorequest"
 	"github.com/spf13/viper"
+
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
 func Secrets() error {
 	apikey := viper.GetString("auth.apikey")
-	host := viper.GetString("host") + "/app/secrets"
+	host := util.ServerURL() + "/app/secrets"
 
 	secretsData, err := ioutil.ReadFile("./secrets/secrets.yaml")
 	if err != nil {

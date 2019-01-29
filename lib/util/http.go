@@ -9,8 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func SimpleGet(path string) error {
-	apikey := viper.GetString("APIKey")
+func ServerURL() string {
 	account := viper.GetString("Account")
 	host := viper.GetString("Host")
 	insecure := viper.GetBool("insecure")
@@ -19,12 +18,20 @@ func SimpleGet(path string) error {
 	if insecure {
 		proto = "http"
 	}
+
 	dir, _ := os.Getwd()
 	name := filepath.Base(dir)
 
-	url := fmt.Sprintf("%s://%s.%s.%s/studios%s", proto, name, account, host, path)
+	url := fmt.Sprintf("%s://%s.%s.%s/studios", proto, name, account, host)
+	// fmt.Println(url)
 
-	fmt.Println(url)
+	return url
+}
+
+func SimpleGet(path string) error {
+
+	apikey := viper.GetString("APIKey")
+	url := ServerURL() + path
 
 	resp, body, errs := gorequest.New().Get(url).
 		Set("Authorization", "Bearer "+apikey).
