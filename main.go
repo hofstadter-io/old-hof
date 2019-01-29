@@ -33,6 +33,23 @@ func read_config() {
 	// viper.AddConfigPath("$HOME/.hof")
 	viper.AddConfigPath(filepath.Join(util.UserHomeDir(), ".hof"))
 	viper.MergeInConfig()
+
+	/*
+		// Hackery because viper only takes the first config file found... not merging, wtf does merge config mean then anyway
+		f, err := os.Open("hof.yml")
+		if err != nil {
+			f = nil
+			f2, err2 := os.Open("hof.yaml")
+			if err2 != nil {
+				f = nil
+			} else {
+				f = f2
+			}
+		}
+		if f != nil {
+			viper.MergeConfig(f)
+		}
+	*/
 }
 
 func config_logger() {

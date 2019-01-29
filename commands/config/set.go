@@ -32,4 +32,5 @@ func init() {
 
 	SetCmd.AddCommand(set.ApikeyCmd)
 	SetCmd.AddCommand(set.AccountCmd)
+	SetCmd.AddCommand(set.HostCmd)
 }
