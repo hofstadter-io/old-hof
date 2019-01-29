@@ -22,6 +22,14 @@ var FunctionCmd = &cobra.Command{
 
 	Use: "function",
 
+	Aliases: []string{
+		"functions",
+		"funcs",
+		"func",
+		"fns",
+		"fn",
+	},
+
 	Short: "Work with your Studios Functions",
 
 	Long: FunctionLong,
@@ -36,5 +44,8 @@ func init() {
 
 	FunctionCmd.AddCommand(function.StatusCmd)
 	FunctionCmd.AddCommand(function.DeployCmd)
+	FunctionCmd.AddCommand(function.CallCmd)
 	FunctionCmd.AddCommand(function.DeleteCmd)
+	FunctionCmd.AddCommand(function.PullCmd)
+	FunctionCmd.AddCommand(function.PushCmd)
 }

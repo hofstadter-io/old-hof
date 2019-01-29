@@ -51,7 +51,11 @@ var DeployCmd = &cobra.Command{
 			name,
 		)
 		*/
-		fns.Deploy(name)
+		err := fns.Deploy(name)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 
