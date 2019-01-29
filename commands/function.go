@@ -44,5 +44,6 @@ func init() {
 
 	FunctionCmd.AddCommand(function.StatusCmd)
 	FunctionCmd.AddCommand(function.DeployCmd)
+	FunctionCmd.AddCommand(function.CallCmd)
 	FunctionCmd.AddCommand(function.DeleteCmd)
 }
