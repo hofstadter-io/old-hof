@@ -22,6 +22,14 @@ var FunctionCmd = &cobra.Command{
 
 	Use: "function",
 
+	Aliases: []string{
+		"functions",
+		"funcs",
+		"func",
+		"fns",
+		"fns",
+	},
+
 	Short: "Work with your Studios Functions",
 
 	Long: FunctionLong,
