@@ -47,8 +47,26 @@ var CallCmd = &cobra.Command{
 			name = args[0]
 		}
 
+		// [1]name:   data
+		//     help:
+		//     req'd:  true
+		if 1 >= len(args) {
+			fmt.Println("missing required argument: 'data'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
+
+		var data string
+
+		if 1 < len(args) {
+
+			data = args[1]
+		}
+
 		fmt.Println("hof function call:",
 			name,
+
+			data,
 		)
 	},
 }
