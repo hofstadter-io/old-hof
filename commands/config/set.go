@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 
 	// custom imports
 
@@ -26,18 +25,11 @@ var SetCmd = &cobra.Command{
 	Short: "Get configuration values",
 
 	Long: SetLong,
-
-	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In setCmd", "args", args)
-		// Argument Parsing
-
-		fmt.Println("hof config set:")
-	},
 }
 
 func init() {
 	// add sub-commands to this command when present
 
 	SetCmd.AddCommand(set.ApikeyCmd)
-	SetCmd.AddCommand(set.UrlCmd)
+	SetCmd.AddCommand(set.AccountCmd)
 }

@@ -13,46 +13,46 @@ import (
 )
 
 // Tool:   hof
-// Name:   apikey
-// Usage:  apikey <key>
+// Name:   account
+// Usage:  account <name>
 // Parent: set
 
-var ApikeyLong = `Set your API Key`
+var AccountLong = `Set your account ID`
 
-var ApikeyCmd = &cobra.Command{
+var AccountCmd = &cobra.Command{
 
-	Use: "apikey <key>",
+	Use: "account <name>",
 
-	Short: "Set your API Key",
+	Short: "Set your account ID",
 
-	Long: ApikeyLong,
+	Long: AccountLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In apikeyCmd", "args", args)
+		logger.Debug("In accountCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   key
+		// [0]name:   account
 		//     help:
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'key'\n")
+			fmt.Println("missing required argument: 'account'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}
 
-		var key string
+		var account string
 
 		if 0 < len(args) {
 
-			key = args[0]
+			account = args[0]
 		}
 
 		/*
-		fmt.Println("hof config set apikey:",
-			key,
+		fmt.Println("hof config set account:",
+			account,
 		)
 		*/
 
-		config.SetAPIKey(key)
+		config.SetAccount(account)
 	},
 }
 

@@ -1,13 +1,14 @@
 package config
 
 import (
-	"fmt"
+	// "fmt"
 
 	// custom imports
 
 	// infered imports
 
 	"github.com/spf13/cobra"
+	"github.com/hofstadter-io/hof/lib/config"
 )
 
 // Tool:   hof
@@ -21,6 +22,10 @@ var GetCmd = &cobra.Command{
 
 	Use: "get",
 
+	Aliases: []string{
+		"view",
+	},
+
 	Short: "Get your configuration",
 
 	Long: GetLong,
@@ -29,7 +34,11 @@ var GetCmd = &cobra.Command{
 		logger.Debug("In getCmd", "args", args)
 		// Argument Parsing
 
+		/*
 		fmt.Println("hof config get:")
+		*/
+
+		config.Get()
 	},
 }
 

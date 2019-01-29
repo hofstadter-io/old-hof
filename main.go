@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
 
 	"github.com/hofstadter-io/hof/commands"
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
 var logger = log.New()
@@ -24,26 +26,13 @@ func main() {
 
 func read_config() {
 	viper.SetConfigType("yaml")
-	viper.SetConfigName("config")
+	// viper.SetConfigName("config")
+	viper.SetConfigName("hof")
 	viper.AddConfigPath(".")
 	// viper.SetConfigName("hof")
 	// viper.AddConfigPath("$HOME/.hof")
+	viper.AddConfigPath(filepath.Join(util.UserHomeDir(), ".hof"))
 	viper.MergeInConfig()
-
-	// Hackery because viper only takes the first config file found... not merging, wtf does merge config mean then anyway
-	f, err := os.Open("hof.yml")
-	if err != nil {
-		f = nil
-		f2, err2 := os.Open("hof.yaml")
-		if err2 != nil {
-			f = nil
-		} else {
-			f = f2
-		}
-	}
-	if f != nil {
-		viper.MergeConfig(f)
-	}
 }
 
 func config_logger() {
