@@ -11,10 +11,13 @@ import (
 )
 
 func Pull() error {
-	apikey := viper.GetString("auth.apikey")
-	host := util.ServerURL() + "/app/latest"
+	apikey := viper.GetString("APIKey")
+	host := util.ServerURL() + "/app/pull"
+	acct, name := util.GetAcctAndName()
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
+		Query("name="+name).
+		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		EndBytes()
 
@@ -23,6 +26,9 @@ func Pull() error {
 		fmt.Println("resp:", resp)
 		return errs[0]
 	}
+
+	// fmt.Println("resp:", resp)
+	fmt.Println("length:", len(bodyBytes))
 
 	err := util.UntarFiles(AppFiles, ".", bytes.NewReader(bodyBytes))
 	if err != nil {

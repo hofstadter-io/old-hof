@@ -3,7 +3,6 @@ package fns
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
@@ -16,9 +15,7 @@ func Push() error {
 
 	apikey := viper.GetString("auth.apikey")
 	host := util.ServerURL() + "/fns/push"
-
-	dir, _ := os.Getwd()
-	name := filepath.Base(dir)
+	acct, name := util.GetAcctAndName()
 
 	// package
 	var buf bytes.Buffer
@@ -30,6 +27,7 @@ func Push() error {
 
 	resp, body, errs := gorequest.New().Get(host).
 		Query("name="+name).
+		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
 		SendFile(buf.Bytes()).

@@ -3,20 +3,14 @@ package dsl
 import (
 	"fmt"
 
-	"github.com/parnurzeal/gorequest"
-	"github.com/spf13/viper"
-
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
 func Set(version string) error {
-	apikey := viper.GetString("auth.apikey")
-	host := util.ServerURL() + "/dsl/update"
+	req := util.BuildRequest("/dsl/update").
+		Query("version="+version)
 
-	resp, bodyBytes, errs := gorequest.New().Get(host).
-		Query("version="+version).
-		Set("Authorization", "Bearer "+apikey).
-		EndBytes()
+	resp, body, errs := req.End()
 
 	if len(errs) != 0 {
 		fmt.Println("errs:", errs)
@@ -25,6 +19,6 @@ func Set(version string) error {
 		return nil
 	}
 
-	fmt.Println(string(bodyBytes))
+	fmt.Println(body)
 	return nil
 }
