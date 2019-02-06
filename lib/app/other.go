@@ -4,6 +4,10 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
+func Hello() error {
+	return util.SimpleGet("/app/hello")
+}
+
 func Deploy() error {
 	return util.SimpleGet("/app/deploy")
 }
