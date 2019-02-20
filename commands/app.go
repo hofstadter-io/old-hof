@@ -38,14 +38,15 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
-	AppCmd.AddCommand(app.CreateCmd)
 	AppCmd.AddCommand(app.StatusCmd)
 	AppCmd.AddCommand(app.VersionCmd)
 	AppCmd.AddCommand(app.UpdateCmd)
 	AppCmd.AddCommand(app.ResetCmd)
-	// AppCmd.AddCommand(app.ImportsCmd)
+	AppCmd.AddCommand(app.ValidateCmd)
+	AppCmd.AddCommand(app.GenerateCmd)
 	AppCmd.AddCommand(app.SecretsCmd)
 	AppCmd.AddCommand(app.PullCmd)
 	AppCmd.AddCommand(app.PushCmd)
 	AppCmd.AddCommand(app.DeployCmd)
+	AppCmd.AddCommand(app.ShutdownCmd)
 }

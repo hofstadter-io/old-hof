@@ -18,13 +18,13 @@ import (
 // Usage:  deploy
 // Parent: app
 
-var DeployLong = `Deploys the App to Production`
+var DeployLong = `Deploys the App`
 
 var DeployCmd = &cobra.Command{
 
 	Use: "deploy",
 
-	Short: "Deploys the App to Production",
+	Short: "Deploys the App",
 
 	Long: DeployLong,
 

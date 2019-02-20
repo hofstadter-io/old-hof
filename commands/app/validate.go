@@ -1,4 +1,4 @@
-package commands
+package app
 
 import (
 	"fmt"
@@ -8,14 +8,12 @@ import (
 	// infered imports
 
 	"github.com/spf13/cobra"
-
-	"github.com/hofstadter-io/hof/commands/validate"
 )
 
 // Tool:   hof
 // Name:   validate
 // Usage:  validate
-// Parent: hof
+// Parent: app
 
 var ValidateLong = `Validate your application or components of it`
 
@@ -36,16 +34,11 @@ var ValidateCmd = &cobra.Command{
 		logger.Debug("In validateCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof validate:")
+		fmt.Println("hof app validate:")
 	},
-}
-
-func init() {
-	RootCmd.AddCommand(ValidateCmd)
 }
 
 func init() {
 	// add sub-commands to this command when present
 
-	ValidateCmd.AddCommand(validate.DesignCmd)
 }
