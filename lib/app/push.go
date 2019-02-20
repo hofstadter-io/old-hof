@@ -3,6 +3,7 @@ package app
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
@@ -11,13 +12,17 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push() error {
+func Push(writeFile bool) error {
 
 	var buf bytes.Buffer
 	err := util.TarFiles(AppFiles, "./", &buf)
 	if err != nil {
 		fmt.Println("err", err)
 		return err
+	}
+
+	if writeFile {
+		return ioutil.WriteFile("studios.tar.gz", buf.Bytes(), 0644)
 	}
 
 	apikey := viper.GetString("APIKey")

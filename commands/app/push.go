@@ -31,7 +31,9 @@ var PushCmd = &cobra.Command{
 		// Argument Parsing
 
 		// fmt.Println("hof app push:")
-		app.Push()
+
+		writeFile := len(args) > 0
+		app.Push(writeFile)
 	},
 }
 
