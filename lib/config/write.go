@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
 
 	"github.com/hofstadter-io/hof/lib/util"
 )
@@ -20,8 +19,6 @@ Host: {{.Host}}
 `
 
 func Write(C Config) (err error) {
-
-	C.Insecure = viper.GetBool("insecure")
 
 	T := template.Must(template.New("hof.yaml").Parse(fileTemplate))
 

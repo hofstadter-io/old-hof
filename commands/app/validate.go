@@ -7,7 +7,10 @@ import (
 
 	// infered imports
 
+	"os"
+
 	"github.com/spf13/cobra"
+	"github.com/hofstadter-io/hof/lib/app"
 )
 
 // Tool:   hof
@@ -34,7 +37,13 @@ var ValidateCmd = &cobra.Command{
 		logger.Debug("In validateCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app validate:")
+		// fmt.Println("hof app validate:")
+
+		err := app.Validate()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 

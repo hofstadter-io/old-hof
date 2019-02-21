@@ -24,6 +24,14 @@ func Status() error {
 	return util.SimpleGet("/app/status")
 }
 
+func Generate() error {
+	return util.SimpleGet("/app/generate")
+}
+
+func Validate() error {
+	return util.SimpleGet("/app/validate")
+}
+
 func Version() error {
 	return util.SimpleGet("/app/version")
 }

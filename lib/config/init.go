@@ -4,6 +4,5 @@ type Config struct {
 	APIKey   string
 	Account  string
 	Host     string
-	Insecure bool
 }
 

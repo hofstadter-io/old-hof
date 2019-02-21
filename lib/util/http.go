@@ -24,14 +24,8 @@ func BuildRequest(path string) *gorequest.SuperAgent {
 
 func ServerURL() string {
 	host := viper.GetString("Host")
-	insecure := viper.GetBool("insecure")
 
-	proto := "https"
-	if insecure {
-		proto = "http"
-	}
-
-	url := fmt.Sprintf("%s://%s/studios", proto, host)
+	url := fmt.Sprintf("%s/studios", host)
 	// fmt.Println(url)
 
 	return url
