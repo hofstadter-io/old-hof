@@ -8,6 +8,7 @@ import (
 	// infered imports
 
 	"github.com/spf13/cobra"
+
 	"github.com/hofstadter-io/hof/lib/config"
 )
 
@@ -26,19 +27,31 @@ var GetCmd = &cobra.Command{
 		"view",
 	},
 
-	Short: "Get your configuration",
+	Short: "Get Hofsadter configuration(s)",
 
 	Long: GetLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In getCmd", "args", args)
 		// Argument Parsing
+		// [0]name:   context
+		//     help:
+		//     req'd:
+
+		var context string
+
+		if 0 < len(args) {
+
+			context = args[0]
+		}
 
 		/*
-		fmt.Println("hof config get:")
+		fmt.Println("hof config get:",
+			context,
+		)
 		*/
 
-		config.Get()
+		config.GetContext(context)
 	},
 }
 

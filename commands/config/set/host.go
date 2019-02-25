@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/hofstadter-io/hof/lib/config"
 )
 
@@ -52,7 +53,8 @@ var HostCmd = &cobra.Command{
 		)
 		*/
 
-		config.SetHost(host)
+		context := viper.GetString("context")
+		config.SetHost(context, host)
 	},
 }
 

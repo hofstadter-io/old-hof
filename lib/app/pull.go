@@ -5,13 +5,15 @@ import (
 	"fmt"
 
 	"github.com/parnurzeal/gorequest"
-	"github.com/spf13/viper"
 
+	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
 func Pull() error {
-	apikey := viper.GetString("APIKey")
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
+
 	host := util.ServerURL() + "/app/pull"
 	acct, name := util.GetAcctAndName()
 

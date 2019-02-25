@@ -7,8 +7,8 @@ import (
 
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
 
+	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -25,7 +25,8 @@ func Push(writeFile bool) error {
 		return ioutil.WriteFile("studios.tar.gz", buf.Bytes(), 0644)
 	}
 
-	apikey := viper.GetString("APIKey")
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
 	host := util.ServerURL() + "/app/push"
 	acct, name := util.GetAcctAndName()
 

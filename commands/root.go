@@ -6,12 +6,24 @@ import (
 
 	// infered imports
 
+	"github.com/spf13/viper"
+
 	"github.com/spf13/cobra"
 )
 
 var HofLong = `Hofstadter Studios is a platform
 for collaborative development.
 `
+
+var (
+	RootContextPFlag string
+)
+
+func init() {
+	RootCmd.PersistentFlags().StringVarP(&RootContextPFlag, "context", "c", "", "the context to use for the hof tool and commands")
+	viper.BindPFlag("context", RootCmd.PersistentFlags().Lookup("context"))
+
+}
 
 var (
 	RootCmd = &cobra.Command{

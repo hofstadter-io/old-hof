@@ -6,14 +6,15 @@ import (
 	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
-	"github.com/spf13/viper"
 
+	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
 func Pull() error {
 
-	apikey := viper.GetString("auth.apikey")
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
 	host := util.ServerURL() + "/fns/pull"
 	acct, name := util.GetAcctAndName()
 

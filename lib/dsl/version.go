@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/parnurzeal/gorequest"
-	"github.com/spf13/viper"
 
+	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
 func Version() error {
-	apikey := viper.GetString("auth.apikey")
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
 	host := util.ServerURL() + "/dsl/version"
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).

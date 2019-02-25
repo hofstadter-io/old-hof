@@ -6,11 +6,15 @@ import (
 	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
-	"github.com/spf13/viper"
+
+	"github.com/hofstadter-io/hof/lib/config"
+
 )
 
 func BuildRequest(path string) *gorequest.SuperAgent {
-	apikey := viper.GetString("APIKey")
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
+
 	url := ServerURL() + path
 	acct, name := GetAcctAndName()
 
@@ -23,16 +27,16 @@ func BuildRequest(path string) *gorequest.SuperAgent {
 }
 
 func ServerURL() string {
-	host := viper.GetString("Host")
+	ctx := config.GetCurrentContext()
 
+	host := ctx.Host
 	url := fmt.Sprintf("%s/studios", host)
-	// fmt.Println(url)
 
 	return url
 }
 
 func GetAcctAndName() (string, string) {
-	account := viper.GetString("Account")
+	account := config.GetCurrentContext().Account
 
 	dir, _ := os.Getwd()
 	name := filepath.Base(dir)
