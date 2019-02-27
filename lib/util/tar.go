@@ -31,7 +31,7 @@ func TarFiles(files []string, src string, writers ...io.Writer) error {
 
 	// walk path
 	walker := func(file string, fi os.FileInfo, err error) error {
-		fmt.Println("+", file)
+		// fmt.Println("+", file)
 
 		// return on any error
 		if err != nil {

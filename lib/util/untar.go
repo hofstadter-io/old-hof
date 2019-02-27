@@ -3,7 +3,7 @@ package util
 import (
 	"archive/tar"
 	"compress/gzip"
-	"fmt"
+	// "fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -66,7 +66,7 @@ func UntarFiles(files []string, dst string, r io.Reader) error {
 		// if it's a file create it
 		case tar.TypeReg:
 			dir := filepath.Dir(target)
-			fmt.Println("x ", target)
+			// fmt.Println("x ", target)
 			if _, err := os.Stat(dir); err != nil {
 				if err := os.MkdirAll(dir, 0755); err != nil {
 					return err
