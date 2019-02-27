@@ -3,10 +3,13 @@ package app
 import (
 	"fmt"
 
+	"os"
+
 	// custom imports
 
 	// infered imports
 
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +32,13 @@ var ShutdownCmd = &cobra.Command{
 		logger.Debug("In shutdownCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app shutdown:")
+		// fmt.Println("hof app shutdown:")
+
+		err := app.Shutdown()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 

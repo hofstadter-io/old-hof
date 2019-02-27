@@ -1,7 +1,7 @@
 package app
 
 import (
-	// "fmt"
+	"fmt"
 
 	// custom imports
 
@@ -36,6 +36,7 @@ var ResetCmd = &cobra.Command{
 
 		err := app.Reset()
 		if err != nil {
+			fmt.Println(err)
 			os.Exit(1)
 		}
 	},

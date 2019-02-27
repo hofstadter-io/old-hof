@@ -9,8 +9,8 @@ import (
 
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/hofstadter-io/hof/lib/app"
+	"github.com/spf13/cobra"
 )
 
 // Tool:   hof

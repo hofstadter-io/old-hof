@@ -7,6 +7,9 @@ import (
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -34,7 +37,13 @@ var GenerateCmd = &cobra.Command{
 		logger.Debug("In generateCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app generate:")
+		// fmt.Println("hof app generate:")
+
+		err := app.Generate()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 

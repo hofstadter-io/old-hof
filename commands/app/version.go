@@ -1,7 +1,7 @@
 package app
 
 import (
-	// "fmt"
+	"fmt"
 
 	// custom imports
 
@@ -35,6 +35,7 @@ var VersionCmd = &cobra.Command{
 		// fmt.Println("hof app version:")
 		err := app.Version()
 		if err != nil {
+			fmt.Println(err)
 			os.Exit(1)
 		}
 	},

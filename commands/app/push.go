@@ -1,7 +1,8 @@
 package app
 
 import (
-	// "fmt"
+	"fmt"
+	"os"
 
 	// custom imports
 
@@ -33,7 +34,12 @@ var PushCmd = &cobra.Command{
 		// fmt.Println("hof app push:")
 
 		writeFile := len(args) > 0
-		app.Push(writeFile)
+
+		err := app.Push(writeFile)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 

@@ -1,7 +1,8 @@
 package app
 
 import (
-	// "fmt"
+	"fmt"
+	"os"
 
 	// custom imports
 
@@ -31,7 +32,11 @@ var PullCmd = &cobra.Command{
 		// Argument Parsing
 
 		// fmt.Println("hof app pull:")
-		app.Pull()
+		err := app.Pull()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 

@@ -12,6 +12,10 @@ func Deploy() error {
 	return util.SimpleGet("/app/deploy")
 }
 
+func Shutdown() error {
+	return util.SimpleGet("/app/shutdown")
+}
+
 func Imports() error {
 	return util.SimpleGet("/app/imports")
 }

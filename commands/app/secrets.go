@@ -1,7 +1,7 @@
 package app
 
 import (
-	// "fmt"
+	"fmt"
 
 	// custom imports
 
@@ -37,6 +37,7 @@ var SecretsCmd = &cobra.Command{
 
 		err := app.Secrets()
 		if err != nil {
+			fmt.Println(err)
 			os.Exit(1)
 		}
 	},

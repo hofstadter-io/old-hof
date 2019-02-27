@@ -1,7 +1,7 @@
 package app
 
 import (
-	// "fmt"
+	"fmt"
 
 	// custom imports
 
@@ -36,6 +36,7 @@ var DeployCmd = &cobra.Command{
 
 		err := app.Deploy()
 		if err != nil {
+			fmt.Println(err)
 			os.Exit(1)
 		}
 	},

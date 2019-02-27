@@ -49,7 +49,7 @@ var UpdateCmd = &cobra.Command{
 
 		err := app.Update(version)
 		if err != nil {
-			fmt.Println("Error\n", err)
+			fmt.Println(err)
 			os.Exit(1)
 		}
 	},
