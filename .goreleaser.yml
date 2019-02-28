@@ -82,18 +82,5 @@ brew:
   homepage: https://github.com/hofstadter-io/hof
   description: 'Hofstadter Studios CLI'
 
-dockers:
-  - image: hofstadter/hof
-    binary: hof
-    tag_templates:
-      - "{{ .Tag }}"
-      - "{{ .Major }}.{{ .Minor }}"
-      - "{{ .Major }}"
-      - latest
-
-
-git:
-  short_hash: true
-
 release:
   draft: false
