@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   use-context
-// Usage:  use-context
+// Usage:  use-context <context-name>
 // Parent: config
 
 var UseContextLong = `Sets the context as the default`
 
 var UseContextCmd = &cobra.Command{
 
-	Use: "use-context",
+	Use: "use-context <context-name>",
 
 	Short: "Use a context configuration",
 

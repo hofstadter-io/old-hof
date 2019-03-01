@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   get
-// Usage:  get
+// Usage:  get [all|<context-name>]
 // Parent: config
 
 var GetLong = `Get your configuration`
 
 var GetCmd = &cobra.Command{
 
-	Use: "get",
+	Use: "get [all|<context-name>]",
 
 	Aliases: []string{
 		"view",

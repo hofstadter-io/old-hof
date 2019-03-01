@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   set-context
-// Usage:  set-context
+// Usage:  set-context <context-name> <username> <apikey> <host>
 // Parent: config
 
 var SetContextLong = `Sets the context values and makes it the default`
 
 var SetContextCmd = &cobra.Command{
 
-	Use: "set-context",
+	Use: "set-context <context-name> <username> <apikey> <host>",
 
 	Short: "Set a context configuration",
 
