@@ -34,6 +34,7 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
+	ConfigCmd.AddCommand(config.TestCmd)
 	ConfigCmd.AddCommand(config.UseContextCmd)
 	ConfigCmd.AddCommand(config.SetContextCmd)
 	ConfigCmd.AddCommand(config.GetCmd)
