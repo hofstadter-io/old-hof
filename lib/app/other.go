@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -16,15 +18,13 @@ func Shutdown() error {
 	return util.SimpleGet("/app/shutdown")
 }
 
-func Imports() error {
-	return util.SimpleGet("/app/imports")
-}
-
 func Reset() error {
 	return util.SimpleGet("/app/reset")
 }
 
 func Status() error {
+	acct, appname := util.GetAcctAndName()
+	fmt.Printf("https://%s.%s.live.hofstadter.io\n", appname, acct)
 	return util.SimpleGet("/app/status")
 }
 
