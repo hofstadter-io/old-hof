@@ -2,11 +2,11 @@ package app
 
 var (
 	AppFiles = []string{
+		"custom",
 		"design",
 		"design-vendor",
-		"seeds",
 		"pages",
-		"custom",
+		"seeds",
 		"translations",
 	}
 )
