@@ -13,6 +13,8 @@ import (
   "gopkg.in/src-d/go-git.v4"
   "gopkg.in/src-d/go-git.v4/plumbing"
   "gopkg.in/src-d/go-git.v4/storage/memory"
+
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
 
@@ -28,17 +30,35 @@ func CloneAndWrite(srcUrl, srcVer string) error {
 		co.ReferenceName = plumbing.ReferenceName(srcVer)
 	}
 
-	err := os.MkdirAll("design-vendor", 0755)
+	// temp dir to clone to
+	dir, err := ioutil.TempDir("", "")
 	if err != nil {
 		return err
 	}
 
 	// Clones the repository into the worktree (fs) and storer all the .git
 	// content into the storer
-	_, err = git.PlainClone("design-vendor", false, co)
+	_, err = git.PlainClone(dir, false, co)
 	if err != nil {
 		return err
 	}
+
+	// TODO read hof-pkg.yaml config and do...
+
+	// Copy tmpdir/design/... to design-vendor/...
+	err = util.CopyDir(filepath.Join(dir, "design"), "design-vendor")
+	if err != nil {
+		return err
+	}
+	if _, err := os.Stat(filepath.Join(dir, "design-vendor")); !os.IsNotExist(err) {
+		// path exists
+		err = util.CopyDir(filepath.Join(dir, "design-vendor"), "design-vendor")
+		if err != nil {
+			return err
+		}
+	}
+
+	// TODO update hof-deps.yaml
 
 	return nil
 }
