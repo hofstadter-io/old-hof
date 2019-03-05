@@ -1,5 +1,17 @@
 package extern
 
+import (
+	"os"
+	"path/filepath"
+
+	"github.com/hofstadter-io/hof/lib/util"
+)
+
+// TODO, pass common vars
+/*
+- app name
+*/
+
 func ImportFetchAll() (string, error) {
 	// need a deps file
 
@@ -7,7 +19,7 @@ func ImportFetchAll() (string, error) {
 }
 
 func ImportAddBundle(bundle, version string) (string, error) {
-	err := CloneAndWrite(bundle, version)
+	err := cloneAndRenderImport(bundle, version)
 	if err != nil {
 		return "", err
 	}
@@ -18,7 +30,7 @@ func ImportAddBundle(bundle, version string) (string, error) {
 }
 
 func ImportUpdateBundle(bundle, version string) (string, error) {
-	err := CloneAndWrite(bundle, version)
+	err := cloneAndRenderImport(bundle, version)
 	if err != nil {
 		return "", err
 	}
@@ -35,3 +47,31 @@ func ImportRemoveBundle(bundle string) (string, error) {
 
 	return "TBD", nil
 }
+
+
+func cloneAndRenderImport(srcUrl, srcVer string) error {
+	_, appname := util.GetAcctAndName()
+	data := map[string]interface{}{
+		"AppName": appname,
+	}
+
+	dir, err := util.CloneRepo(srcUrl, srcVer)
+	if err != nil {
+		return err
+	}
+
+	err = util.RenderDir(filepath.Join(dir, "design"), "design-vendor", data)
+	if err != nil {
+		return err
+	}
+
+	if _, err := os.Stat(filepath.Join(dir, "design-vendor")); !os.IsNotExist(err) {
+		// path exists
+		err = util.RenderDir(filepath.Join(dir, "design-vendor"), "design-vendor", data)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+

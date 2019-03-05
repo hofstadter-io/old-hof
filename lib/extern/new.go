@@ -1,12 +1,14 @@
 package extern
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/data-utils/io"
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
 
@@ -68,21 +70,29 @@ func NewEntry(what, name, template, version, strData string) (string, error) {
 }
 
 func NewApp(name, template, version string, data map[string]interface{}) (string, error) {
+	data["AppName"] = name
 
-	err := CloneAndRender(template, version, name, data)
+	dir, err := util.CloneRepo(template, version)
 	if err != nil {
 		return "", err
 	}
 
-	return "TBD", nil
+	err = util.RenderDirNameSub(dir, name, data)
+	if err != nil {
+		return "", err
+	}
+
+	return "App created\n", nil
 }
 
 func NewModule(name, template, version string, data map[string]interface{}) (string, error) {
-	dir, _ := filepath.Split(name)
+	dir, fn := filepath.Split(name)
 	if dir == name {
 		dir = name
+		name = fn
 	}
-	err := CloneAndRender(template, version, dir, data)
+
+	err := cloneAndRenderNewThing(template, version, dir, data)
 	if err != nil {
 		return "", err
 	}
@@ -106,4 +116,38 @@ func NewComponent(name, template, version string, data map[string]interface{}) (
 
 	return "TBD", nil
 }
+
+func cloneAndRenderNewThing(srcUrl, srcVer, destBasePath string, data map[string]interface{}) error {
+	_, appname := util.GetAcctAndName()
+	data["AppName"] = appname
+
+	// A bit hacky
+	paths := strings.Split(destBasePath, "/")
+	if len(destBasePath) >= 2 {
+		data["ModuleName"] = paths[1]
+	}
+	if len(destBasePath) == 3 {
+		data["TypeName"] = paths[2]
+	}
+
+	dir, err := util.CloneRepo(srcUrl, srcVer)
+	if err != nil {
+		return err
+	}
+
+	err = util.RenderDirNameSub(filepath.Join(dir, "design"), "design", data)
+	if err != nil {
+		return err
+	}
+	if _, err := os.Stat(filepath.Join(dir, "design-vendor")); !os.IsNotExist(err) {
+		// path exists
+		err = util.RenderDirNameSub(filepath.Join(dir, "design-vendor"), "design", data)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 
