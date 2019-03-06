@@ -1,11 +1,11 @@
 package util
 
 import (
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"os"
 	"path"
-	"path/filepath"
+	// "path/filepath"
 	"strings"
 
 	"github.com/aymerick/raymond"
@@ -77,7 +77,7 @@ func RenderDir(src string, dst string, data interface{}) error {
 func RenderFileNameSub(src, dst string, data interface{}) error {
 
 	dst = subNames(dst, data)
-	fmt.Println(src, "->", filepath.Join(dst, src))
+	// fmt.Println(src, "->", filepath.Join(dst))
 
 	content, err := ioutil.ReadFile(src)
 	if err != nil {
@@ -145,7 +145,7 @@ func RenderDirNameSub(src string, dst string, data interface{}) error {
 
 func subNames(name string, data interface{}) string {
 	ctx := data.(map[string]interface{})
-	fmt.Println("Sub", name, data)
+	// fmt.Println("Sub", name, data)
 
 	sub, ok := ctx["AppName"]
 	if ok {
@@ -162,7 +162,7 @@ func subNames(name string, data interface{}) string {
 		name = strings.Replace(name, "TypeName", sub.(string), -1)
 	}
 
-	fmt.Println("   ", name)
+	// fmt.Println("   ", name)
 	return name
 }
 

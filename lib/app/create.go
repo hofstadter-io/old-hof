@@ -1,7 +1,9 @@
 package app
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 	"strings"
 
 	"github.com/parnurzeal/gorequest"
@@ -12,6 +14,24 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
+const appCreateTemplate = `
+mutation {
+  appCreate(input:{
+    name:"{{.name}}"
+    version:"{{.version}}"
+    type:"{{.type}}"
+  }) {
+    app {
+      name
+      id
+      version
+      type
+			createdAt
+    }
+  }
+}
+`
+
 func Create(name, kitver, template string) error {
 	var version string
 
@@ -21,12 +41,12 @@ func Create(name, kitver, template string) error {
 		version = parts[1]
 	}
 
-	_, err = extern.NewApp(name, template, version, nil)
+	_, err := extern.NewApp(name, template, version, nil)
 	if err != nil {
 		return err
 	}
 
-	err := SendCreateRequest(name, kitver)
+	err = SendCreateRequest(name, kitver)
 	if err != nil {
 		return err
 	}
@@ -37,24 +57,36 @@ func Create(name, kitver, template string) error {
 func SendCreateRequest(name, kitver string) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/api/app-create"
+	host := util.ServerHost() + "/graphql"
 	acct, _ := util.GetAcctAndName()
 
+	// Create a new template and parse the letter into it.
+	t := template.Must(template.New("appCreate").Parse(appCreateTemplate))
+
+	// Create Template Data
 	data := map[string]interface{} {
 		"name": name,
 		"type": "starter",
 		"version": kitver,
 	}
 
-	input := map[string]interface{} {
-		"input": data,
+
+	// Execute the template for each recipient.
+	var b bytes.Buffer
+	err := t.Execute(&b, data)
+	if err != nil {
+		return errors.Wrap(err, "error executing template\n")
 	}
 
+	send := map[string]interface{} {
+		"query": b.String(),
+		"variables": nil,
+	}
 
 	resp, body, errs := gorequest.New().Post(host).
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
-		Send(input).
+		Send(send).
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
