@@ -14,30 +14,27 @@ import (
 )
 
 // Tool:   hof
-// Name:   version
-// Usage:  version
+// Name:   list
+// Usage:  list
 // Parent: app
 
-var VersionLong = `Get the runtime version of your App`
+var ListLong = `List app of your Apps`
 
-var VersionCmd = &cobra.Command{
+var ListCmd = &cobra.Command{
 
-	Use: "version",
+	Use: "list",
 
-	Aliases: []string{
-		"vers",
-	},
+	Short: "List app of your Apps",
 
-	Short: "Get the runtime version of your App",
-
-	Long: VersionLong,
+	Long: ListLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In versionCmd", "args", args)
+		logger.Debug("In listCmd", "args", args)
 		// Argument Parsing
 
-		// fmt.Println("hof app version:")
-		err := app.Version()
+		// fmt.Println("hof app list:")
+
+		err := app.List()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

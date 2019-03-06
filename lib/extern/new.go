@@ -70,6 +70,10 @@ func NewEntry(what, name, template, version, strData string) (string, error) {
 }
 
 func NewApp(name, template, version string, data map[string]interface{}) (string, error) {
+	if data == nil {
+		data = map[string]interface{}{}
+	}
+
 	data["AppName"] = name
 
 	dir, err := util.CloneRepo(template, version)

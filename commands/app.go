@@ -40,6 +40,10 @@ func init() {
 
 	AppCmd.AddCommand(app.StatusCmd)
 	AppCmd.AddCommand(app.VersionCmd)
+	AppCmd.AddCommand(app.AvailableVersionCmd)
+	AppCmd.AddCommand(app.ListCmd)
+	AppCmd.AddCommand(app.CreateCmd)
+	AppCmd.AddCommand(app.DeleteCmd)
 	AppCmd.AddCommand(app.UpdateCmd)
 	AppCmd.AddCommand(app.ResetCmd)
 	AppCmd.AddCommand(app.ValidateCmd)
