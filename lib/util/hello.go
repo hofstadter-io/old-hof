@@ -1,6 +1,6 @@
 package util
 
 func TestConfigAuth() error {
-	return SimpleGet("/hello")
+	return SimpleGet("/studios/hello")
 }
 

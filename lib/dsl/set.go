@@ -7,7 +7,7 @@ import (
 )
 
 func Set(version string) error {
-	req := util.BuildRequest("/dsl/update").
+	req := util.BuildRequest("/studios/dsl/update").
 		Query("version="+version)
 
 	resp, body, errs := req.End()

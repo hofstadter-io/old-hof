@@ -26,7 +26,7 @@ func ImportAddBundle(bundle, version string) (string, error) {
 
 	// TODO update some deps file
 
-	return "TBD", nil
+	return "Done", nil
 }
 
 func ImportUpdateBundle(bundle, version string) (string, error) {
@@ -37,7 +37,7 @@ func ImportUpdateBundle(bundle, version string) (string, error) {
 
 	// TODO update some deps file
 
-	return "TBD", nil
+	return "Done", nil
 }
 
 func ImportRemoveBundle(bundle string) (string, error) {

@@ -5,5 +5,5 @@ import (
 )
 
 func Status() error {
-	return util.SimpleGet("/db/status")
+	return util.SimpleGet("/studios/db/status")
 }

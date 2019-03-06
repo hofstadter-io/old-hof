@@ -27,7 +27,7 @@ func Push(writeFile bool) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerURL() + "/app/push"
+	host := util.ServerHost() + "/studios/app/push"
 	acct, name := util.GetAcctAndName()
 
 	resp, body, errs := gorequest.New().Post(host).

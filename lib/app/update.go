@@ -12,7 +12,7 @@ import (
 func Update(version string) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerURL() + "/app/update"
+	host := util.ServerHost() + "/studios/app/update"
 
 	resp, body, errs := gorequest.New().Get(host).
 		Query("version="+version).

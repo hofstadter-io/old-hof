@@ -12,7 +12,7 @@ import (
 func Version() error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerURL() + "/dsl/version"
+	host := util.ServerHost() + "/studios/dsl/version"
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
 		Set("Authorization", "Bearer "+apikey).

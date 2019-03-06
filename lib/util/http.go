@@ -15,7 +15,7 @@ func BuildRequest(path string) *gorequest.SuperAgent {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 
-	url := ServerURL() + path
+	url := ServerHost() + path
 	acct, name := GetAcctAndName()
 
 	req := gorequest.New().Get(url).
@@ -26,13 +26,8 @@ func BuildRequest(path string) *gorequest.SuperAgent {
 	return req
 }
 
-func ServerURL() string {
-	ctx := config.GetCurrentContext()
-
-	host := ctx.Host
-	url := fmt.Sprintf("%s/studios", host)
-
-	return url
+func ServerHost() string {
+	return config.GetCurrentContext().Host
 }
 
 func GetAcctAndName() (string, string) {

@@ -5,5 +5,5 @@ import (
 )
 
 func Migrate() error {
-	return util.SimpleGet("/db/migrate")
+	return util.SimpleGet("/studios/db/migrate")
 }

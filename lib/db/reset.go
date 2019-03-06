@@ -5,5 +5,5 @@ import (
 )
 
 func Reset() error {
-	return util.SimpleGet("/db/reset")
+	return util.SimpleGet("/studios/db/reset")
 }

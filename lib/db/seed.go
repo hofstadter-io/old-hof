@@ -5,6 +5,6 @@ import (
 )
 
 func Seed() error {
-	return util.SimpleGet("/db/seed")
+	return util.SimpleGet("/studios/db/seed")
 }
 

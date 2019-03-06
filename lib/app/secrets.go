@@ -14,7 +14,7 @@ import (
 func Secrets() error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerURL() + "/app/secrets"
+	host := util.ServerHost() + "/studios/app/secrets"
 	acct, name := util.GetAcctAndName()
 
 	secretsData, err := ioutil.ReadFile("./secrets/secrets.yaml")

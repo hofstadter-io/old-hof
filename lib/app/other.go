@@ -7,35 +7,35 @@ import (
 )
 
 func Hello() error {
-	return util.SimpleGet("/app/hello")
+	return util.SimpleGet("/studios/app/hello")
 }
 
 func Deploy() error {
-	return util.SimpleGet("/app/deploy")
+	return util.SimpleGet("/studios/app/deploy")
 }
 
 func Shutdown() error {
-	return util.SimpleGet("/app/shutdown")
+	return util.SimpleGet("/studios/app/shutdown")
 }
 
 func Reset() error {
-	return util.SimpleGet("/app/reset")
+	return util.SimpleGet("/studios/app/reset")
 }
 
 func Status() error {
 	acct, appname := util.GetAcctAndName()
 	fmt.Printf("https://%s.%s.live.hofstadter.io\n", appname, acct)
-	return util.SimpleGet("/app/status")
+	return util.SimpleGet("/studios/app/status")
 }
 
 func Generate() error {
-	return util.SimpleGet("/app/generate")
+	return util.SimpleGet("/studios/app/generate")
 }
 
 func Validate() error {
-	return util.SimpleGet("/app/validate")
+	return util.SimpleGet("/studios/app/validate")
 }
 
 func Version() error {
-	return util.SimpleGet("/app/version")
+	return util.SimpleGet("/studios/app/version")
 }

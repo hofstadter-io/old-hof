@@ -15,7 +15,7 @@ func Push() error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerURL() + "/fns/push"
+	host := util.ServerHost() + "/studios/fns/push"
 	acct, name := util.GetAcctAndName()
 
 	// package

@@ -14,7 +14,7 @@ func Pull() error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 
-	host := util.ServerURL() + "/app/pull"
+	host := util.ServerHost() + "/studios/app/pull"
 	acct, name := util.GetAcctAndName()
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
