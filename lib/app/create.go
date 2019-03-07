@@ -2,68 +2,106 @@ package app
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
-	"io/ioutil"
-	"os"
-	"path/filepath"
+	"strings"
 
+	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
+
+	"github.com/hofstadter-io/hof/lib/config"
+	"github.com/hofstadter-io/hof/lib/extern"
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const fileTemplate = `app:
-  name: {{.AppName}}
-
-auth:
-  username: <user-name>
-  apikey: <your-secret-key>
-
-host: "https://{{.AppName}}.live.hofstadter.io/studios"
-
+const appCreateTemplate = `
+mutation {
+  appCreate(input:{
+    name:"{{.name}}"
+    version:"{{.version}}"
+    type:"{{.type}}"
+  }) {
+    app {
+      name
+      id
+      version
+      type
+			createdAt
+    }
+  }
+}
 `
 
-func Create(inputName string) error {
-	var name string
+func Create(name, kitver, template string) error {
+	var version string
 
-	dir, err := os.Getwd()
+	parts := strings.Split(template, "@")
+	if len(parts) == 2 {
+		template = parts[0]
+		version = parts[1]
+	}
+
+	_, err := extern.NewApp(name, template, version, nil)
 	if err != nil {
-		return errors.Wrap(err, "getting current directory\n")
+		return err
 	}
 
-	// set the name or mk the dir
-	if inputName == "" {
-		name = filepath.Base(dir)
-	} else {
-		name = inputName
-		err = os.Mkdir(filepath.Join(dir, name), 0755)
-		if err != nil {
-			return errors.Wrap(err, "error making directory\n")
-		}
-	}
-
-	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("hof.yaml").Parse(fileTemplate))
-
-	// Create Template Data
-	p := map[string]string{
-		"AppName": name,
-	}
-
-	// Execute the template for each recipient.
-	var b bytes.Buffer
-	err = t.Execute(&b, p)
+	err = SendCreateRequest(name, kitver)
 	if err != nil {
-		return errors.Wrap(err, "error executing template\n")
-	}
-
-	// Write the file
-	if inputName == "" {
-		err = ioutil.WriteFile("hof.yaml", b.Bytes(), 0644)
-	} else {
-		err = ioutil.WriteFile(filepath.Join(dir, name, "hof.yaml"), b.Bytes(), 0644)
-	}
-	if err != nil {
-		return errors.Wrap(err, "error writing hof.yaml\n")
+		return err
 	}
 
 	return nil
 }
+
+func SendCreateRequest(name, kitver string) error {
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
+	host := util.ServerHost() + "/graphql"
+	acct, _ := util.GetAcctAndName()
+
+	// Create a new template and parse the letter into it.
+	t := template.Must(template.New("appCreate").Parse(appCreateTemplate))
+
+	// Create Template Data
+	data := map[string]interface{} {
+		"name": name,
+		"type": "starter",
+		"version": kitver,
+	}
+
+
+	// Execute the template for each recipient.
+	var b bytes.Buffer
+	err := t.Execute(&b, data)
+	if err != nil {
+		return errors.Wrap(err, "error executing template\n")
+	}
+
+	send := map[string]interface{} {
+		"query": b.String(),
+		"variables": nil,
+	}
+
+	resp, body, errs := gorequest.New().Post(host).
+		Query("account="+acct).
+		Set("Authorization", "Bearer "+apikey).
+		Send(send).
+		End()
+
+	if len(errs) != 0 || resp.StatusCode >= 500 {
+		fmt.Println("errs:", errs)
+		fmt.Println("resp:", resp)
+		fmt.Println("body:", body)
+		return errors.New("Internal Error")
+	}
+	if resp.StatusCode >= 400 {
+		fmt.Println("errs:", errs)
+		fmt.Println("resp:", resp)
+		return errors.New("Bad Request")
+	}
+
+	fmt.Println(body)
+	return nil
+}
+
