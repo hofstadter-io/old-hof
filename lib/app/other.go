@@ -39,3 +39,7 @@ func Validate() error {
 func Version() error {
 	return util.SimpleGet("/studios/app/version")
 }
+
+func Versions() error {
+	return util.SimpleGet("/studios/app/versions")
+}

@@ -37,6 +37,7 @@ var VersionCmd = &cobra.Command{
 		// Argument Parsing
 
 		// fmt.Println("hof app version:")
+
 		err := app.Version()
 		if err != nil {
 			fmt.Println(err)

@@ -7,6 +7,9 @@ import (
 
 	// infered imports
 
+	"os"
+
+	"github.com/hofstadter-io/hof/lib/app"
 	"github.com/spf13/cobra"
 )
 
@@ -36,7 +39,13 @@ var AvailableVersionCmd = &cobra.Command{
 		logger.Debug("In available-versionCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof app available-version:")
+		// fmt.Println("hof app available-version:")
+
+		err := app.Versions()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 
