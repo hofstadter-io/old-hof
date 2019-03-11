@@ -10,7 +10,6 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/hof/lib/config"
-	"github.com/hofstadter-io/hof/lib/extern"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -41,7 +40,15 @@ func Create(name, kitver, template string) error {
 		version = parts[1]
 	}
 
-	_, err := extern.NewApp(name, template, version, nil)
+	data := map[string]interface{}{}
+	data["AppName"] = name
+
+	dir, err := util.CloneRepo(template, version)
+	if err != nil {
+		return err
+	}
+
+	err = util.RenderDirNameSub(dir, name, data)
 	if err != nil {
 		return err
 	}

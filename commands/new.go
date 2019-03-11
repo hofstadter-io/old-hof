@@ -17,21 +17,25 @@ import (
 
 // Tool:   hof
 // Name:   new
-// Usage:  new
+// Usage:  new <what> <name> <template>
 // Parent: hof
 
-var NewLong = `Make new apps, types, modules, pages, and functions.`
+var NewLong = `Make new apps, types, modules, pages, and functions.
+
+<what>     - one of [module, type, page, component]
+<name>     - the name for the new <what>
+<template> - https://github.com/hofstadter-io/studios-new-templates@beta#modules/account-default
+
+'<git-url>'    - a full url to a git repository
+'@version'     - a branch, commit, or tag
+'#nested-path' - a filepath within the repository
+`
 
 var (
-	NewVersionFlag string
-
 	NewDataFlag string
 )
 
 func init() {
-	NewCmd.Flags().StringVarP(&NewVersionFlag, "version", "v", "", "version of the template to use (git branch, tag, commit hash)")
-	viper.BindPFlag("version", NewCmd.Flags().Lookup("version"))
-
 	NewCmd.Flags().StringVarP(&NewDataFlag, "data", "d", "", "a filepath or raw data in [json,xml,yaml,toml]")
 	viper.BindPFlag("data", NewCmd.Flags().Lookup("data"))
 
@@ -39,7 +43,7 @@ func init() {
 
 var NewCmd = &cobra.Command{
 
-	Use: "new",
+	Use: "new <what> <name> <template>",
 
 	Short: "Make new apps, types, modules, pages, and components.",
 
@@ -106,7 +110,7 @@ var NewCmd = &cobra.Command{
 		)
 		*/
 
-		out, err := extern.NewEntry(what, name, template, NewVersionFlag, NewDataFlag)
+		out, err := extern.NewEntry(what, name, template, NewDataFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

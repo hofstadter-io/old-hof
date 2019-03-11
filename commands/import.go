@@ -8,8 +8,6 @@ import (
 
 	// infered imports
 
-	"github.com/spf13/viper"
-
 	"github.com/spf13/cobra"
 
 	"github.com/hofstadter-io/hof/lib/extern"
@@ -17,31 +15,23 @@ import (
 
 // Tool:   hof
 // Name:   import
-// Usage:  import
+// Usage:  import <git-url>[@version][#nested-path]
 // Parent: hof
 
-var ImportLong = `import bundles for types, modules, pages, packages and components.`
+var ImportLong = `Import bundles for types, modules, pages, packages and components.
 
-var (
-	ImportUpdateFlag bool
+an example - https://github.com/hofstadter-io/studios-universe@beta#modules/account-default
 
-	ImportRemoveFlag bool
-)
-
-func init() {
-	ImportCmd.Flags().BoolVarP(&ImportUpdateFlag, "update", "u", false, "update the bundle to version or latest")
-	viper.BindPFlag("update", ImportCmd.Flags().Lookup("update"))
-
-	ImportCmd.Flags().BoolVarP(&ImportRemoveFlag, "remove", "x", false, "remove a bundle")
-	viper.BindPFlag("remove", ImportCmd.Flags().Lookup("remove"))
-
-}
+'<git-url>'    - a full url to a git repository
+'@version'     - a branch, commit, or tag
+'#nested-path' - a filepath within the repository
+`
 
 var ImportCmd = &cobra.Command{
 
-	Use: "import",
+	Use: "import <git-url>[@version][#nested-path]",
 
-	Short: "import bundles for types, modules, pages, packages and components.",
+	Short: "Import bundles for types, modules, pages, packages and components.",
 
 	Long: ImportLong,
 
@@ -50,7 +40,12 @@ var ImportCmd = &cobra.Command{
 		// Argument Parsing
 		// [0]name:   bundle
 		//     help:
-		//     req'd:
+		//     req'd:  true
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'bundle'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
 		var bundle string
 
@@ -59,44 +54,13 @@ var ImportCmd = &cobra.Command{
 			bundle = args[0]
 		}
 
-		// [1]name:   version
-		//     help:
-		//     req'd:
-
-		var version string
-
-		if 1 < len(args) {
-
-			version = args[1]
-		}
-
 		/*
 		fmt.Println("hof import:",
 			bundle,
-
-			version,
 		)
 		*/
 
-		var (
-			out string
-			err error
-		)
-
-		if ImportUpdateFlag {
-			out, err = extern.ImportUpdateBundle(bundle, version)
-
-		} else if ImportRemoveFlag {
-			out, err = extern.ImportUpdateBundle(bundle, version)
-
-		} else if bundle == "" {
-			out, err = extern.ImportFetchAll()
-
-		} else {
-			out, err = extern.ImportAddBundle(bundle, version)
-
-		}
-
+		out, err := extern.ImportAddBundle(bundle)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

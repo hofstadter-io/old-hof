@@ -3,23 +3,15 @@ package extern
 import (
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-// TODO, pass common vars
-/*
-- app name
-*/
+func ImportAddBundle(bundle string) (string, error) {
+	url, version, subpath := splitParts(bundle)
 
-func ImportFetchAll() (string, error) {
-	// need a deps file
-
-	return "TBD", nil
-}
-
-func ImportAddBundle(bundle, version string) (string, error) {
-	err := cloneAndRenderImport(bundle, version)
+	err := cloneAndRenderImport(url, version, subpath)
 	if err != nil {
 		return "", err
 	}
@@ -29,27 +21,7 @@ func ImportAddBundle(bundle, version string) (string, error) {
 	return "Done", nil
 }
 
-func ImportUpdateBundle(bundle, version string) (string, error) {
-	err := cloneAndRenderImport(bundle, version)
-	if err != nil {
-		return "", err
-	}
-
-	// TODO update some deps file
-
-	return "Done", nil
-}
-
-func ImportRemoveBundle(bundle string) (string, error) {
-	// TODO update some deps file for version
-
-	// Clone, walk, delete
-
-	return "TBD", nil
-}
-
-
-func cloneAndRenderImport(srcUrl, srcVer string) error {
+func cloneAndRenderImport(srcUrl, srcVer, srcPath string) error {
 	_, appname := util.GetAcctAndName()
 	data := map[string]interface{}{
 		"AppName": appname,
@@ -60,18 +32,54 @@ func cloneAndRenderImport(srcUrl, srcVer string) error {
 		return err
 	}
 
-	err = util.RenderDir(filepath.Join(dir, "design"), "design-vendor", data)
+	err = util.RenderDir(filepath.Join(dir, srcPath, "design"), "design-vendor", data)
 	if err != nil {
 		return err
 	}
 
-	if _, err := os.Stat(filepath.Join(dir, "design-vendor")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(dir, srcPath, "design-vendor")); !os.IsNotExist(err) {
 		// path exists
-		err = util.RenderDir(filepath.Join(dir, "design-vendor"), "design-vendor", data)
+		err = util.RenderDir(filepath.Join(dir, srcPath, "design-vendor"), "design-vendor", data)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func splitParts(full string) (url, version, subpath string) {
+  posVersion := strings.LastIndex(full, "@")
+  posSubpath := strings.LastIndex(full, "#")
+
+	if posVersion == -1 && posSubpath == -1 {
+		url = full
+		return
+	}
+
+	if posVersion == -1 {
+		parts := strings.Split(full, "#")
+		url, subpath = parts[0], parts[1]
+		return
+	}
+
+	if posSubpath == -1 {
+		parts := strings.Split(full, "@")
+		url, version = parts[0], parts[1]
+		return
+	}
+
+	if posVersion < posSubpath {
+		parts := strings.Split(full, "#")
+		subpath = parts[1]
+		parts = strings.Split(parts[0], "@")
+		url, version = parts[0], parts[1]
+	} else {
+		parts := strings.Split(full, "@")
+		version = parts[1]
+		parts = strings.Split(parts[0], "#")
+		url, subpath = parts[0], parts[1]
+	}
+
+	return url, version, subpath
 }
 

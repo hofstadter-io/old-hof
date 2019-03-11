@@ -1,6 +1,7 @@
 package extern
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,8 +12,16 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
+func NewEntry(what, name, template, strData string) (string, error) {
 
-func NewEntry(what, name, template, version, strData string) (string, error) {
+	dir, fn := filepath.Split(name)
+	if dir == name {
+		dir = name
+		name = fn
+	}
+
+	url, version, subpath := splitParts(template)
+	fmt.Printf("%q %q %q %q %q\n", dir, name, url, version, subpath)
 
 	var data map[string]interface{}
 
@@ -46,106 +55,62 @@ func NewEntry(what, name, template, version, strData string) (string, error) {
 		}
 	}
 
+	_, appname := util.GetAcctAndName()
+	data["AppName"] = appname
+
+	// A bit hacky
+	paths := strings.Split(dir, "/")
+	if len(paths) >= 2 {
+		data["ModuleName"] = paths[1]
+	}
+	if len(paths) >= 3 {
+		data["TypeName"] = paths[2]
+	}
+
 	switch what {
 
-	case "app":
-		return NewApp(name, template, version, data)
-
 	case "module":
-		return NewModule(name, template, version, data)
+		data["ModuleName"] = name
 
 	case "type":
-		return NewType(name, template, version, data)
+		data["TypeName"] = name
 
 	case "page":
-		return NewPage(name, template, version, data)
+		data["PageName"] = name
 
 	case "component":
-		return NewPage(name, template, version, data)
+		data["ComponentName"] = name
 
 	default:
 		return "", errors.New("Unknown new what: " + what)
 	}
 
-}
+	fmt.Printf("%q %q %q %q %q\n", dir, name, url, version, subpath)
+	fmt.Println(data)
+	return "fake Created", nil
 
-func NewApp(name, template, version string, data map[string]interface{}) (string, error) {
-	if data == nil {
-		data = map[string]interface{}{}
-	}
-
-	data["AppName"] = name
-
-	dir, err := util.CloneRepo(template, version)
-	if err != nil {
-		return "", err
-	}
-
-	err = util.RenderDirNameSub(dir, name, data)
-	if err != nil {
-		return "", err
-	}
-
-	return "App created\n", nil
-}
-
-func NewModule(name, template, version string, data map[string]interface{}) (string, error) {
-	dir, fn := filepath.Split(name)
-	if dir == name {
-		dir = name
-		name = fn
-	}
-
-	err := cloneAndRenderNewThing(template, version, dir, data)
+	err := cloneAndRenderNewThing(url, version, subpath, dir, name, data)
 	if err != nil {
 		return "", err
 	}
 
 	// TODO be sure to add the module to your app.modules
-	return "TBD", nil
+	return "Created", nil
 }
 
-func NewType(name, template, version string, data map[string]interface{}) (string, error) {
-
-	// TODO be sure to add the type to your module
-	return "TBD", nil
-}
-
-func NewPage(name, template, version string, data map[string]interface{}) (string, error) {
-
-	return "TBD", nil
-}
-
-func NewComponent(name, template, version string, data map[string]interface{}) (string, error) {
-
-	return "TBD", nil
-}
-
-func cloneAndRenderNewThing(srcUrl, srcVer, destBasePath string, data map[string]interface{}) error {
-	_, appname := util.GetAcctAndName()
-	data["AppName"] = appname
-
-	// A bit hacky
-	paths := strings.Split(destBasePath, "/")
-	if len(destBasePath) >= 2 {
-		data["ModuleName"] = paths[1]
-	}
-	if len(destBasePath) == 3 {
-		data["TypeName"] = paths[2]
-	}
-
+func cloneAndRenderNewThing(srcUrl, srcVer, srcSubpath, destBasePath, name string, data map[string]interface{}) error {
 	dir, err := util.CloneRepo(srcUrl, srcVer)
 	if err != nil {
 		return err
 	}
 
-	err = util.RenderDirNameSub(filepath.Join(dir, "design"), "design", data)
+	err = util.RenderDirNameSub(filepath.Join(dir, srcSubpath, "design"), "design", data)
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(filepath.Join(dir, "design-vendor")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(dir, srcSubpath, "design-vendor")); !os.IsNotExist(err) {
 		// path exists
-		err = util.RenderDirNameSub(filepath.Join(dir, "design-vendor"), "design", data)
+		err = util.RenderDirNameSub(filepath.Join(dir, srcSubpath, "design-vendor"), "design", data)
 		if err != nil {
 			return err
 		}
