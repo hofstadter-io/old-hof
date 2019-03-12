@@ -3,7 +3,6 @@ package app
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
@@ -21,22 +20,23 @@ func Push(writeFile bool) error {
 		return err
 	}
 
-	if writeFile {
-		return ioutil.WriteFile("studios.tar.gz", buf.Bytes(), 0644)
-	}
-
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/app/push"
 	acct, name := util.GetAcctAndName()
 
-	resp, body, errs := gorequest.New().Post(host).
+	req := gorequest.New().Post(host).
 		Query("name="+name).
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
-		SendFile(buf.Bytes()).
-		End()
+		SendFile(buf.Bytes())
+
+	if writeFile {
+		req = req.Query("devmode=yes")
+	}
+
+	resp, body, errs := req.End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		fmt.Println("errs:", errs)
