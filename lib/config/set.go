@@ -13,6 +13,9 @@ func SetContext(context, account, apikey, host string) {
 		Host: host,
 	}
 
+	if c.Contexts == nil {
+		c.Contexts = make(map[string]Context)
+	}
 	c.Contexts[context] = ctx
 	c.CurrentContext = context
 
