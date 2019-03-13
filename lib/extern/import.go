@@ -10,7 +10,7 @@ import (
 
 func ImportAddBundle(bundle string) (string, error) {
 	if bundle == "" || bundle[0] == '#' || bundle[0] == '@' {
-		bundle = "https://github.com/hofstadter-io/studios-universe" + bundle
+		bundle = "https://github.com/hofstadter-io/studios-modules" + bundle
 	}
 	url, version, subpath := splitParts(bundle)
 
