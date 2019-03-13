@@ -80,14 +80,11 @@ var SetContextCmd = &cobra.Command{
 
 		// [3]name:   host
 		//     help:
-		//     req'd:  true
-		if 3 >= len(args) {
-			fmt.Println("missing required argument: 'host'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
+		//     req'd:
 
 		var host string
+
+		host = "https://studios.studios.live.hofstadter.io"
 
 		if 3 < len(args) {
 
