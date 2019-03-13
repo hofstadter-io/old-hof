@@ -43,14 +43,11 @@ var CreateCmd = &cobra.Command{
 
 		// [1]name:   appver
 		//     help:
-		//     req'd:  true
-		if 1 >= len(args) {
-			fmt.Println("missing required argument: 'appver'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
+		//     req'd:
 
 		var appver string
+
+		appver = "beta"
 
 		if 1 < len(args) {
 
@@ -59,14 +56,11 @@ var CreateCmd = &cobra.Command{
 
 		// [2]name:   template
 		//     help:
-		//     req'd:  true
-		if 2 >= len(args) {
-			fmt.Println("missing required argument: 'template'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
+		//     req'd:
 
 		var template string
+
+		template = "https://github.com/hofstadter-io/hof-starter-app-minimal"
 
 		if 2 < len(args) {
 
