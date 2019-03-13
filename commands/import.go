@@ -2,11 +2,11 @@ package commands
 
 import (
 	"fmt"
-	"os"
 
 	// custom imports
 
 	// infered imports
+	"os"
 
 	"github.com/spf13/cobra"
 
@@ -55,9 +55,9 @@ var ImportCmd = &cobra.Command{
 		}
 
 		/*
-		fmt.Println("hof import:",
-			bundle,
-		)
+			fmt.Println("hof import:",
+				bundle,
+			)
 		*/
 
 		out, err := extern.ImportAddBundle(bundle)

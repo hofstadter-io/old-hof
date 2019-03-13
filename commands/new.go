@@ -86,12 +86,7 @@ var NewCmd = &cobra.Command{
 
 		// [2]name:   template
 		//     help:
-		//     req'd:  true
-		if 2 >= len(args) {
-			fmt.Println("missing required argument: 'template'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
+		//     req'd:
 
 		var template string
 

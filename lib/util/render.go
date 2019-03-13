@@ -143,26 +143,26 @@ func RenderDirNameSub(src string, dst string, data interface{}) error {
 	return nil
 }
 
+var names = []string{
+	"AppName",
+	"ModuleName",
+	"TypeName",
+	"PageName",
+	"ComponentName",
+  "FuncName",
+}
+
 func subNames(name string, data interface{}) string {
 	ctx := data.(map[string]interface{})
-	// fmt.Println("Sub", name, data)
 
-	sub, ok := ctx["AppName"]
-	if ok {
-		name = strings.Replace(name, "AppName", sub.(string), -1)
+	for _, N := range names {
+		// what is the substitution?
+		sub, ok := ctx[N]
+		if ok {
+			name = strings.Replace(name, N, sub.(string), -1)
+		}
 	}
 
-	sub, ok = ctx["ModuleName"]
-	if ok {
-		name = strings.Replace(name, "ModuleName", sub.(string), -1)
-	}
-
-	sub, ok = ctx["TypeName"]
-	if ok {
-		name = strings.Replace(name, "TypeName", sub.(string), -1)
-	}
-
-	// fmt.Println("   ", name)
 	return name
 }
 

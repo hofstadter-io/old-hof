@@ -9,6 +9,9 @@ import (
 )
 
 func ImportAddBundle(bundle string) (string, error) {
+	if bundle == "" || bundle[0] == '#' || bundle[0] == '@' {
+		bundle = "https://github.com/hofstadter-io/studios-universe" + bundle
+	}
 	url, version, subpath := splitParts(bundle)
 
 	err := cloneAndRenderImport(url, version, subpath)
