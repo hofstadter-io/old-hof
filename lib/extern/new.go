@@ -67,9 +67,6 @@ func NewEntry(what, name, template, strData string) (string, error) {
 	if len(paths) >= 3 {
 		data["ModuleName"] = paths[2]
 	}
-	if len(paths) >= 4 {
-		data["TypeName"] = paths[3]
-	}
 
 	url, version, subpath := splitParts(template)
 	basePath := dir
@@ -90,12 +87,18 @@ func NewEntry(what, name, template, strData string) (string, error) {
 		}
 
 	case "page":
+		if len(paths) >= 5 {
+			data["TypeName"] = paths[3]
+		}
 		data["PageName"] = name
 		if subpath == "" {
 			subpath = "page-default"
 		}
 
 	case "component":
+		if len(paths) >= 5 {
+			data["TypeName"] = paths[3]
+		}
 		data["ComponentName"] = name
 		if subpath == "" {
 			subpath = "component-default"
@@ -118,8 +121,8 @@ func NewEntry(what, name, template, strData string) (string, error) {
 
 func cloneAndRenderNewThing(srcUrl, srcVer, srcSubpath, destBasePath, name string, data map[string]interface{}) error {
 
-	// fmt.Printf("%q %q %q %q -> %q\n", name, srcUrl, srcVer, srcSubpath, destBasePath)
-	// fmt.Println(data)
+	fmt.Printf("%q %q %q %q -> %q\n", name, srcUrl, srcVer, srcSubpath, destBasePath)
+	fmt.Println(data)
 
 	var err error
 	var dir string

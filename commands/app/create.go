@@ -60,7 +60,7 @@ var CreateCmd = &cobra.Command{
 
 		var template string
 
-		template = "https://github.com/hofstadter-io/hof-starter-app-minimal"
+		template = "https://github.com/hofstadter-io/hof-starter-app"
 
 		if 2 < len(args) {
 
