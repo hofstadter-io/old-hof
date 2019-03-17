@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 
 	"github.com/parnurzeal/gorequest"
@@ -22,6 +23,10 @@ func Pull() error {
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		EndBytes()
+
+	if resp.StatusCode != 200 {
+		errs = append(errs, errors.New(fmt.Sprintf("%v %s", resp.StatusCode, string(bodyBytes))))
+	}
 
 	if len(errs) != 0 {
 		fmt.Println("errs:", errs)
