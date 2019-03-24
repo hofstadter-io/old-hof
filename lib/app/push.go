@@ -45,8 +45,9 @@ func Push(writeFile bool) error {
 		return errors.New("Internal Error")
 	}
 	if resp.StatusCode >= 400 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
+		// fmt.Println("errs:", errs)
+		// fmt.Println("resp:", resp)
+		fmt.Println("body:", body)
 		return errors.New("Bad Request")
 	}
 
