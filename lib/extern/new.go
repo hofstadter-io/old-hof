@@ -121,8 +121,8 @@ func NewEntry(what, name, template, strData string) (string, error) {
 
 func cloneAndRenderNewThing(srcUrl, srcVer, srcSubpath, destBasePath, name string, data map[string]interface{}) error {
 
-	fmt.Printf("%q %q %q %q -> %q\n", name, srcUrl, srcVer, srcSubpath, destBasePath)
-	fmt.Println(data)
+	// fmt.Printf("%q %q %q %q -> %q\n", name, srcUrl, srcVer, srcSubpath, destBasePath)
+	// fmt.Println(data)
 
 	var err error
 	var dir string

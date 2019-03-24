@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -43,7 +44,8 @@ func SimpleGet(path string) error {
 	req := BuildRequest(path)
 	resp, body, errs := req.End()
 
-	if len(errs) != 0 {
+	check := "http2: server sent GOAWAY and closed the connection"
+	if len(errs) != 0 && !strings.Contains(errs[0].Error(), check) {
 		fmt.Println("errs:", errs)
 		fmt.Println("resp:", resp)
 		fmt.Println("body:", body)
