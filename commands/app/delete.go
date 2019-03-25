@@ -6,7 +6,6 @@ import (
 	// custom imports
 
 	// infered imports
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -16,32 +15,24 @@ import (
 // Usage:  delete <name>
 // Parent: app
 
+var DeleteLong = `Delete an App and all associated data`
+
 var DeleteCmd = &cobra.Command{
 
 	Use: "delete <name>",
 
+	Short: "Delete an App",
+
+	Long: DeleteLong,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   name
-		//     help:
-		//     req'd:  true
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'name'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
 
-		var name string
+		// fmt.Println("hof app delete:")
 
-		if 0 < len(args) {
+		fmt.Println("Please delete your app from the web application.")
 
-			name = args[0]
-		}
-
-		fmt.Println("hof app delete:",
-			name,
-		)
 	},
 }
 
