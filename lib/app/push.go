@@ -26,15 +26,18 @@ func Push(writeFile bool) error {
 	acct, name := util.GetAcctAndName()
 
 	req := gorequest.New().Post(host).
+		Query("devmode=yes").
 		Query("name="+name).
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
 		SendFile(buf.Bytes())
 
+	/*
 	if writeFile {
 		req = req.Query("devmode=yes")
 	}
+	*/
 
 	resp, body, errs := req.End()
 

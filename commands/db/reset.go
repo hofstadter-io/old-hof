@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/hofstadter-io/hof/lib/db"
+	"github.com/spf13/viper"
 	"github.com/spf13/cobra"
 )
 
@@ -19,6 +20,16 @@ import (
 // Parent: db
 
 var ResetLong = `Resets the DB to the latest schema and also seeds it.`
+
+var (
+	ResetHardFlag bool
+)
+
+func init() {
+	ResetCmd.Flags().BoolVarP(&ResetHardFlag, "hard", "H", false, "perform a hard database rest, squashing all migrations into one.")
+	viper.BindPFlag("hard", ResetCmd.Flags().Lookup("hard"))
+
+}
 
 var ResetCmd = &cobra.Command{
 
@@ -34,7 +45,7 @@ var ResetCmd = &cobra.Command{
 
 		// fmt.Println("hof db reset:")
 
-		err := db.Reset()
+		err := db.Reset(ResetHardFlag)
 		if err != nil {
 			os.Exit(1)
 		}
