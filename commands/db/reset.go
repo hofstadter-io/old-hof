@@ -19,7 +19,7 @@ import (
 // Usage:  reset
 // Parent: db
 
-var ResetLong = `Resets the DB to the latest schema and also seeds it.`
+var ResetLong = `Resets the DB to the latest checkpoint & schema, also adding seed data.`
 
 var (
 	ResetHardFlag bool

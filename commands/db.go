@@ -36,6 +36,5 @@ func init() {
 
 	DbCmd.AddCommand(db.StatusCmd)
 	DbCmd.AddCommand(db.ResetCmd)
-	DbCmd.AddCommand(db.SeedCmd)
-	DbCmd.AddCommand(db.MigrateCmd)
+	DbCmd.AddCommand(db.CheckpointCmd)
 }

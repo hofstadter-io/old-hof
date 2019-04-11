@@ -2,41 +2,40 @@ package db
 
 import (
 	// "fmt"
+	"os"
 
 	// custom imports
 
 	// infered imports
-
-	"os"
 
 	"github.com/hofstadter-io/hof/lib/db"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   migrate
-// Usage:  migrate
+// Name:   checkpoint
+// Usage:  checkpoint
 // Parent: db
 
-var MigrateLong = `Migrates the DB, making only the necessary changes to the schema.`
+var CheckpointLong = `Checkpoints the DB, making only the necessary changes to the schema.`
 
-var MigrateCmd = &cobra.Command{
+var CheckpointCmd = &cobra.Command{
 
-	Use: "migrate",
+	Use: "checkpoint",
 
-	Short: "Migrates the DB",
+	Short: "Checkpoint the DB schema",
 
-	Long: MigrateLong,
+	Long: CheckpointLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In migrateCmd", "args", args)
+		logger.Debug("In checkpointCmd", "args", args)
 		// Argument Parsing
 
-		// fmt.Println("hof db migrate:")
+		// fmt.Println("hof db checkpoint:")
 
 		err := db.Migrate()
 		if err != nil {
-			os.Exit(1)
+		 os.Exit(1)
 		}
 
 	},
