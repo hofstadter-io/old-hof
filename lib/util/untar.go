@@ -5,11 +5,52 @@ import (
 	"compress/gzip"
 	// "fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/mholt/archiver"
 )
 
-func UntarFiles(files []string, dst string, r io.Reader) error {
+func UntarFiles(files []string, dst string, content []byte) error {
+
+	if _, err := os.Stat(tarfile); !os.IsNotExist(err) {
+		// path/to/whatever does not exist
+		err = os.RemoveAll(tarfile)
+		if err != nil {
+			return err
+		}
+	}
+
+
+	for _, dir := range files {
+		err := os.RemoveAll(filepath.Join(dst, dir))
+		if err != nil {
+			return err
+		}
+	}
+
+  err := ioutil.WriteFile(tarfile, content, 0644)
+	if err != nil {
+		return err
+	}
+
+	err = archiver.Unarchive(tarfile, ".")
+	if err != nil {
+		return err
+	}
+
+	/*
+	err = os.RemoveAll(tarfile)
+	if err != nil {
+		return data, err
+	}
+	*/
+
+	return nil
+}
+
+func OldUntarFiles(files []string, dst string, r io.Reader) error {
 
 	for _, dir := range files {
 		err := os.RemoveAll(filepath.Join(dst, dir))

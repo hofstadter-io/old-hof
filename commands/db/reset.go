@@ -11,6 +11,7 @@ import (
 
 	"github.com/hofstadter-io/hof/lib/db"
 	"github.com/spf13/viper"
+
 	"github.com/spf13/cobra"
 )
 

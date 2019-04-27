@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bytes"
 	"fmt"
 
 	"github.com/parnurzeal/gorequest"
@@ -13,8 +12,7 @@ import (
 
 func Push(writeFile bool) error {
 
-	var buf bytes.Buffer
-	err := util.TarFiles(AppFiles, "./", &buf)
+	data, err := util.TarFiles(AppFiles, "./")
 	if err != nil {
 		fmt.Println("err", err)
 		return err
@@ -31,7 +29,7 @@ func Push(writeFile bool) error {
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
-		SendFile(buf.Bytes())
+		SendFile(data)
 
 	/*
 	if writeFile {

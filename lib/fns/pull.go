@@ -1,7 +1,6 @@
 package fns
 
 import (
-	"bytes"
 	"fmt"
 	"path/filepath"
 
@@ -30,7 +29,7 @@ func Pull() error {
 		return errs[0]
 	}
 
-	err := util.UntarFiles(FuncFiles, filepath.Join("funcs", name), bytes.NewReader(bodyBytes))
+	err := util.UntarFiles(FuncFiles, filepath.Join("funcs", name), bodyBytes)
 	if err != nil {
 		fmt.Println("err", err)
 		return err

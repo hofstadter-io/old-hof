@@ -5,14 +5,55 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/mholt/archiver"
 )
 
+var tarfile = "studios.tar.gz"
 
-func TarFiles(files []string, src string, writers ...io.Writer) error {
+func TarFiles(files []string, src string) (data []byte, err error) {
 
+	if _, err := os.Stat(tarfile); !os.IsNotExist(err) {
+		// path/to/whatever does not exist
+		err = os.RemoveAll(tarfile)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var paths []string
+	// ensure the src actually exists before trying to tar it
+	for _, path := range files {
+		if _, lerr := os.Stat(filepath.Join(src, path)); lerr == nil {
+			paths = append(paths, path)
+		}
+	}
+
+	err = archiver.Archive(paths, tarfile)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err = ioutil.ReadFile(tarfile)
+	if err != nil {
+		return nil, err
+	}
+
+	/*
+	err = os.RemoveAll(tarfile)
+	if err != nil {
+		return data, err
+	}
+	*/
+
+	return data, err
+}
+
+func OldTarFiles(files []string, src string, writers ...io.Writer) error {
 	var paths []string
 	// ensure the src actually exists before trying to tar it
 	for _, path := range files {

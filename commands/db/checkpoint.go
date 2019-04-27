@@ -23,6 +23,10 @@ var CheckpointCmd = &cobra.Command{
 
 	Use: "checkpoint",
 
+	Aliases: []string{
+		"migrate",
+	},
+
 	Short: "Checkpoint the DB schema",
 
 	Long: CheckpointLong,

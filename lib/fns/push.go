@@ -1,7 +1,6 @@
 package fns
 
 import (
-	"bytes"
 	"fmt"
 	"path/filepath"
 
@@ -19,8 +18,7 @@ func Push() error {
 	acct, name := util.GetAcctAndName()
 
 	// package
-	var buf bytes.Buffer
-	err := util.TarFiles(FuncFiles, filepath.Join("funcs", name), &buf)
+	data, err := util.TarFiles(FuncFiles, filepath.Join("funcs", name))
 	if err != nil {
 		fmt.Println("err", err)
 		return err
@@ -31,7 +29,7 @@ func Push() error {
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
-		SendFile(buf.Bytes()).
+		SendFile(data).
 		End()
 
 	if len(errs) != 0 {

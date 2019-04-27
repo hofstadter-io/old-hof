@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 
@@ -37,7 +36,7 @@ func Pull() error {
 	// fmt.Println("resp:", resp)
 	fmt.Println("length:", len(bodyBytes))
 
-	err := util.UntarFiles(AppFiles, ".", bytes.NewReader(bodyBytes))
+	err := util.UntarFiles(AppFiles, ".", bodyBytes)
 	if err != nil {
 		fmt.Println("err", err)
 		return err
