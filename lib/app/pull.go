@@ -34,7 +34,7 @@ func Pull() error {
 	}
 
 	// fmt.Println("resp:", resp)
-	fmt.Println("length:", len(bodyBytes))
+	// fmt.Println("length:", len(bodyBytes))
 
 	err := util.UntarFiles(AppFiles, ".", bodyBytes)
 	if err != nil {
@@ -42,6 +42,6 @@ func Pull() error {
 		return err
 	}
 
-	fmt.Println("success")
+	fmt.Println("App pulled locally")
 	return nil
 }
