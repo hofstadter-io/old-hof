@@ -84,7 +84,7 @@ var SetContextCmd = &cobra.Command{
 
 		var host string
 
-		host = "https://studios.studios.live.hofstadter.io"
+		host = "https://studios.hofstadter.io"
 
 		if 3 < len(args) {
 

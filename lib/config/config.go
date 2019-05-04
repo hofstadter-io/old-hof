@@ -38,6 +38,14 @@ func GetConfigContext(context string) (Context, error) {
 	if !ok {
 		return Context{}, errors.New("Unknown Context: " + context)
 	}
+
+	// TODO remove once the old domain is retired
+	if ctx.Host == "https://studios.studios.live.hofstadter.io" {
+		ctx.Host = "https://studios.hofstadter.io"
+		c.Contexts[context] = ctx
+		write()
+	}
+
 	return ctx, nil
 }
 
@@ -46,6 +54,14 @@ func GetCurrentContext() (Context) {
 
 	context := c.CurrentContext
 	ctx := c.Contexts[context]
+
+	// TODO remove once the old domain is retired
+	if ctx.Host == "https://studios.studios.live.hofstadter.io" {
+		ctx.Host = "https://studios.hofstadter.io"
+		c.Contexts[context] = ctx
+		write()
+	}
+
 	return ctx
 }
 
