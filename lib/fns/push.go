@@ -10,7 +10,7 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push() error {
+func Push(path string) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
@@ -18,7 +18,7 @@ func Push() error {
 	acct, name := util.GetAcctAndName()
 
 	// package
-	data, err := util.TarFiles(FuncFiles, filepath.Join("funcs", name))
+	data, err := util.TarFiles(FuncFiles, filepath.Join("funcs", path))
 	if err != nil {
 		fmt.Println("err", err)
 		return err
@@ -27,6 +27,7 @@ func Push() error {
 	resp, body, errs := gorequest.New().Get(host).
 		Query("name="+name).
 		Query("account="+acct).
+		Query("fname="+path).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
 		SendFile(data).

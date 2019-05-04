@@ -21,7 +21,7 @@ var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
 
 var PushCmd = &cobra.Command{
 
-	Use: "push",
+	Use: "push <function path>",
 
 	Short: "Send and make the latest version on Studios",
 
@@ -30,10 +30,18 @@ var PushCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In pushCmd", "args", args)
 		// Argument Parsing
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'function path'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
-		fmt.Println("hof function push:")
+		path := args[0]
 
-		err := fns.Push()
+		fmt.Println("hof function push: ", path)
+
+		err := fns.Push(path)
+
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
