@@ -17,23 +17,31 @@ import (
 // Usage:  deploy
 // Parent: function
 
-var DeployLong = `Deploy the function <name> from the dir "funcs/<name>"`
+var DeployLong = `Deploy the function <function path>`
 
 var DeployCmd = &cobra.Command{
 
 	Use: "deploy",
 
-	Short: "Deploys the function <name>",
+	Short: "Deploys the function <function path>",
 
 	Long: DeployLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deployCmd", "args", args)
 		// Argument Parsing
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'function path'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
-		// fmt.Println("hof function deploy:")
+		path := args[0]
 
-		err := fns.Deploy()
+		fmt.Println("hof function push: ", path)
+
+		err := fns.Deploy(path)
+
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
