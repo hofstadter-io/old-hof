@@ -8,48 +8,47 @@ import (
 	// infered imports
 	"os"
 
+	"github.com/hofstadter-io/hof/lib/fns"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   call
-// Usage:  call <data>
+// Usage:  call <function path> <args...>
 // Parent: function
 
-var CallLong = `Call the function <name> with <data>
-data may be a JSON string or @filename.json
-`
+var CallLong = `Call the function <function path> with <args...>`
 
 var CallCmd = &cobra.Command{
 
-	Use: "call <data>",
+	Use: "call <args>",
 
-	Short: "Call a function by name",
+	Short: "Call a function by name with args",
 
 	Long: CallLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In callCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   data
-		//     help:
-		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'data'\n")
+			fmt.Println("missing required argument: 'function path'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}
 
-		var data string
+		path := args[0]
 
-		if 0 < len(args) {
+		args = args[1:]
 
-			data = args[0]
+		fmt.Println("hof function call:", path, args)
+
+		err := fns.Call(path, args)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
 		}
 
-		fmt.Println("hof function call:",
-			data,
-		)
 	},
 }
 
