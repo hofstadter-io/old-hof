@@ -7,7 +7,3 @@ import (
 func Delete() error {
 	return util.SimpleGet("/studios/fns/delete")
 }
-
-func Status() error {
-	return util.SimpleGet("/studios/fns/status")
-}
