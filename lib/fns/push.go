@@ -36,7 +36,7 @@ func Push(path string) error {
 		return err
 	}
 
-	resp, body, errs := gorequest.New().Get(host).
+	resp, body, errs := gorequest.New().Post(host).
 		Query("name="+name).
 		Query("account="+acct).
 		Query("fname="+path).
