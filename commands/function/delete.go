@@ -17,23 +17,28 @@ import (
 // Usage:  delete
 // Parent: function
 
-var DeleteLong = `Deletes the function <name> from the dir "funcs/<name>"`
+var DeleteLong = `Delete the function <function path>`
 
 var DeleteCmd = &cobra.Command{
 
 	Use: "delete",
 
-	Short: "Deletes the function <name>",
+	Short: "Delete a function by name",
 
 	Long: DeleteLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
+		if 0 >= len(args) {
+			fmt.Println("missing required argument: 'function path'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
-		// fmt.Println("hof function delete:")
+		path := args[0]
 
-		err := fns.Delete()
+		err := fns.Delete(path)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
