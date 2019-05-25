@@ -16,7 +16,7 @@ func Call(path string, args []string) error {
 	host := util.ServerHost() + "/studios/fns/call"
 	acct, name := util.GetAcctAndName()
 
-	gr := gorequest.New().Get(host).
+	gr := gorequest.New().Post(host).
 		Query("name=" + name).
 		Query("account=" + acct).
 		Query("fname=" + path).
