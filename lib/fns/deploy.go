@@ -10,17 +10,16 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Deploy(path string) error {
+func Deploy(push bool) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/fns/deploy"
-	acct, name := util.GetAcctAndName()
+	acct, fname := util.GetAcctAndName()
 
 	resp, body, errs := gorequest.New().Get(host).
-		Query("name="+name).
 		Query("account="+acct).
-		Query("fname="+path).
+		Query("fname="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		End()
 

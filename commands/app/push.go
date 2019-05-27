@@ -33,9 +33,7 @@ var PushCmd = &cobra.Command{
 
 		// fmt.Println("hof app push:")
 
-		writeFile := len(args) > 0
-
-		err := app.Push(writeFile)
+		err := app.Push()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

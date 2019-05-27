@@ -3,6 +3,8 @@ package fns
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -10,25 +12,24 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Call(path string, args []string) error {
+func Call(fname string, data string) error {
+	if fname == "" {
+		dir, _ := os.Getwd()
+		fname = filepath.Base(dir)
+	}
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/fns/call"
-	acct, name := util.GetAcctAndName()
+	acct, _ := util.GetAcctAndName()
 
-	gr := gorequest.New().Post(host).
-		Query("name=" + name).
-		Query("account=" + acct).
-		Query("fname=" + path).
-		Query(fmt.Sprintf("argcount=%d", len(args)))
-	for i, arg := range args {
-		gr = gr.Query(fmt.Sprintf("arg%d=%s", i, arg))
-	}
-
-	resp, body, errs := gr.
+	req := gorequest.New().Post(host).
+		Query("account="+acct).
+		Query("fname="+fname).
 		Set("Authorization", "Bearer "+apikey).
-		End()
+		Send(data)
+
+	resp, body, errs := req.End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)

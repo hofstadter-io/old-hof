@@ -10,7 +10,7 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push(writeFile bool) error {
+func Push() error {
 
 	data, err := util.TarFiles(AppFiles, "./")
 	if err != nil {

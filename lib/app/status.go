@@ -1,33 +1,30 @@
-package fns
+package app
 
 import (
-	"errors"
 	"fmt"
-
-	"github.com/parnurzeal/gorequest"
 
 	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
+	"github.com/parnurzeal/gorequest"
+	"github.com/pkg/errors"
 )
 
-func Push() error {
-	data, err := util.TarFiles(FuncFiles, "./")
-	if err != nil {
-		fmt.Println("err", err)
-		return err
-	}
-
+func Status(name string) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/fns/push"
-	acct, fname := util.GetAcctAndName()
+	host := util.ServerHost() + "/studios/app/status"
 
-	req := gorequest.New().Post(host).
+	acct, appname := util.GetAcctAndName()
+	if name == "" {
+		name = appname
+	}
+
+	fmt.Printf("https://%s.%s.live.hofstadter.io\n", name, acct)
+
+	req := gorequest.New().Get(host).
+		Query("name="+name).
 		Query("account="+acct).
-		Query("fname="+fname).
-		Set("Authorization", "Bearer "+apikey).
-		Type("multipart").
-		SendFile(data)
+		Set("Authorization", "Bearer "+apikey)
 
 	resp, body, errs := req.End()
 

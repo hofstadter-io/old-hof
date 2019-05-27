@@ -14,41 +14,69 @@ import (
 
 // Tool:   hof
 // Name:   call
-// Usage:  call <function path> <args...>
+// Usage:  call <name> <data>
 // Parent: function
 
-var CallLong = `Call the function <function path> with <args...>`
+var CallLong = `Call the function <name> with <data>
+data may be a JSON string or @filename.json
+`
 
 var CallCmd = &cobra.Command{
 
-	Use: "call <args>",
+	Use: "call <name> <data>",
 
-	Short: "Call a function by name with args",
+	Short: "Call a function by name",
 
 	Long: CallLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In callCmd", "args", args)
 		// Argument Parsing
+		// [0]name:   name
+		//     help:
+		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'function path'\n")
+			fmt.Println("missing required argument: 'name'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}
 
-		path := args[0]
+		var name string
 
-		args = args[1:]
+		if 0 < len(args) {
 
-		fmt.Println("hof function call:", path, args)
+			name = args[0]
+		}
 
-		err := fns.Call(path, args)
+		// [1]name:   data
+		//     help:
+		//     req'd:  true
+		if 1 >= len(args) {
+			fmt.Println("missing required argument: 'data'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
 
+		var data string
+
+		if 1 < len(args) {
+
+			data = args[1]
+		}
+
+		/*
+			fmt.Println("hof function call:",
+				name,
+
+				data,
+			)
+		*/
+
+		err := fns.Call(name, data)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 	},
 }
 

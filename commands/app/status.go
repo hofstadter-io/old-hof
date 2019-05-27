@@ -32,10 +32,24 @@ var StatusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In statusCmd", "args", args)
 		// Argument Parsing
+		// [0]name:   name
+		//     help:
+		//     req'd:  false
 
-		// fmt.Println("hof app status:")
+		var name string
 
-		err := app.Status()
+		if 0 < len(args) {
+
+			name = args[0]
+		}
+
+		/*
+			fmt.Println("hof app status:",
+				name,
+			)
+		*/
+
+		err := app.Status(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

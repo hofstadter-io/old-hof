@@ -3,6 +3,8 @@ package fns
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -10,17 +12,20 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Delete(path string) error {
+func Delete(fname string) error {
+	if fname == "" {
+		dir, _ := os.Getwd()
+		fname = filepath.Base(dir)
+	}
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/fns/delete"
-	acct, name := util.GetAcctAndName()
+	acct, _ := util.GetAcctAndName()
 
 	resp, body, errs := gorequest.New().Get(host).
-		Query("name="+name).
 		Query("account="+acct).
-		Query("fname="+path).
+		Query("fname="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		End()
 

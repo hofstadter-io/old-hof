@@ -17,28 +17,37 @@ import (
 // Usage:  status
 // Parent: function
 
-var StatusLong = `Get the status of the function <function path>`
+var StatusLong = `Get the status of your functions`
 
 var StatusCmd = &cobra.Command{
 
 	Use: "status",
 
-	Short: "Get the status of a function by name",
+	Short: "Get the status of your functions",
 
 	Long: StatusLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In statusCmd", "args", args)
 		// Argument Parsing
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'function path'\n")
-			cmd.Usage()
-			os.Exit(1)
+		// [0]name:   name
+		//     help:
+		//     req'd:  false
+
+		var name string
+
+		if 0 < len(args) {
+
+			name = args[0]
 		}
 
-		path := args[0]
+		/*
+			fmt.Println("hof function status:",
+				name,
+			)
+		*/
 
-		err := fns.Status(path)
+		err := fns.Status(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
