@@ -31,25 +31,14 @@ func Push(writeFile bool) error {
 		Type("multipart").
 		SendFile(data)
 
-	/*
-	if writeFile {
-		req = req.Query("devmode=yes")
-	}
-	*/
-
 	resp, body, errs := req.End()
+	// fmt.Println(resp, body, errs)
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		fmt.Println("body:", body)
-		return errors.New("Internal Error")
+		return errors.New("Internal Error: " + body)
 	}
 	if resp.StatusCode >= 400 {
-		// fmt.Println("errs:", errs)
-		// fmt.Println("resp:", resp)
-		fmt.Println("body:", body)
-		return errors.New("Bad Request")
+		return errors.New("Bad Request: " + body)
 	}
 
 	fmt.Println(body)

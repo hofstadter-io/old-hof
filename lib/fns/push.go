@@ -1,6 +1,7 @@
 package fns
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -45,11 +46,11 @@ func Push(path string) error {
 		SendFile(data).
 		End()
 
-	if len(errs) != 0 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		fmt.Println("body:", body)
-		return errs[0]
+	if len(errs) != 0 || resp.StatusCode >= 500 {
+		return errors.New("Internal Error: " + body)
+	}
+	if resp.StatusCode >= 400 {
+		return errors.New("Bad Request: " + body)
 	}
 
 	fmt.Println(body)

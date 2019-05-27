@@ -1,6 +1,7 @@
 package fns
 
 import (
+	"errors"
 	"fmt"
 	"path/filepath"
 
@@ -23,10 +24,11 @@ func Pull() error {
 		Set("Authorization", "Bearer "+apikey).
 		EndBytes()
 
-	if len(errs) != 0 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		return errs[0]
+	if len(errs) != 0 || resp.StatusCode >= 500 {
+		return errors.New("Internal Error: " + fmt.Sprint(errs))
+	}
+	if resp.StatusCode >= 400 {
+		return errors.New("Bad Request: " + fmt.Sprint(errs))
 	}
 
 	err := util.UntarFiles(FuncFiles, filepath.Join("funcs", name), bodyBytes)

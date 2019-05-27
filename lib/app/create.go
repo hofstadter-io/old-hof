@@ -71,12 +71,11 @@ func SendCreateRequest(name, kitver string) error {
 	t := template.Must(template.New("appCreate").Parse(appCreateTemplate))
 
 	// Create Template Data
-	data := map[string]interface{} {
-		"name": name,
-		"type": "starter",
+	data := map[string]interface{}{
+		"name":    name,
+		"type":    "starter",
 		"version": kitver,
 	}
-
 
 	// Execute the template for each recipient.
 	var b bytes.Buffer
@@ -85,30 +84,25 @@ func SendCreateRequest(name, kitver string) error {
 		return errors.Wrap(err, "error executing template\n")
 	}
 
-	send := map[string]interface{} {
-		"query": b.String(),
+	send := map[string]interface{}{
+		"query":     b.String(),
 		"variables": nil,
 	}
 
-	resp, body, errs := gorequest.New().Post(host).
+	req := gorequest.New().Post(host).
 		Query("account="+acct).
 		Set("Authorization", "Bearer "+apikey).
-		Send(send).
-		End()
+		Send(send)
+
+	resp, body, errs := req.End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		fmt.Println("body:", body)
-		return errors.New("Internal Error")
+		return errors.New("Internal Error: " + body)
 	}
 	if resp.StatusCode >= 400 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		return errors.New("Bad Request")
+		return errors.New("Bad Request: " + body)
 	}
 
 	fmt.Println(body)
 	return nil
 }
-

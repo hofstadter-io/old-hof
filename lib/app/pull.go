@@ -23,18 +23,12 @@ func Pull() error {
 		Set("Authorization", "Bearer "+apikey).
 		EndBytes()
 
-	if resp.StatusCode != 200 {
-		errs = append(errs, errors.New(fmt.Sprintf("%v %s", resp.StatusCode, string(bodyBytes))))
+	if len(errs) != 0 || resp.StatusCode >= 500 {
+		return errors.New("Internal Error: " + fmt.Sprint(errs))
 	}
-
-	if len(errs) != 0 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		return errs[0]
+	if resp.StatusCode >= 400 {
+		return errors.New("Bad Request: " + fmt.Sprint(errs))
 	}
-
-	// fmt.Println("resp:", resp)
-	// fmt.Println("length:", len(bodyBytes))
 
 	err := util.UntarFiles(AppFiles, ".", bodyBytes)
 	if err != nil {
