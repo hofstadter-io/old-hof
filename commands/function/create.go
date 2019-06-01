@@ -9,6 +9,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/hofstadter-io/hof/lib/fns"
 )
 
 // Tool:   hof
@@ -58,11 +60,20 @@ var CreateCmd = &cobra.Command{
 			template = args[1]
 		}
 
-		fmt.Println("hof function create:",
-			name,
+		/*
+			fmt.Println("hof function create:",
+				name,
 
-			template,
-		)
+				template,
+			)
+		*/
+
+		err := fns.Create(name, template)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 	},
 }
 

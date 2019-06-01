@@ -22,9 +22,11 @@ func Push() error {
 	host := util.ServerHost() + "/studios/fns/push"
 	acct, fname := util.GetAcctAndName()
 
+	fmt.Println("Pushing:", fname)
+
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Query("fname="+fname).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		Type("multipart").
 		SendFile(data)

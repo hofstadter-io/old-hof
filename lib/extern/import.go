@@ -12,7 +12,7 @@ func ImportAddBundle(bundle string) (string, error) {
 	if bundle == "" || bundle[0] == '#' || bundle[0] == '@' {
 		bundle = "https://github.com/hofstadter-io/studios-modules" + bundle
 	}
-	url, version, subpath := splitParts(bundle)
+	url, version, subpath := SplitParts(bundle)
 
 	err := cloneAndRenderImport(url, version, subpath)
 	if err != nil {
@@ -50,9 +50,9 @@ func cloneAndRenderImport(srcUrl, srcVer, srcPath string) error {
 	return nil
 }
 
-func splitParts(full string) (url, version, subpath string) {
-  posVersion := strings.LastIndex(full, "@")
-  posSubpath := strings.LastIndex(full, "#")
+func SplitParts(full string) (url, version, subpath string) {
+	posVersion := strings.LastIndex(full, "@")
+	posSubpath := strings.LastIndex(full, "#")
 
 	if posVersion == -1 && posSubpath == -1 {
 		url = full
@@ -85,4 +85,3 @@ func splitParts(full string) (url, version, subpath string) {
 
 	return url, version, subpath
 }
-

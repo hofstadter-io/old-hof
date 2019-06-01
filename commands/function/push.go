@@ -29,12 +29,6 @@ var PushCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In pushCmd", "args", args)
-		// Argument Parsing
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'function path'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
 
 		// fmt.Println("hof function push: ")
 
