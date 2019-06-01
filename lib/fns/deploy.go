@@ -19,7 +19,7 @@ func Deploy(push bool) error {
 
 	resp, body, errs := gorequest.New().Get(host).
 		Query("account="+acct).
-		Query("fname="+fname).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		End()
 

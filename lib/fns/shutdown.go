@@ -26,7 +26,7 @@ func Shutdown(fname string) error {
 	resp, body, errs := gorequest.New().Get(host).
 		Query("name="+name).
 		Query("account="+acct).
-		Query("fname="+fname).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		End()
 

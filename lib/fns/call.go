@@ -25,7 +25,7 @@ func Call(fname string, data string) error {
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Query("fname="+fname).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		Send(data)
 
