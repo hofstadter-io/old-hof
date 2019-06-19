@@ -3,6 +3,7 @@ package fns
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -22,6 +23,14 @@ func Call(fname string, data string) error {
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/fns/call"
 	acct, _ := util.GetAcctAndName()
+
+	if data[:1] == "@" {
+		bytes, err := ioutil.ReadFile(data[1:])
+		if err != nil {
+			return err
+		}
+		data = string(bytes)
+	}
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
