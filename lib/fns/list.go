@@ -1,14 +1,14 @@
-package app
+package fns
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/hofstadter-io/hof/lib/util"
-	"github.com/pkg/errors"
 )
 
 func List() error {
-	req := util.BuildRequest("/studios/app/list")
+	req := util.BuildRequest("/studios/fns/list")
 
 	resp, body, errs := req.End()
 

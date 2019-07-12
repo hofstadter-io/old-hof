@@ -10,28 +10,22 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push() error {
-	data, err := util.TarFiles(FuncFiles, "./")
-	if err != nil {
-		fmt.Println("err", err)
-		return err
-	}
+func Deploy(push bool, memory int) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/fns/push"
+	host := util.ServerHost() + "/studios/fns/deploy"
 	acct, fname := util.GetAcctAndName()
 
-	fmt.Println("Pushing:", fname)
-
-	req := gorequest.New().Post(host).
-		Query("account="+acct).
-		Query("name="+fname).
+	req := gorequest.New().Get(host).
+		Query("account=" + acct).
+		Query("name=" + fname)
+	if memory > 0 {
+		req = req.Query(fmt.Sprintf("memory=%d", memory))
+	}
+	resp, body, errs := req.
 		Set("Authorization", "Bearer "+apikey).
-		Type("multipart").
-		SendFile(data)
-
-	resp, body, errs := req.End()
+		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)

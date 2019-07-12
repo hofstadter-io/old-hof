@@ -1,38 +1,44 @@
-package app
+package fns
 
 import (
+	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
-	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push() error {
-
-	data, err := util.TarFiles(AppFiles, "./")
-	if err != nil {
-		fmt.Println("err", err)
-		return err
+func Call(fname string, data string) error {
+	if fname == "" {
+		dir, _ := os.Getwd()
+		fname = filepath.Base(dir)
 	}
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/app/push"
-	acct, name := util.GetAcctAndName()
+	host := util.ServerHost() + "/studios/fns/call"
+	acct, _ := util.GetAcctAndName()
+
+	if data[:1] == "@" {
+		bytes, err := ioutil.ReadFile(data[1:])
+		if err != nil {
+			return err
+		}
+		data = string(bytes)
+	}
 
 	req := gorequest.New().Post(host).
-		Query("devmode=yes").
-		Query("name="+name).
 		Query("account="+acct).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
-		Type("multipart").
-		SendFile(data)
+		Send(data)
 
 	resp, body, errs := req.End()
-	// fmt.Println(resp, body, errs)
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)

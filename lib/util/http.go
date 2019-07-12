@@ -1,6 +1,7 @@
 package util
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,7 +10,6 @@ import (
 	"github.com/parnurzeal/gorequest"
 
 	"github.com/hofstadter-io/hof/lib/config"
-
 )
 
 func BuildRequest(path string) *gorequest.SuperAgent {
@@ -50,6 +50,13 @@ func SimpleGet(path string) error {
 		fmt.Println("resp:", resp)
 		fmt.Println("body:", body)
 		return errs[0]
+	}
+
+	if len(errs) != 0 || resp.StatusCode >= 500 {
+		return errors.New("Internal Error: " + body)
+	}
+	if resp.StatusCode >= 400 {
+		return errors.New("Bad Request: " + body)
 	}
 
 	fmt.Println(body)

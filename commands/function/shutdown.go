@@ -1,35 +1,34 @@
-package app
+package function
 
 import (
 	"fmt"
+	"os"
 
 	// custom imports
 
 	// infered imports
 
-	"os"
-
-	"github.com/hofstadter-io/hof/lib/app"
+	"github.com/hofstadter-io/hof/lib/fns"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   reset
-// Usage:  reset
-// Parent: app
+// Name:   shutdown
+// Usage:  shutdown
+// Parent: function
 
-var ResetLong = `Resets the App, because sometimes things get weird...`
+var ShutdownLong = `Shutsdown the function <name>, while preserving code in Studios.`
 
-var ResetCmd = &cobra.Command{
+var ShutdownCmd = &cobra.Command{
 
-	Use: "reset",
+	Use: "shutdown",
 
-	Short: "Reset the App",
+	Short: "Shutsdown the function <name>",
 
-	Long: ResetLong,
+	Long: ShutdownLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In resetCmd", "args", args)
+		logger.Debug("In shutdownCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -43,12 +42,12 @@ var ResetCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof app reset:",
+			fmt.Println("hof function shutdown:",
 				name,
 			)
 		*/
 
-		err := app.Reset(name)
+		err := fns.Shutdown(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

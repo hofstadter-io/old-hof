@@ -22,7 +22,7 @@ import (
 
 var NewLong = `Make new apps, types, modules, pages, and functions.
 
-<what>     - one of [module, type, page, component]
+<what>     - one of [module, type, page, component, func]
 <name>     - the name for the new <what>
 <template> - https://github.com/hofstadter-io/studios-new-templates@beta#modules/account-default
 
@@ -96,13 +96,13 @@ var NewCmd = &cobra.Command{
 		}
 
 		/*
-		fmt.Println("hof new:",
-			what,
+			fmt.Println("hof new:",
+				what,
 
-			name,
+				name,
 
-			template,
-		)
+				template,
+			)
 		*/
 
 		out, err := extern.NewEntry(what, name, template, NewDataFlag)

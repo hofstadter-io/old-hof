@@ -33,15 +33,10 @@ func Secrets() error {
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		fmt.Println("body:", body)
-		return errors.New("Internal Error")
+		return errors.New("Internal Error: " + body)
 	}
 	if resp.StatusCode >= 400 {
-		fmt.Println("errs:", errs)
-		fmt.Println("resp:", resp)
-		return errors.New("Bad Request")
+		return errors.New("Bad Request: " + body)
 	}
 
 	fmt.Println(body)

@@ -31,10 +31,24 @@ var DeployCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deployCmd", "args", args)
 		// Argument Parsing
+		// [0]name:   name
+		//     help:
+		//     req'd:  false
 
-		// fmt.Println("hof app deploy:")
+		var name string
 
-		err := app.Deploy()
+		if 0 < len(args) {
+
+			name = args[0]
+		}
+
+		/*
+			fmt.Println("hof app deploy:",
+				name,
+			)
+		*/
+
+		err := app.Deploy(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

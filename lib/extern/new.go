@@ -68,7 +68,7 @@ func NewEntry(what, name, template, strData string) (string, error) {
 		data["ModuleName"] = paths[2]
 	}
 
-	url, version, subpath := splitParts(template)
+	url, version, subpath := SplitParts(template)
 	basePath := dir
 
 	switch what {
@@ -151,5 +151,3 @@ func cloneAndRenderNewThing(srcUrl, srcVer, srcSubpath, destBasePath, name strin
 
 	return nil
 }
-
-

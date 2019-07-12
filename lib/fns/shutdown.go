@@ -3,6 +3,7 @@ package fns
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
@@ -11,31 +12,31 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Pull() error {
+func Shutdown(fname string) error {
+	if fname == "" {
+		dir, _ := os.Getwd()
+		fname = filepath.Base(dir)
+	}
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/fns/pull"
+	host := util.ServerHost() + "/studios/fns/shutdown"
 	acct, name := util.GetAcctAndName()
 
-	resp, bodyBytes, errs := gorequest.New().Get(host).
+	resp, body, errs := gorequest.New().Get(host).
 		Query("name="+name).
 		Query("account="+acct).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
-		EndBytes()
+		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
-		return errors.New("Internal Error: " + fmt.Sprint(errs))
+		return errors.New("Internal Error: " + body)
 	}
 	if resp.StatusCode >= 400 {
-		return errors.New("Bad Request: " + fmt.Sprint(errs))
+		return errors.New("Bad Request: " + body)
 	}
 
-	err := util.UntarFiles(FuncFiles, filepath.Join("funcs", name), bodyBytes)
-	if err != nil {
-		fmt.Println("err", err)
-		return err
-	}
-
+	fmt.Println(body)
 	return nil
 }

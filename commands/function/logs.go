@@ -9,30 +9,32 @@ import (
 	// infered imports
 
 	"github.com/hofstadter-io/hof/lib/fns"
+
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   push
-// Usage:  push
+// Name:   logs
+// Usage:  logs
 // Parent: function
 
-var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
+var LogsLong = `List the logs of function <name> from the current directory`
 
-var PushCmd = &cobra.Command{
+var LogsCmd = &cobra.Command{
 
-	Use: "push <function path>",
+	Use: "logs",
 
-	Short: "Send and make the latest version on Studios",
+	Short: "List the logs of the function <name>",
 
-	Long: PushLong,
+	Long: LogsLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In pushCmd", "args", args)
+		logger.Debug("In logsCmd", "args", args)
+		// Argument Parsing
 
-		// fmt.Println("hof function push: ")
+		// fmt.Println("hof function logs:")
 
-		err := fns.Push()
+		err := fns.Logs()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

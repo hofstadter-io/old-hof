@@ -13,26 +13,27 @@ import (
 )
 
 // Tool:   hof
-// Name:   push
-// Usage:  push
+// Name:   list
+// Usage:  list
 // Parent: function
 
-var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
+var ListLong = `List your functions`
 
-var PushCmd = &cobra.Command{
+var ListCmd = &cobra.Command{
 
-	Use: "push <function path>",
+	Use: "list",
 
-	Short: "Send and make the latest version on Studios",
+	Short: "List your functions",
 
-	Long: PushLong,
+	Long: ListLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In pushCmd", "args", args)
+		logger.Debug("In listCmd", "args", args)
+		// Argument Parsing
 
-		// fmt.Println("hof function push: ")
+		// fmt.Println("hof function list:")
 
-		err := fns.Push()
+		err := fns.List()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

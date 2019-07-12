@@ -35,10 +35,24 @@ var VersionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In versionCmd", "args", args)
 		// Argument Parsing
+		// [0]name:   name
+		//     help:
+		//     req'd:  false
 
-		// fmt.Println("hof app version:")
+		var name string
 
-		err := app.Version()
+		if 0 < len(args) {
+
+			name = args[0]
+		}
+
+		/*
+			fmt.Println("hof app version:",
+				name,
+			)
+		*/
+
+		err := app.Version(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

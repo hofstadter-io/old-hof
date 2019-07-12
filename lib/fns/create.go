@@ -1,26 +1,28 @@
-package app
+package fns
 
 import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"path/filepath"
 	"strings"
 
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
 
 	"github.com/hofstadter-io/hof/lib/config"
+	"github.com/hofstadter-io/hof/lib/extern"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const appCreateTemplate = `
+const fnCreateTemplate = `
 mutation {
-  appCreate(input:{
+  fnCreate(input:{
     name:"{{.name}}"
     version:"{{.version}}"
     type:"{{.type}}"
   }) {
-    app {
+    fn {
       name
       id
       version
@@ -31,29 +33,31 @@ mutation {
 }
 `
 
-func Create(name, kitver, template string) error {
-	var version string
-
-	parts := strings.Split(template, "@")
-	if len(parts) == 2 {
-		template = parts[0]
-		version = parts[1]
-	}
+func Create(name, template string) error {
+	url, version, subpath := extern.SplitParts(template)
 
 	data := map[string]interface{}{}
-	data["AppName"] = name
+	data["FuncName"] = name
 
-	dir, err := util.CloneRepo(template, version)
+	var err error
+	var dir string
+
+	if strings.HasPrefix(url, "https") {
+		dir, err = util.CloneRepo(url, version)
+		if err != nil {
+			return err
+		}
+	} else {
+		// assume local, just copy, so working copy
+		dir = url
+	}
+
+	err = util.RenderDirNameSub(filepath.Join(dir, subpath), name, data)
 	if err != nil {
 		return err
 	}
 
-	err = util.RenderDirNameSub(dir, name, data)
-	if err != nil {
-		return err
-	}
-
-	err = SendCreateRequest(name, kitver)
+	err = SendCreateRequest(name, template)
 	if err != nil {
 		return err
 	}
@@ -61,20 +65,20 @@ func Create(name, kitver, template string) error {
 	return nil
 }
 
-func SendCreateRequest(name, kitver string) error {
+func SendCreateRequest(name, version string) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/graphql"
 	acct, _ := util.GetAcctAndName()
 
 	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("appCreate").Parse(appCreateTemplate))
+	t := template.Must(template.New("fnCreate").Parse(fnCreateTemplate))
 
 	// Create Template Data
 	data := map[string]interface{}{
 		"name":    name,
 		"type":    "starter",
-		"version": kitver,
+		"version": version,
 	}
 
 	// Execute the template for each recipient.
