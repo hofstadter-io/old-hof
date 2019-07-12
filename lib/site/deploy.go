@@ -10,7 +10,7 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Deploy(push bool, memory int) error {
+func Deploy(push bool) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
@@ -20,9 +20,6 @@ func Deploy(push bool, memory int) error {
 	req := gorequest.New().Get(host).
 		Query("account=" + acct).
 		Query("name=" + fname)
-	if memory > 0 {
-		req = req.Query(fmt.Sprintf("memory=%d", memory))
-	}
 	resp, body, errs := req.
 		Set("Authorization", "Bearer "+apikey).
 		End()

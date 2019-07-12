@@ -45,7 +45,7 @@ var DeployCmd = &cobra.Command{
 
 		fmt.Println("hof site deploy:")
 
-		err := site.Deploy(DeployPushFlag, DeployMemoryFlag)
+		err := site.Deploy(DeployPushFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
