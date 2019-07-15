@@ -7,6 +7,9 @@ import (
 
 	// infered imports
 
+	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 
 	"github.com/hofstadter-io/hof/lib/util"
@@ -33,7 +36,12 @@ var TestCmd = &cobra.Command{
 
 		// fmt.Println("hof config test:")
 
-		util.TestConfigAuth()
+		err := util.TestConfigAuth()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 	},
 }
 
