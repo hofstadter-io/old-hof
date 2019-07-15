@@ -24,7 +24,7 @@ func Deploy(push bool, memory int) error {
 		req = req.Query(fmt.Sprintf("memory=%d", memory))
 	}
 	resp, body, errs := req.
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {

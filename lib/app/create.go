@@ -91,7 +91,7 @@ func SendCreateRequest(name, kitver string) error {
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Send(send)
 
 	resp, body, errs := req.End()

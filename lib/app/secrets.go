@@ -27,7 +27,7 @@ func Secrets() error {
 	resp, body, errs := gorequest.New().Post(host).
 		Query("name="+name).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Type("text").
 		Send(outData).
 		End()
