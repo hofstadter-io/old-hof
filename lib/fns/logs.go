@@ -20,7 +20,7 @@ func Logs() error {
 	resp, body, errs := gorequest.New().Get(host).
 		Query("account="+acct).
 		Query("name="+fname).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {

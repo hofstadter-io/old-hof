@@ -17,7 +17,7 @@ func Update(version string) error {
 
 	resp, body, errs := gorequest.New().Get(host).
 		Query("version="+version).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {

@@ -15,7 +15,7 @@ func Version() error {
 	host := util.ServerHost() + "/studios/dsl/version"
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		EndBytes()
 
 	if len(errs) != 0 {

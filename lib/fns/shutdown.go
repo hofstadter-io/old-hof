@@ -27,7 +27,7 @@ func Shutdown(fname string) error {
 		Query("name="+name).
 		Query("account="+acct).
 		Query("name="+fname).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {

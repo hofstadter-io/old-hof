@@ -22,7 +22,7 @@ func Reset(name string) error {
 	req := gorequest.New().Get(host).
 		Query("name="+name).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey)
+		Set("apikey", apikey)
 
 	resp, body, errs := req.End()
 

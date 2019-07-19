@@ -27,7 +27,7 @@ func Push() error {
 		Query("devmode=yes").
 		Query("name="+name).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Type("multipart").
 		SendFile(data)
 

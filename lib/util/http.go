@@ -22,7 +22,7 @@ func BuildRequest(path string) *gorequest.SuperAgent {
 	req := gorequest.New().Get(url).
 		Query("name="+name).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey)
+		Set("apikey", apikey)
 
 	return req
 }

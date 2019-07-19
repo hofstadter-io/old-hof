@@ -27,7 +27,7 @@ func Push() error {
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
 		Query("name="+fname).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Type("multipart").
 		SendFile(data)
 
