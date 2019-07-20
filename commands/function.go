@@ -43,8 +43,8 @@ func init() {
 	// add sub-commands to this command when present
 
 	FunctionCmd.AddCommand(function.StatusCmd)
-	FunctionCmd.AddCommand(function.ListCmd)
 	FunctionCmd.AddCommand(function.LogsCmd)
+	FunctionCmd.AddCommand(function.ListCmd)
 	FunctionCmd.AddCommand(function.DeployCmd)
 	FunctionCmd.AddCommand(function.CreateCmd)
 	FunctionCmd.AddCommand(function.DeleteCmd)
