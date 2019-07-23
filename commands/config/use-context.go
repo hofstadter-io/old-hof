@@ -23,6 +23,10 @@ var UseContextCmd = &cobra.Command{
 
 	Use: "use-context <context-name>",
 
+	Aliases: []string{
+		"use",
+	},
+
 	Short: "Use a context configuration",
 
 	Long: UseContextLong,

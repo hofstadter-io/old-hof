@@ -8,8 +8,8 @@ import (
 	// infered imports
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/hofstadter-io/hof/lib/config"
+	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
@@ -84,7 +84,7 @@ var SetContextCmd = &cobra.Command{
 
 		var host string
 
-		host = "https://studios.hofstadter.io"
+		host = "https://studios.studios.live.hofstadter.io"
 
 		if 3 < len(args) {
 
@@ -92,15 +92,15 @@ var SetContextCmd = &cobra.Command{
 		}
 
 		/*
-		fmt.Println("hof config set-context:",
-			context,
+			fmt.Println("hof config set-context:",
+				context,
 
-			account,
+				account,
 
-			apikey,
+				apikey,
 
-			host,
-		)
+				host,
+			)
 		*/
 
 		config.SetContext(context, account, apikey, host)

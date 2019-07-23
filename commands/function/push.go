@@ -30,7 +30,9 @@ var PushCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In pushCmd", "args", args)
 
-		// fmt.Println("hof function push: ")
+		// Argument Parsing
+
+		fmt.Println("hof function push: ")
 
 		err := fns.Push()
 		if err != nil {
