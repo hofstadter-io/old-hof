@@ -1,4 +1,4 @@
-package site
+package crun
 
 var FuncFiles = []string{
 	".",

@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"errors"
@@ -21,7 +21,7 @@ func Call(fname string, data string) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/site/call"
+	host := util.ServerHost() + "/studios/crun/call"
 	acct, _ := util.GetAcctAndName()
 
 	if data[:1] == "@" {

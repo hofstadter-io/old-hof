@@ -1,8 +1,10 @@
-package site
+package crun
 
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -10,28 +12,22 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push() error {
-	data, err := util.TarFiles(FuncFiles, "./")
-	if err != nil {
-		fmt.Println("err", err)
-		return err
+func Status(fname string) error {
+	if fname == "" {
+		dir, _ := os.Getwd()
+		fname = filepath.Base(dir)
 	}
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/site/push"
-	acct, fname := util.GetAcctAndName()
+	host := util.ServerHost() + "/studios/crun/status"
+	acct, _ := util.GetAcctAndName()
 
-	fmt.Println("Pushing:", fname)
-
-	req := gorequest.New().Post(host).
+	resp, body, errs := gorequest.New().Get(host).
 		Query("account="+acct).
 		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
-		Type("multipart").
-		SendFile(data)
-
-	resp, body, errs := req.End()
+		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)

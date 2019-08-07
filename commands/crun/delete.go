@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -7,28 +7,28 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   status
-// Usage:  status
-// Parent: site
+// Name:   delete
+// Usage:  delete
+// Parent: crun
 
-var StatusLong = `Get the status of your sites`
+var DeleteLong = `Deletes the crun <name> and all associated data in Studios.`
 
-var StatusCmd = &cobra.Command{
+var DeleteCmd = &cobra.Command{
 
-	Use: "status",
+	Use: "delete",
 
-	Short: "Get the status of your sites",
+	Short: "Deletes the crun <name>",
 
-	Long: StatusLong,
+	Long: DeleteLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In statusCmd", "args", args)
+		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -41,11 +41,11 @@ var StatusCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		fmt.Println("hof site status:",
+		fmt.Println("hof crun delete:",
 			name,
 		)
 
-		err := site.Status(name)
+		err := crun.Delete(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

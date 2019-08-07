@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"errors"
@@ -10,17 +10,16 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Deploy(push bool) error {
+func Logs() error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/site/deploy"
+	host := util.ServerHost() + "/studios/crun/logs"
 	acct, fname := util.GetAcctAndName()
 
-	req := gorequest.New().Get(host).
-		Query("account=" + acct).
-		Query("name=" + fname)
-	resp, body, errs := req.
+	resp, body, errs := gorequest.New().Get(host).
+		Query("account="+acct).
+		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).
 		End()
 

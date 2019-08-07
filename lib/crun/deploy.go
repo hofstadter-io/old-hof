@@ -1,10 +1,8 @@
-package site
+package crun
 
 import (
 	"errors"
 	"fmt"
-	"os"
-	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -12,20 +10,17 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Delete(fname string) error {
-	if fname == "" {
-		dir, _ := os.Getwd()
-		fname = filepath.Base(dir)
-	}
+func Deploy(push bool) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/site/delete"
-	acct, _ := util.GetAcctAndName()
+	host := util.ServerHost() + "/studios/crun/deploy"
+	acct, fname := util.GetAcctAndName()
 
-	resp, body, errs := gorequest.New().Get(host).
-		Query("account="+acct).
-		Query("name="+fname).
+	req := gorequest.New().Get(host).
+		Query("account=" + acct).
+		Query("name=" + fname)
+	resp, body, errs := req.
 		Set("Authorization", "Bearer "+apikey).
 		End()
 

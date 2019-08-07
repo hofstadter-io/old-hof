@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"github.com/spf13/viper"
@@ -8,7 +8,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.site.default")
+	ldcfg := viper.GetStringMap("log-config.commands.crun.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -41,7 +41,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.site")
+	lcfg := viper.GetStringMap("log-config.commands.crun")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

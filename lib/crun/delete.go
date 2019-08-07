@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"errors"
@@ -12,7 +12,7 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Shutdown(fname string) error {
+func Delete(fname string) error {
 	if fname == "" {
 		dir, _ := os.Getwd()
 		fname = filepath.Base(dir)
@@ -20,11 +20,10 @@ func Shutdown(fname string) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/site/shutdown"
-	acct, name := util.GetAcctAndName()
+	host := util.ServerHost() + "/studios/crun/delete"
+	acct, _ := util.GetAcctAndName()
 
 	resp, body, errs := gorequest.New().Get(host).
-		Query("name="+name).
 		Query("account="+acct).
 		Query("name="+fname).
 		Set("Authorization", "Bearer "+apikey).

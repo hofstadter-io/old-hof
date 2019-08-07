@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -7,28 +7,28 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   shutdown
-// Usage:  shutdown
-// Parent: site
+// Name:   status
+// Usage:  status
+// Parent: crun
 
-var ShutdownLong = `Shutsdown the site <name>, while preserving code in Studios.`
+var StatusLong = `Get the status of your cruns`
 
-var ShutdownCmd = &cobra.Command{
+var StatusCmd = &cobra.Command{
 
-	Use: "shutdown",
+	Use: "status",
 
-	Short: "Shutsdown the site <name>",
+	Short: "Get the status of your cruns",
 
-	Long: ShutdownLong,
+	Long: StatusLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In shutdownCmd", "args", args)
+		logger.Debug("In statusCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -41,11 +41,11 @@ var ShutdownCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		fmt.Println("hof site shutdown:",
+		fmt.Println("hof crun status:",
 			name,
 		)
 
-		err := site.Shutdown(name)
+		err := crun.Status(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

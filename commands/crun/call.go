@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -8,16 +8,16 @@ import (
 	// infered imports
 	"os"
 
-	"github.com/hofstadter-io/hof/lib/site"
+	"github.com/hofstadter-io/hof/lib/crun"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   call
 // Usage:  call <name> <data>
-// Parent: site
+// Parent: crun
 
-var CallLong = `Call the site <name> with <data>
+var CallLong = `Call the crun <name> with <data>
 data may be a JSON string or @filename.json
 `
 
@@ -25,7 +25,7 @@ var CallCmd = &cobra.Command{
 
 	Use: "call <name> <data>",
 
-	Short: "Call a site by name",
+	Short: "Call a crun by name",
 
 	Long: CallLong,
 
@@ -64,13 +64,13 @@ var CallCmd = &cobra.Command{
 			data = args[1]
 		}
 
-		fmt.Println("hof site call:",
+		fmt.Println("hof crun call:",
 			name,
 
 			data,
 		)
 
-		err := site.Call(name, data)
+		err := crun.Call(name, data)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

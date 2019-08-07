@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -7,15 +7,15 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   pull
 // Usage:  pull
-// Parent: site
+// Parent: crun
 
 var PullLong = `Replaces the local copy with the latest copy in Studios`
 
@@ -31,9 +31,9 @@ var PullCmd = &cobra.Command{
 		logger.Debug("In pullCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof site pull:")
+		fmt.Println("hof crun pull:")
 
-		err := site.Pull()
+		err := crun.Pull()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

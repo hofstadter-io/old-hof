@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -7,15 +7,15 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   logs
 // Usage:  logs
-// Parent: site
+// Parent: crun
 
 var LogsLong = `List the logs of your function`
 
@@ -31,9 +31,9 @@ var LogsCmd = &cobra.Command{
 		logger.Debug("In logsCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof site logs:")
+		fmt.Println("hof crun logs:")
 
-		err := site.Logs()
+		err := crun.Logs()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
