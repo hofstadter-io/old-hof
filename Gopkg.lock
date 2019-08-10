@@ -105,6 +105,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:fefbbe347c4cf14c86cefd3aaf4f75212d7e87a3718fc26b62eba9c479dd43d0"
+  name = "github.com/hofstadter-io/dotpath"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c1d8e02366178c3635c09743afaebc16d8f9c78f"
+
+[[projects]]
+  branch = "master"
   digest = "1:c284be911f7e31518854c9b47dcd1dca1b508a104962f3addf5838637c5b43ce"
   name = "github.com/hofstadter-io/hof-lang"
   packages = [
@@ -547,6 +555,7 @@
   input-imports = [
     "github.com/aymerick/raymond",
     "github.com/hofstadter-io/data-utils/io",
+    "github.com/hofstadter-io/dotpath",
     "github.com/mholt/archiver",
     "github.com/parnurzeal/gorequest",
     "github.com/pkg/errors",
