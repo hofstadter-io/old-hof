@@ -12,6 +12,13 @@ import (
 
 func Deploy(push bool, memory int) error {
 
+	if push {
+		err := Push()
+		if err != nil {
+			return err
+		}
+	}
+
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/fns/deploy"
