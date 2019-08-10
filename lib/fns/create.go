@@ -107,6 +107,14 @@ func SendCreateRequest(name, version string) error {
 		return errors.New("Bad Request: " + body)
 	}
 
-	fmt.Println(body)
+	printCreateSuccess(name, body)
+	return nil
+}
+
+func printCreateSuccess(name, body string) error {
+	// body is a json object as a string
+
+	fmt.Printf("Function '%s' successfully created", name)
+
 	return nil
 }

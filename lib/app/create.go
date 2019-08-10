@@ -103,6 +103,13 @@ func SendCreateRequest(name, kitver string) error {
 		return errors.New("Bad Request: " + body)
 	}
 
-	fmt.Println(body)
+	printSuccess(name, body)
+	return nil
+}
+
+func printSuccess(name, body string) error {
+	// body is a json object as a string
+	fmt.Printf("App '%s' successfully created", name)
+
 	return nil
 }
