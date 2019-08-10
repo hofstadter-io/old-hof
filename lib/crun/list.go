@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 )
 
 func List() error {
-	req := util.BuildRequest("/studios/site/list")
+	req := util.BuildRequest("/studios/crun/list")
 
 	resp, body, errs := req.End()
 

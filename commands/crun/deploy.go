@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -7,8 +7,8 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -17,16 +17,16 @@ import (
 // Tool:   hof
 // Name:   deploy
 // Usage:  deploy
-// Parent: site
+// Parent: crun
 
-var DeployLong = `Deploy the site <name> from the current directory`
+var DeployLong = `Deploy the crun <name> from the current directory`
 
 var (
 	DeployPushFlag bool
 )
 
 func init() {
-	DeployCmd.Flags().BoolVarP(&DeployPushFlag, "push", "p", true, "push the latest site code with the deploy.")
+	DeployCmd.Flags().BoolVarP(&DeployPushFlag, "push", "p", true, "push the latest crun code with the deploy.")
 	viper.BindPFlag("push", DeployCmd.Flags().Lookup("push"))
 
 }
@@ -35,7 +35,7 @@ var DeployCmd = &cobra.Command{
 
 	Use: "deploy",
 
-	Short: "Deploys the site <name>",
+	Short: "Deploys the crun <name>",
 
 	Long: DeployLong,
 
@@ -43,9 +43,9 @@ var DeployCmd = &cobra.Command{
 		logger.Debug("In deployCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof site deploy:")
+		fmt.Println("hof crun deploy:")
 
-		err := site.Deploy(DeployPushFlag)
+		err := crun.Deploy(DeployPushFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

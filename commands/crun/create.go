@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -6,24 +6,24 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 	"os"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   create
 // Usage:  create [path/to]<name> <template>[@version][#template-subpath]
-// Parent: site
+// Parent: crun
 
-var CreateLong = `Create a new site from a template. The path prefix says where, the last part will be the name`
+var CreateLong = `Create a new crun from a template. The path prefix says where, the last part will be the name`
 
 var CreateCmd = &cobra.Command{
 
 	Use: "create [path/to]<name> <template>[@version][#template-subpath]",
 
-	Short: "Create a new site",
+	Short: "Create a new crun",
 
 	Long: CreateLong,
 
@@ -59,13 +59,13 @@ var CreateCmd = &cobra.Command{
 			template = args[1]
 		}
 
-		fmt.Println("hof site create:",
+		fmt.Println("hof crun create:",
 			name,
 
 			template,
 		)
 
-		err := site.Create(name, template)
+		err := crun.Create(name, template)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

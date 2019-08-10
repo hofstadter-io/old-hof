@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"fmt"
@@ -7,23 +7,23 @@ import (
 	// custom imports
 
 	// infered imports
+	"github.com/hofstadter-io/hof/lib/crun"
 
-	"github.com/hofstadter-io/hof/lib/site"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   list
 // Usage:  list
-// Parent: site
+// Parent: crun
 
-var ListLong = `List your sites`
+var ListLong = `List your cruns`
 
 var ListCmd = &cobra.Command{
 
 	Use: "list",
 
-	Short: "List your sites",
+	Short: "List your cruns",
 
 	Long: ListLong,
 
@@ -31,9 +31,9 @@ var ListCmd = &cobra.Command{
 		logger.Debug("In listCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof site list:")
+		fmt.Println("hof crun list:")
 
-		err := site.List()
+		err := crun.List()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

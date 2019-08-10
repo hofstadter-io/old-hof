@@ -1,4 +1,4 @@
-package site
+package crun
 
 import (
 	"errors"
@@ -15,7 +15,7 @@ func Pull() error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/site/pull"
+	host := util.ServerHost() + "/studios/crun/pull"
 	acct, name := util.GetAcctAndName()
 
 	resp, bodyBytes, errs := gorequest.New().Get(host).
