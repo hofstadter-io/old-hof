@@ -116,17 +116,22 @@ func printListSuccess(body []byte) error {
 		return err
 	}
 
-	fs := fsi.([]interface{})
+	fmt.Println("ID   Name")
+	switch fs := fsi.(type) {
+	case []interface{}:
+		for _, fi := range fs {
+			fm := fi.(map[string]interface{})
+			fmt.Printf("%v    %v\n", fm["id"], fm["name"])
+		}
+
+	case map[string]interface{}:
+		fmt.Printf("%v    %v\n", fs["id"], fs["name"])
+	}
 
 	/*
 		fmt.Println(fs)
 		fmt.Println("\n")
 	*/
-
-	for _, fi := range fs {
-		fm := fi.(map[string]interface{})
-		fmt.Printf("%v    %v\n", fm["id"], fm["name"])
-	}
 
 	return nil
 }
