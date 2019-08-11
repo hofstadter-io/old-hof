@@ -24,7 +24,7 @@ func Deploy(push bool, memory int) error {
 	host := util.ServerHost() + "/studios/fns/deploy"
 	acct, fname := util.GetAcctAndName()
 
-	req := gorequest.New().Get(host).
+	req := gorequest.New().Post(host).
 		Query("account=" + acct).
 		Query("name=" + fname)
 	if memory > 0 {

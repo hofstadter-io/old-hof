@@ -19,7 +19,7 @@ func Deploy(name string) error {
 		name = appname
 	}
 
-	req := gorequest.New().Get(host).
+	req := gorequest.New().Post(host).
 		Query("name="+name).
 		Query("account="+acct).
 		Set("apikey", apikey)

@@ -21,7 +21,7 @@ func Pull() error {
 	resp, bodyBytes, errs := gorequest.New().Get(host).
 		Query("name="+name).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		EndBytes()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
@@ -31,7 +31,7 @@ func Pull() error {
 		return errors.New("Bad Request: " + fmt.Sprint(errs))
 	}
 
-	err := util.UntarFiles(FuncFiles, filepath.Join("funcs", name), bodyBytes)
+	err := util.UntarFiles(CrunFiles, filepath.Join("funcs", name), bodyBytes)
 	if err != nil {
 		fmt.Println("err", err)
 		return err

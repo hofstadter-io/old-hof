@@ -22,12 +22,16 @@ import (
 var DeployLong = `Deploy the crun <name> from the current directory`
 
 var (
-	DeployPushFlag bool
+	DeployPushFlag   bool
+	DeployMemoryFlag int
 )
 
 func init() {
 	DeployCmd.Flags().BoolVarP(&DeployPushFlag, "push", "p", true, "push the latest crun code with the deploy.")
 	viper.BindPFlag("push", DeployCmd.Flags().Lookup("push"))
+
+	DeployCmd.Flags().IntVarP(&DeployMemoryFlag, "memory", "m", 0, "set the memory for this service (in megabytes).")
+	viper.BindPFlag("memory", DeployCmd.Flags().Lookup("memory"))
 
 }
 
@@ -43,9 +47,11 @@ var DeployCmd = &cobra.Command{
 		logger.Debug("In deployCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof crun deploy:")
+		/*
+			fmt.Println("hof crun deploy:")
+		*/
 
-		err := crun.Deploy(DeployPushFlag)
+		err := crun.Deploy(DeployPushFlag, DeployMemoryFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

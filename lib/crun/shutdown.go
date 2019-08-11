@@ -21,13 +21,12 @@ func Shutdown(fname string) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/crun/shutdown"
-	acct, name := util.GetAcctAndName()
+	acct, _ := util.GetAcctAndName()
 
 	resp, body, errs := gorequest.New().Get(host).
-		Query("name="+name).
 		Query("account="+acct).
 		Query("name="+fname).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {

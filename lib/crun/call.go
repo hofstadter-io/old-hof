@@ -24,6 +24,8 @@ func Call(fname string, data string) error {
 	host := util.ServerHost() + "/studios/crun/call"
 	acct, _ := util.GetAcctAndName()
 
+	fmt.Println("Calling:", host)
+
 	if data[:1] == "@" {
 		bytes, err := ioutil.ReadFile(data[1:])
 		if err != nil {
@@ -35,7 +37,7 @@ func Call(fname string, data string) error {
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
 		Query("name="+fname).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Send(data)
 
 	resp, body, errs := req.End()

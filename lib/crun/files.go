@@ -1,5 +1,5 @@
 package crun
 
-var FuncFiles = []string{
+var CrunFiles = []string{
 	".",
 }

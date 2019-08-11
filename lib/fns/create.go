@@ -34,6 +34,10 @@ mutation {
 `
 
 func Create(name, template string) error {
+	if template == "" || template[0] == '#' || template[0] == '@' {
+		template = "https://github.com/hofstadter-io/studios-functions" + template
+	}
+
 	url, version, subpath := extern.SplitParts(template)
 
 	data := map[string]interface{}{}

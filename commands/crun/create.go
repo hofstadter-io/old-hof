@@ -6,8 +6,9 @@ import (
 	// custom imports
 
 	// infered imports
-	"github.com/hofstadter-io/hof/lib/crun"
 	"os"
+
+	"github.com/hofstadter-io/hof/lib/crun"
 
 	"github.com/spf13/cobra"
 )
@@ -52,18 +53,20 @@ var CreateCmd = &cobra.Command{
 
 		var template string
 
-		template = "https://github.com/hofstadter-io/studios-functions#custom-default"
+		template = "https://github.com/hofstadter-io/studios-containers#custom-default"
 
 		if 1 < len(args) {
 
 			template = args[1]
 		}
 
-		fmt.Println("hof crun create:",
-			name,
+		/*
+			fmt.Println("hof crun create:",
+				name,
 
-			template,
-		)
+				template,
+			)
+		*/
 
 		err := crun.Create(name, template)
 		if err != nil {

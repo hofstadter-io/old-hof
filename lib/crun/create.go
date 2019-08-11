@@ -15,14 +15,14 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const fnCreateTemplate = `
+const crunCreateTemplate = `
 mutation {
-  fnCreate(input:{
+  crunCreate(input:{
     name:"{{.name}}"
     version:"{{.version}}"
     type:"{{.type}}"
   }) {
-    fn {
+    crun {
       name
       id
       version
@@ -34,6 +34,10 @@ mutation {
 `
 
 func Create(name, template string) error {
+	if template == "" || template[0] == '#' || template[0] == '@' {
+		template = "https://github.com/hofstadter-io/studios-containers" + template
+	}
+
 	url, version, subpath := extern.SplitParts(template)
 
 	data := map[string]interface{}{}
@@ -72,7 +76,7 @@ func SendCreateRequest(name, version string) error {
 	acct, _ := util.GetAcctAndName()
 
 	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("fnCreate").Parse(fnCreateTemplate))
+	t := template.Must(template.New("crunCreate").Parse(crunCreateTemplate))
 
 	// Create Template Data
 	data := map[string]interface{}{
@@ -95,7 +99,7 @@ func SendCreateRequest(name, version string) error {
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Send(send)
 
 	resp, body, errs := req.End()
@@ -107,6 +111,14 @@ func SendCreateRequest(name, version string) error {
 		return errors.New("Bad Request: " + body)
 	}
 
-	fmt.Println(body)
+	printCreateSuccess(name, body)
+	return nil
+}
+
+func printCreateSuccess(name, body string) error {
+	// body is a json object as a string
+
+	fmt.Printf("Container '%s' successfully created", name)
+
 	return nil
 }

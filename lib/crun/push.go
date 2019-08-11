@@ -11,7 +11,7 @@ import (
 )
 
 func Push() error {
-	data, err := util.TarFiles(FuncFiles, "./")
+	data, err := util.TarFiles(CrunFiles, "./")
 	if err != nil {
 		fmt.Println("err", err)
 		return err
@@ -27,7 +27,7 @@ func Push() error {
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
 		Query("name="+fname).
-		Set("Authorization", "Bearer "+apikey).
+		Set("apikey", apikey).
 		Type("multipart").
 		SendFile(data)
 

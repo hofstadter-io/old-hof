@@ -64,11 +64,13 @@ var CallCmd = &cobra.Command{
 			data = args[1]
 		}
 
-		fmt.Println("hof crun call:",
-			name,
+		/*
+			fmt.Println("hof crun call:",
+				name,
 
-			data,
-		)
+				data,
+			)
+		*/
 
 		err := crun.Call(name, data)
 		if err != nil {
