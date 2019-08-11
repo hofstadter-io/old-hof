@@ -1,4 +1,4 @@
-package crun
+package containers
 
 import (
 	"fmt"
@@ -7,15 +7,15 @@ import (
 	// custom imports
 
 	// infered imports
-	"github.com/hofstadter-io/hof/lib/crun"
 
+	"github.com/hofstadter-io/hof/lib/crun"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   pull
 // Usage:  pull
-// Parent: crun
+// Parent: containers
 
 var PullLong = `Replaces the local copy with the latest copy in Studios`
 
@@ -31,7 +31,9 @@ var PullCmd = &cobra.Command{
 		logger.Debug("In pullCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof crun pull:")
+		/*
+			fmt.Println("hof containers pull:")
+		*/
 
 		err := crun.Pull()
 		if err != nil {

@@ -33,32 +33,47 @@ mutation {
 }
 `
 
-func Create(name, template string) error {
-	if template == "" || template[0] == '#' || template[0] == '@' {
-		template = "https://github.com/hofstadter-io/studios-containers" + template
+func Create(name string, here bool, template string) error {
+	fmt.Println(name, here, template)
+	var err error
+
+	if name == "" {
+		_, fname := util.GetAcctAndName()
+		name = fname
 	}
 
-	url, version, subpath := extern.SplitParts(template)
+	if template != "none" {
 
-	data := map[string]interface{}{}
-	data["FuncName"] = name
+		if template == "" || template[0] == '#' || template[0] == '@' {
+			template = "https://github.com/hofstadter-io/studios-containers" + template
+		}
 
-	var err error
-	var dir string
+		url, version, subpath := extern.SplitParts(template)
 
-	if strings.HasPrefix(url, "https") {
-		dir, err = util.CloneRepo(url, version)
+		data := map[string]interface{}{}
+		data["FuncName"] = name
+
+		var dir string
+
+		if strings.HasPrefix(url, "https") {
+			dir, err = util.CloneRepo(url, version)
+			if err != nil {
+				return err
+			}
+		} else {
+			// assume local, just copy, so working copy
+			dir = url
+		}
+
+		if here {
+			err = util.RenderDirNameSub(filepath.Join(dir, subpath), ".", data)
+		} else {
+			err = util.RenderDirNameSub(filepath.Join(dir, subpath), name, data)
+		}
 		if err != nil {
 			return err
 		}
-	} else {
-		// assume local, just copy, so working copy
-		dir = url
-	}
 
-	err = util.RenderDirNameSub(filepath.Join(dir, subpath), name, data)
-	if err != nil {
-		return err
 	}
 
 	err = SendCreateRequest(name, template)

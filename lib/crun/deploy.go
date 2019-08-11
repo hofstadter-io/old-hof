@@ -12,10 +12,10 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Deploy(push bool, memory int) error {
+func Deploy(name string, push bool, memory string, concurrency int, timeout string, envs string) error {
 
 	if push {
-		err := Push()
+		err := Push(name)
 		if err != nil {
 			return err
 		}
@@ -25,22 +25,26 @@ func Deploy(push bool, memory int) error {
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/crun/deploy"
 	acct, fname := util.GetAcctAndName()
+	if name == "" {
+		name = fname
+	}
 
-	fmt.Println("Building & Deploying...", fname)
+	fmt.Println("Building & Deploying...", name)
 
 	req := gorequest.New().Post(host).
 		Query("account=" + acct).
-		Query("name=" + fname)
-	if memory > 0 {
-		req = req.Query(fmt.Sprintf("memory=%d", memory))
-	}
+		Query("name=" + name).
+		Query("memory=" + memory).
+		Query("concurrency=" + fmt.Sprint(concurrency)).
+		Query("timeout=" + timeout).
+		Query("envs=" + envs)
+
 	resp, body, errs := req.
 		Timeout(20*time.Minute).
 		Retry(0, 0*time.Second, http.StatusInternalServerError).
 		Set("apikey", apikey).
-		End(printStatus)
+		End()
 
-	fmt.Println("Done!")
 	if len(errs) != 0 {
 		fmt.Println(errs)
 		return errors.New("Client Error")
@@ -54,8 +58,4 @@ func Deploy(push bool, memory int) error {
 
 	fmt.Println(body)
 	return nil
-}
-
-func printStatus(resp gorequest.Response, body string, errs []error) {
-	fmt.Println(resp.Status)
 }

@@ -1,4 +1,4 @@
-package crun
+package containers
 
 import (
 	"fmt"
@@ -9,27 +9,28 @@ import (
 	"os"
 
 	"github.com/hofstadter-io/hof/lib/crun"
-
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   create
-// Usage:  create [path/to]<name> <template>[@version][#template-subpath]
-// Parent: crun
+// Name:   call
+// Usage:  call <name> [data]
+// Parent: containers
 
-var CreateLong = `Create a new crun from a template. The path prefix says where, the last part will be the name`
+var CallLong = `Call the container <name> with json <data>
+data may be a JSON string or @filename.json
+`
 
-var CreateCmd = &cobra.Command{
+var CallCmd = &cobra.Command{
 
-	Use: "create [path/to]<name> <template>[@version][#template-subpath]",
+	Use: "call <name> [data]",
 
-	Short: "Create a new crun",
+	Short: "Call a container with data",
 
-	Long: CreateLong,
+	Long: CallLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In createCmd", "args", args)
+		logger.Debug("In callCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -47,32 +48,31 @@ var CreateCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		// [1]name:   template
+		// [1]name:   data
 		//     help:
 		//     req'd:
 
-		var template string
-
-		template = "https://github.com/hofstadter-io/studios-containers#custom-default"
+		var data string
 
 		if 1 < len(args) {
 
-			template = args[1]
+			data = args[1]
 		}
 
 		/*
-			fmt.Println("hof crun create:",
+			fmt.Println("hof containers call:",
 				name,
 
-				template,
+				data,
 			)
 		*/
 
-		err := crun.Create(name, template)
+		err := crun.Call(name, data)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

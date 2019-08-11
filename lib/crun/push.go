@@ -10,7 +10,7 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Push() error {
+func Push(name string) error {
 	data, err := util.TarFiles(CrunFiles, "./")
 	if err != nil {
 		fmt.Println("err", err)
@@ -21,12 +21,15 @@ func Push() error {
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/crun/push"
 	acct, fname := util.GetAcctAndName()
+	if name == "" {
+		name = fname
+	}
 
-	fmt.Println("Pushing:", fname)
+	fmt.Println("Pushing:", name)
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Query("name="+fname).
+		Query("name="+name).
 		Set("apikey", apikey).
 		Type("multipart").
 		SendFile(data)

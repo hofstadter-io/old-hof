@@ -32,7 +32,7 @@ mutation {
 }
 `
 
-func Delete(id string) error {
+func Delete(id int) error {
 	err := SendDeleteRequest(id)
 	if err != nil {
 		return err
@@ -41,7 +41,7 @@ func Delete(id string) error {
 	return nil
 }
 
-func SendDeleteRequest(id string) error {
+func SendDeleteRequest(id int) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/graphql"

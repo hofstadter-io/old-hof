@@ -1,4 +1,4 @@
-package crun
+package containers
 
 import (
 	"fmt"
@@ -7,23 +7,23 @@ import (
 	// custom imports
 
 	// infered imports
-	"github.com/hofstadter-io/hof/lib/crun"
 
+	"github.com/hofstadter-io/hof/lib/crun"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   shutdown
-// Usage:  shutdown
-// Parent: crun
+// Usage:  shutdown [name]
+// Parent: containers
 
-var ShutdownLong = `Shutsdown the crun <name>, while preserving code in Studios.`
+var ShutdownLong = `Shutsdown a container by name or from the current directory`
 
 var ShutdownCmd = &cobra.Command{
 
-	Use: "shutdown",
+	Use: "shutdown [name]",
 
-	Short: "Shutsdown the crun <name>",
+	Short: "Shutsdown a container",
 
 	Long: ShutdownLong,
 
@@ -32,7 +32,7 @@ var ShutdownCmd = &cobra.Command{
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
-		//     req'd:  false
+		//     req'd:
 
 		var name string
 
@@ -41,15 +41,18 @@ var ShutdownCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		fmt.Println("hof crun shutdown:",
-			name,
-		)
+		/*
+			fmt.Println("hof containers shutdown:",
+				name,
+			)
+		*/
 
 		err := crun.Shutdown(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

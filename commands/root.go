@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	RootCmd.PersistentFlags().StringVarP(&RootContextPFlag, "context", "c", "", "the context to use for the hof tool and commands")
+	RootCmd.PersistentFlags().StringVarP(&RootContextPFlag, "context", "C", "", "the context to use for the hof tool and commands")
 	viper.BindPFlag("context", RootCmd.PersistentFlags().Lookup("context"))
 
 }

@@ -1,4 +1,4 @@
-package crun
+package containers
 
 import (
 	"fmt"
@@ -7,23 +7,25 @@ import (
 	// custom imports
 
 	// infered imports
-	"github.com/hofstadter-io/hof/lib/crun"
 
+	"github.com/hofstadter-io/hof/lib/crun"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   status
-// Usage:  status
-// Parent: crun
+// Usage:  status [name]
+// Parent: containers
 
-var StatusLong = `Get the status of your cruns`
+var StatusLong = `Get the status of your container.
+If name is not specified, the current directory is used.
+`
 
 var StatusCmd = &cobra.Command{
 
-	Use: "status",
+	Use: "status [name]",
 
-	Short: "Get the status of your cruns",
+	Short: "Get the status of your container",
 
 	Long: StatusLong,
 
@@ -32,7 +34,7 @@ var StatusCmd = &cobra.Command{
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
-		//     req'd:  false
+		//     req'd:
 
 		var name string
 
@@ -41,15 +43,18 @@ var StatusCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		fmt.Println("hof crun status:",
-			name,
-		)
+		/*
+			fmt.Println("hof containers status:",
+				name,
+			)
+		*/
 
-		err := crun.Status(name)
+		err := crun.Shutdown(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -13,32 +11,31 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Call(fname string, data string) error {
-	if fname == "" {
-		dir, _ := os.Getwd()
-		fname = filepath.Base(dir)
-	}
+func Call(name string, data string) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/crun/call"
 	acct, _ := util.GetAcctAndName()
 
-	fmt.Println("Calling:", host)
-
-	if data[:1] == "@" {
-		bytes, err := ioutil.ReadFile(data[1:])
-		if err != nil {
-			return err
-		}
-		data = string(bytes)
-	}
+	// fmt.Println("Calling:", host)
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Query("name="+fname).
-		Set("apikey", apikey).
-		Send(data)
+		Query("name="+name).
+		Set("apikey", apikey)
+
+	if len(data) > 0 {
+		if data[:1] == "@" {
+			bytes, err := ioutil.ReadFile(data[1:])
+			if err != nil {
+				return err
+			}
+			data = string(bytes)
+		}
+
+		req.Send(data)
+	}
 
 	resp, body, errs := req.End()
 

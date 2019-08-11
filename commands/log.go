@@ -6,7 +6,7 @@ import (
 
 	"github.com/hofstadter-io/hof/commands/app"
 	"github.com/hofstadter-io/hof/commands/config"
-	"github.com/hofstadter-io/hof/commands/crun"
+	"github.com/hofstadter-io/hof/commands/containers"
 	"github.com/hofstadter-io/hof/commands/db"
 	"github.com/hofstadter-io/hof/commands/dsl"
 	"github.com/hofstadter-io/hof/commands/function"
@@ -83,7 +83,7 @@ func SetLogger(l log.Logger) {
 func setSubLoggers(logger log.Logger) {
 	app.SetLogger(logger)
 	config.SetLogger(logger)
-	crun.SetLogger(logger)
+	containers.SetLogger(logger)
 	db.SetLogger(logger)
 	dsl.SetLogger(logger)
 	function.SetLogger(logger)

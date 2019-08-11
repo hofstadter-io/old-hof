@@ -3,8 +3,6 @@ package crun
 import (
 	"errors"
 	"fmt"
-	"os"
-	"path/filepath"
 
 	"github.com/parnurzeal/gorequest"
 
@@ -12,20 +10,19 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Status(fname string) error {
-	if fname == "" {
-		dir, _ := os.Getwd()
-		fname = filepath.Base(dir)
-	}
+func Status(name string) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/studios/crun/status"
-	acct, _ := util.GetAcctAndName()
+	acct, fname := util.GetAcctAndName()
+	if name == "" {
+		name = fname
+	}
 
 	resp, body, errs := gorequest.New().Get(host).
 		Query("account="+acct).
-		Query("name="+fname).
+		Query("name="+name).
 		Set("apikey", apikey).
 		End()
 
