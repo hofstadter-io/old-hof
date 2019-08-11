@@ -16,13 +16,13 @@ import (
 // Usage:  crun
 // Parent: hof
 
-var CrunLong = `Work with your Studios CRun`
+var CrunLong = `Work with your Studios Container Run`
 
 var CrunCmd = &cobra.Command{
 
 	Use: "crun",
 
-	Short: "Work with your Studios CRun",
+	Short: "Work with your Studios Container Run",
 
 	Long: CrunLong,
 }
