@@ -68,13 +68,13 @@ var CreateCmd = &cobra.Command{
 		}
 
 		/*
-		fmt.Println("hof app create:",
-			name,
+			fmt.Println("hof app create:",
+				name,
 
-			appver,
+				appver,
 
-			template,
-		)
+				template,
+			)
 		*/
 
 		err := app.Create(name, appver, template)

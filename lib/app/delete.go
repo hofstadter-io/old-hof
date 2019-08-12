@@ -1,28 +1,76 @@
 package app
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"html/template"
 
-	"github.com/hofstadter-io/hof/lib/config"
-	"github.com/hofstadter-io/hof/lib/util"
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
+
+	"github.com/hofstadter-io/dotpath"
+	"github.com/hofstadter-io/hof/lib/config"
+	"github.com/hofstadter-io/hof/lib/util"
 )
 
-func Delete(name string) error {
-	ctx := config.GetCurrentContext()
-	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/app/delete"
+const appDeleteTemplate = `
+mutation {
+  appDelete(id:{{.id}}) {
+    app {
+      name
+      id
+      version
+      type
+			createdAt
+    }
+		message
+		errors {
+		  message
+		}
+  }
+}
+`
 
-	acct, appname := util.GetAcctAndName()
-	if name == "" {
-		name = appname
+func Delete(id string) error {
+	err := SendDeleteRequest(id)
+	if err != nil {
+		return err
 	}
 
-	req := gorequest.New().Get(host).
-		Query("name="+name).
+	return nil
+}
+
+func SendDeleteRequest(id string) error {
+	ctx := config.GetCurrentContext()
+	apikey := ctx.APIKey
+	host := util.ServerHost() + "/graphql"
+	acct, _ := util.GetAcctAndName()
+
+	// Create a new template and parse the letter into it.
+	t := template.Must(template.New("appDelete").Parse(appDeleteTemplate))
+
+	// Create Template Data
+	data := map[string]interface{}{
+		"id": id,
+	}
+
+	// Execute the template for each recipient.
+	var b bytes.Buffer
+	err := t.Execute(&b, data)
+	if err != nil {
+		return errors.Wrap(err, "error executing template\n")
+	}
+
+	send := map[string]interface{}{
+		"query":     b.String(),
+		"variables": nil,
+	}
+
+	req := gorequest.New().Post(host).
 		Query("account="+acct).
-		Set("apikey", apikey)
+		Set("apikey", apikey).
+		Send(send)
 
 	resp, body, errs := req.End()
 
@@ -33,6 +81,27 @@ func Delete(name string) error {
 		return errors.New("Bad Request: " + body)
 	}
 
-	fmt.Println(body)
+	printDeleteSuccess(body)
+	return nil
+}
+
+func printDeleteSuccess(body string) error {
+	// body is a json object as a string
+	data := map[string]interface{}{}
+	err := json.Unmarshal([]byte(body), &data)
+	if err != nil {
+		return err
+	}
+
+	query := "data.appDelete.app.name"
+	ni, err := dotpath.Get(query, data, false)
+	if err != nil {
+		return err
+	}
+
+	name := ni.(string)
+
+	fmt.Printf("App '%s' successfully deleted", name)
+
 	return nil
 }
