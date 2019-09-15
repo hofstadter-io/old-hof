@@ -38,7 +38,6 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
-	SecretCmd.AddCommand(secret.CreateCmd)
-	SecretCmd.AddCommand(secret.UpdateCmd)
 	SecretCmd.AddCommand(secret.PushCmd)
+	SecretCmd.AddCommand(secret.DeleteCmd)
 }

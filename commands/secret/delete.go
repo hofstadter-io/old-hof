@@ -13,23 +13,23 @@ import (
 )
 
 // Tool:   hof
-// Name:   push
-// Usage:  push
+// Name:   delete
+// Usage:  delete
 // Parent: secret
 
-var PushCmd = &cobra.Command{
+var DeleteCmd = &cobra.Command{
 
-	Use: "push",
+	Use: "delete",
 
-	Short: "Push secrets",
+	Short: "Delete secrets",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In pushCmd", "args", args)
+		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
 
-		fmt.Println("hof secret push:")
+		fmt.Println("hof secret delete:")
 
-		err := secret.Push()
+		err := secret.Delete()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
