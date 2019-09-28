@@ -11,14 +11,13 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-const filename = "secrets.env"
-
-func Push() error {
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
+func Push(name, file string) error {
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		fmt.Println("Error: file " + file + " does not exist")
 		return nil
 	}
 
-	contents, err := ioutil.ReadFile(filename)
+	contents, err := ioutil.ReadFile(file)
 	if err != nil {
 		return err
 	}
@@ -30,6 +29,7 @@ func Push() error {
 
 	resp, body, errs := gorequest.New().Post(host).
 		Query("account="+acct).
+		Query("name="+name).
 		Set("apikey", apikey).
 		Type("text").
 		Send(string(contents)).

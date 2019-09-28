@@ -10,6 +10,7 @@ import (
 	"github.com/hofstadter-io/hof/commands/db"
 	"github.com/hofstadter-io/hof/commands/dsl"
 	"github.com/hofstadter-io/hof/commands/function"
+	"github.com/hofstadter-io/hof/commands/secret"
 )
 
 var logger = log.New()
@@ -87,4 +88,5 @@ func setSubLoggers(logger log.Logger) {
 	db.SetLogger(logger)
 	dsl.SetLogger(logger)
 	function.SetLogger(logger)
+	secret.SetLogger(logger)
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-func Delete() error {
+func Delete(name string) error {
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
@@ -18,6 +18,7 @@ func Delete() error {
 
 	req := gorequest.New().Post(host).
 		Query("account="+acct).
+		Query("name="+name).
 		Set("apikey", apikey)
 
 	resp, body, errs := req.End()
