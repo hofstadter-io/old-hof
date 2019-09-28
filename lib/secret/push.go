@@ -1,7 +1,6 @@
 package secret
 
 import (
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -29,12 +28,12 @@ func Push() error {
 	host := util.ServerHost() + "/studios/secrets/push"
 	acct := config.GetCurrentContext().Account
 
-	req := gorequest.New().Post(host).
+	resp, body, errs := gorequest.New().Post(host).
 		Query("account="+acct).
-		Query("secrets="+base64.StdEncoding.EncodeToString(contents)).
-		Set("apikey", apikey)
-
-	resp, body, errs := req.End()
+		Set("apikey", apikey).
+		Type("text").
+		Send(string(contents)).
+		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)
