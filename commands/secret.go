@@ -13,17 +13,17 @@ import (
 
 // Tool:   hof
 // Name:   secret
-// Usage:  secret
+// Usage:  secret <name> <env-file>
 // Parent: hof
 
 var SecretLong = `Work with your Studios Secrets`
 
 var SecretCmd = &cobra.Command{
 
-	Use: "secret",
+	Use: "secret <name> <env-file>",
 
 	Aliases: []string{
-		"scrt",
+		"shh",
 	},
 
 	Short: "Work with your Studios Secrets",

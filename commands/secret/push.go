@@ -2,9 +2,11 @@ package secret
 
 import (
 	"fmt"
-	"os"
 
 	// custom imports
+
+	// infered imports
+	"os"
 
 	"github.com/hofstadter-io/hof/lib/secret"
 	"github.com/spf13/cobra"
@@ -36,6 +38,7 @@ var PushCmd = &cobra.Command{
 		var name string
 
 		if 0 < len(args) {
+
 			name = args[0]
 		}
 
@@ -51,11 +54,13 @@ var PushCmd = &cobra.Command{
 		var file string
 
 		if 1 < len(args) {
+
 			file = args[1]
 		}
 
 		fmt.Println("hof secret push:",
 			name,
+
 			file,
 		)
 

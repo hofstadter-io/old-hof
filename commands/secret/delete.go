@@ -2,9 +2,11 @@ package secret
 
 import (
 	"fmt"
-	"os"
 
 	// custom imports
+
+	// infered imports
+	"os"
 
 	"github.com/hofstadter-io/hof/lib/secret"
 	"github.com/spf13/cobra"
@@ -12,12 +14,12 @@ import (
 
 // Tool:   hof
 // Name:   delete
-// Usage:  delete
+// Usage:  delete <name>
 // Parent: secret
 
 var DeleteCmd = &cobra.Command{
 
-	Use: "delete",
+	Use: "delete <name>",
 
 	Short: "Delete secrets",
 
