@@ -13,18 +13,22 @@ import (
 )
 
 // Tool:   hof
-// Name:   push
-// Usage:  push
+// Name:   create
+// Usage:  create <name> <env-file>
 // Parent: secret
 
-var PushCmd = &cobra.Command{
+var CreateLong = `Create a secret file that can be injected as environment variables`
 
-	Use: "push",
+var CreateCmd = &cobra.Command{
 
-	Short: "Push secrets",
+	Use: "create <name> <env-file>",
+
+	Short: "Create a secret",
+
+	Long: CreateLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In pushCmd", "args", args)
+		logger.Debug("In createCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -58,17 +62,20 @@ var PushCmd = &cobra.Command{
 			file = args[1]
 		}
 
-		fmt.Println("hof secret push:",
-			name,
+		/*
+			fmt.Println("hof secret create:",
+				name,
 
-			file,
-		)
+				file,
+			)
+		*/
 
-		err := secret.Push(name, file)
+		err := secret.Create(name, file)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

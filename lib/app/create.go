@@ -1,34 +1,35 @@
 package app
 
 import (
-	"bytes"
-	"fmt"
-	"html/template"
 	"strings"
 
-	"github.com/parnurzeal/gorequest"
-	"github.com/pkg/errors"
-
-	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const appCreateTemplate = `
+const appCreateQuery = `
 mutation {
-  appCreate(input:{
+  appCreateOneFor(values:{
     name:"{{.name}}"
     version:"{{.version}}"
     type:"{{.type}}"
   }) {
-    app {
+    appEverything {
       name
       id
       version
       type
 			createdAt
     }
+		message
+		errors {
+		  message
+		}
   }
 }
+`
+
+const appCreateOutput = `
+{{{data}}}
 `
 
 func Create(name, kitver, template string) error {
@@ -53,63 +54,16 @@ func Create(name, kitver, template string) error {
 		return err
 	}
 
-	err = SendCreateRequest(name, kitver)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func SendCreateRequest(name, kitver string) error {
-	ctx := config.GetCurrentContext()
-	apikey := ctx.APIKey
-	host := util.ServerHost() + "/graphql"
-	acct, _ := util.GetAcctAndName()
-
-	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("appCreate").Parse(appCreateTemplate))
-
-	// Create Template Data
-	data := map[string]interface{}{
+	vars := map[string]interface{}{
 		"name":    name,
 		"type":    "starter",
 		"version": kitver,
 	}
 
-	// Execute the template for each recipient.
-	var b bytes.Buffer
-	err := t.Execute(&b, data)
+	return util.SendRequest(appCreateQuery, appCreateOutput, vars)
 	if err != nil {
-		return errors.Wrap(err, "error executing template\n")
+		return err
 	}
-
-	send := map[string]interface{}{
-		"query":     b.String(),
-		"variables": nil,
-	}
-
-	req := gorequest.New().Post(host).
-		Query("account="+acct).
-		Set("apikey", apikey).
-		Send(send)
-
-	resp, body, errs := req.End()
-
-	if len(errs) != 0 || resp.StatusCode >= 500 {
-		return errors.New("Internal Error: " + body)
-	}
-	if resp.StatusCode >= 400 {
-		return errors.New("Bad Request: " + body)
-	}
-
-	printSuccess(name, body)
-	return nil
-}
-
-func printSuccess(name, body string) error {
-	// body is a json object as a string
-	fmt.Printf("App '%s' successfully created", name)
 
 	return nil
 }

@@ -11,7 +11,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-func Push(name, file string) error {
+func Update(name, file string) error {
 	if _, err := os.Stat(file); os.IsNotExist(err) {
 		fmt.Println("Error: file " + file + " does not exist")
 		return nil
@@ -21,6 +21,9 @@ func Push(name, file string) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("Updating Secret:", name, file)
+	fmt.Println(string(contents))
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey

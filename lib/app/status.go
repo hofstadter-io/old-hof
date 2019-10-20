@@ -19,6 +19,7 @@ func Status(name string) error {
 		name = appname
 	}
 
+	// Change to custom domain / *.hof-apps.com
 	fmt.Printf("https://%s.%s.live.hofstadter.io\n", name, acct)
 
 	req := gorequest.New().Get(host).

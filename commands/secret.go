@@ -13,14 +13,14 @@ import (
 
 // Tool:   hof
 // Name:   secret
-// Usage:  secret <name> <env-file>
+// Usage:  secret
 // Parent: hof
 
 var SecretLong = `Work with your Studios Secrets`
 
 var SecretCmd = &cobra.Command{
 
-	Use: "secret <name> <env-file>",
+	Use: "secret",
 
 	Aliases: []string{
 		"shh",
@@ -38,6 +38,8 @@ func init() {
 func init() {
 	// add sub-commands to this command when present
 
-	SecretCmd.AddCommand(secret.PushCmd)
+	SecretCmd.AddCommand(secret.ListCmd)
+	SecretCmd.AddCommand(secret.CreateCmd)
+	SecretCmd.AddCommand(secret.UpdateCmd)
 	SecretCmd.AddCommand(secret.DeleteCmd)
 }
