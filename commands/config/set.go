@@ -30,7 +30,7 @@ var SetCmd = &cobra.Command{
 func init() {
 	// add sub-commands to this command when present
 
-	SetCmd.AddCommand(set.HostCmd)
 	SetCmd.AddCommand(set.ApikeyCmd)
 	SetCmd.AddCommand(set.AccountCmd)
+	SetCmd.AddCommand(set.HostCmd)
 }

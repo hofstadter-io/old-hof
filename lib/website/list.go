@@ -1,4 +1,4 @@
-package crun
+package website
 
 import (
 	"github.com/hofstadter-io/hof/lib/util"
@@ -6,11 +6,11 @@ import (
 
 const crunListQuery = `
 query {
-	crunGetManyFor(
+	websiteGetManyFor(
     offset:{{.after}}
     limit:{{.limit}}
 	) {
-		crunEverything {
+		websiteStatus {
 			id
 			createdAt
 			name
