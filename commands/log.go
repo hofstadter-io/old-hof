@@ -6,12 +6,12 @@ import (
 
 	"github.com/hofstadter-io/hof/commands/app"
 	"github.com/hofstadter-io/hof/commands/config"
-	"github.com/hofstadter-io/hof/commands/containers"
+	"github.com/hofstadter-io/hof/commands/container"
 	"github.com/hofstadter-io/hof/commands/db"
 	"github.com/hofstadter-io/hof/commands/dsl"
 	"github.com/hofstadter-io/hof/commands/function"
 	"github.com/hofstadter-io/hof/commands/secret"
-	"github.com/hofstadter-io/hof/commands/websites"
+	"github.com/hofstadter-io/hof/commands/website"
 )
 
 var logger = log.New()
@@ -85,10 +85,10 @@ func SetLogger(l log.Logger) {
 func setSubLoggers(logger log.Logger) {
 	app.SetLogger(logger)
 	config.SetLogger(logger)
-	containers.SetLogger(logger)
+	container.SetLogger(logger)
 	db.SetLogger(logger)
 	dsl.SetLogger(logger)
 	function.SetLogger(logger)
 	secret.SetLogger(logger)
-	websites.SetLogger(logger)
+	website.SetLogger(logger)
 }

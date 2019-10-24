@@ -1,4 +1,4 @@
-package websites
+package website
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   list
 // Usage:  list
-// Parent: websites
+// Parent: website
 
 var ListLong = `List your websites`
 

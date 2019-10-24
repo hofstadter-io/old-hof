@@ -1,6 +1,8 @@
 package fns
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -40,5 +42,14 @@ func List() error {
 		"after": "0",
 		"limit": "25",
 	}
-	return util.SendRequest(fnListQuery, fnListOutput, vars)
+
+	data, err := util.SendRequest(fnListQuery, vars)
+	if err != nil {
+		return err
+	}
+
+	output, err := util.RenderString(fnListOutput, data)
+
+	fmt.Println(output)
+	return err
 }

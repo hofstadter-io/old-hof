@@ -1,6 +1,8 @@
 package secret
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -32,10 +34,13 @@ func Create(name, file string) error {
 		"name": name,
 	}
 
-	err := util.SendRequest(secretCreateQuery, secretCreateOutput, vars)
+	data, err := util.SendRequest(secretCreateQuery, vars)
 	if err != nil {
 		return err
 	}
+
+	output, err := util.RenderString(secretCreateOutput, data)
+	fmt.Println(output)
 
 	err = Update(name, file)
 	if err != nil {

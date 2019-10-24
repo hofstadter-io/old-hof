@@ -3,7 +3,6 @@ package util
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"html/template"
 
 	"github.com/hofstadter-io/hof/lib/config"
@@ -11,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func SendRequest(queryTemplate, outputTemplate string, vars interface{}) error {
+func SendRequest(queryTemplate string, vars interface{}) (interface{}, error) {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := ServerHost() + "/graphql"
@@ -24,7 +23,7 @@ func SendRequest(queryTemplate, outputTemplate string, vars interface{}) error {
 	var b bytes.Buffer
 	err := t.Execute(&b, vars)
 	if err != nil {
-		return errors.Wrap(err, "error executing template\n")
+		return nil, errors.Wrap(err, "error executing template\n")
 	}
 
 	send := map[string]interface{}{
@@ -40,24 +39,17 @@ func SendRequest(queryTemplate, outputTemplate string, vars interface{}) error {
 	resp, body, errs := req.EndBytes()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
-		return errors.New("Internal Error: " + string(body))
+		return nil, errors.New("Internal Error: " + string(body))
 	}
 	if resp.StatusCode >= 400 {
-		return errors.New("Bad Request: " + string(body))
+		return nil, errors.New("Bad Request: " + string(body))
 	}
 
 	data := map[string]interface{}{}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	output, err := RenderString(outputTemplate, data)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(output)
-
-	return err
+	return data, nil
 }

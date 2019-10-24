@@ -8,6 +8,8 @@ import (
 	// infered imports
 	"os"
 
+	"github.com/spf13/viper"
+
 	"github.com/spf13/cobra"
 
 	"github.com/hofstadter-io/hof/lib/fns"
@@ -19,6 +21,21 @@ import (
 // Parent: function
 
 var CreateLong = `Create a new function from a template. The path prefix says where, the last part will be the name`
+
+var (
+	CreateHereFlag bool
+
+	CreateTemplateFlag string
+)
+
+func init() {
+	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "", false, "create in the current directory (uses dir as name)")
+	viper.BindPFlag("here", CreateCmd.Flags().Lookup("here"))
+
+	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-functions#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
+	viper.BindPFlag("template", CreateCmd.Flags().Lookup("template"))
+
+}
 
 var CreateCmd = &cobra.Command{
 
@@ -47,19 +64,6 @@ var CreateCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		// [1]name:   template
-		//     help:
-		//     req'd:
-
-		var template string
-
-		template = "https://github.com/hofstadter-io/studios-functions#custom-default"
-
-		if 1 < len(args) {
-
-			template = args[1]
-		}
-
 		/*
 			fmt.Println("hof function create:",
 				name,
@@ -68,7 +72,7 @@ var CreateCmd = &cobra.Command{
 			)
 		*/
 
-		err := fns.Create(name, template)
+		err := fns.Create(name, CreateHereFlag, CreateTemplateFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

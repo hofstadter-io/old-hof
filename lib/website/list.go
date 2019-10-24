@@ -1,10 +1,12 @@
 package website
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const crunListQuery = `
+const websiteListQuery = `
 query {
 	websiteGetManyFor(
     offset:{{.after}}
@@ -24,14 +26,14 @@ query {
 }
 `
 
-const crunListOutput = `
+const websiteListOutput = `
 Name                    Version     State       ID
 =======================================================================================
-{{#each data.crunGetManyFor.crunStatus as |CRUN|}}
-{{pw CRUN.name 24 ~}}
-{{pw CRUN.version 12 ~}}
-{{pw CRUN.state 12 ~}}
-{{CRUN.id}}
+{{#each data.websiteGetManyFor.websiteStatus as |WEBSITE|}}
+{{pw WEBSITE.name 24 ~}}
+{{pw WEBSITE.version 12 ~}}
+{{pw WEBSITE.state 12 ~}}
+{{WEBSITE.id}}
 {{/each}}
 `
 
@@ -40,5 +42,13 @@ func List() error {
 		"after": "0",
 		"limit": "25",
 	}
-	return util.SendRequest(crunListQuery, crunListOutput, vars)
+	data, err := util.SendRequest(websiteListQuery, vars)
+	if err != nil {
+		return err
+	}
+
+	output, err := util.RenderString(websiteListOutput, data)
+
+	fmt.Println(output)
+	return err
 }

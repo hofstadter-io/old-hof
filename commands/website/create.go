@@ -1,14 +1,14 @@
-package containers
+package website
 
 import (
 	"fmt"
 	"os"
 
 	// custom imports
-	"github.com/hofstadter-io/hof/lib/crun"
 
 	// infered imports
 
+	"github.com/hofstadter-io/hof/lib/website"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -17,7 +17,7 @@ import (
 // Tool:   hof
 // Name:   create
 // Usage:  create [path/to]<name> <template>[@version][#template-subpath]
-// Parent: containers
+// Parent: website
 
 var CreateLong = `Create a new crun from a template. The path prefix says where, the last part will be the name`
 
@@ -59,12 +59,12 @@ var CreateCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof containers create:",
+			fmt.Println("hof websites create:",
 				name,
 			)
 		*/
 
-		err := crun.Create(name, CreateHereFlag, CreateTemplateFlag)
+		err := website.Create(name, CreateHereFlag, CreateTemplateFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

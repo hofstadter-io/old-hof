@@ -1,4 +1,4 @@
-package websites
+package website
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ import (
 // Tool:   hof
 // Name:   deploy
 // Usage:  deploy [name]
-// Parent: websites
+// Parent: website
 
 var DeployLong = `Deploys a website by name or from the current directory`
 

@@ -1,4 +1,4 @@
-package websites
+package website
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   shutdown
 // Usage:  shutdown [name]
-// Parent: websites
+// Parent: website
 
 var ShutdownLong = `Shutsdown a website by name or from the current directory`
 

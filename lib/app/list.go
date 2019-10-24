@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -40,5 +42,14 @@ func List() error {
 		"after": "0",
 		"limit": "25",
 	}
-	return util.SendRequest(appListQuery, appListOutput, vars)
+
+	data, err := util.SendRequest(appListQuery, vars)
+	if err != nil {
+		return err
+	}
+
+	output, err := util.RenderString(appListOutput, data)
+
+	fmt.Println(output)
+	return err
 }

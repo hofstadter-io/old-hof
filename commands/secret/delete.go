@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   delete
-// Usage:  delete <name>
+// Usage:  delete <name or id>
 // Parent: secret
 
 var DeleteLong = `Delete a secret file`
 
 var DeleteCmd = &cobra.Command{
 
-	Use: "delete <name>",
+	Use: "delete <name or id>",
 
 	Short: "Delete a secret",
 

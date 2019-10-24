@@ -23,7 +23,7 @@ var AppCmd = &cobra.Command{
 	Use: "app",
 
 	Aliases: []string{
-		"a",
+		"apps",
 	},
 
 	Short: "Work with your Studios App",

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -31,5 +33,13 @@ func Delete(id string) error {
 		"id": id,
 	}
 
-	return util.SendRequest(appDeleteQuery, appDeleteOutput, vars)
+	data, err := util.SendRequest(appDeleteQuery, vars)
+	if err != nil {
+		return err
+	}
+
+	output, err := util.RenderString(appDeleteOutput, data)
+
+	fmt.Println(output)
+	return err
 }

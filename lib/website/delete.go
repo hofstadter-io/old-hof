@@ -32,8 +32,8 @@ mutation {
 }
 `
 
-func Delete(id int) error {
-	err := SendDeleteRequest(id)
+func Delete(name string) error {
+	err := SendDeleteRequest(name)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func Delete(id int) error {
 	return nil
 }
 
-func SendDeleteRequest(id int) error {
+func SendDeleteRequest(name string) error {
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
 	host := util.ServerHost() + "/graphql"
@@ -52,7 +52,7 @@ func SendDeleteRequest(id int) error {
 
 	// Create Template Data
 	data := map[string]interface{}{
-		"id": id,
+		"name": name,
 	}
 
 	// Execute the template for each recipient.

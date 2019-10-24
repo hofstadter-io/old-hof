@@ -1,4 +1,4 @@
-package containers
+package container
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   logs
 // Usage:  logs [name]
-// Parent: containers
+// Parent: container
 
 var LogsLong = `List the logs of your container.
 If name is not specified, the current directory is used.

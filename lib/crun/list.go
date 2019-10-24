@@ -1,6 +1,8 @@
 package crun
 
 import (
+	"fmt"
+
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
@@ -40,5 +42,13 @@ func List() error {
 		"after": "0",
 		"limit": "25",
 	}
-	return util.SendRequest(crunListQuery, crunListOutput, vars)
+	data, err := util.SendRequest(crunListQuery, vars)
+	if err != nil {
+		return err
+	}
+
+	output, err := util.RenderString(crunListOutput, data)
+
+	fmt.Println(output)
+	return err
 }

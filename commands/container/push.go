@@ -1,4 +1,4 @@
-package containers
+package container
 
 import (
 	"fmt"
@@ -13,24 +13,22 @@ import (
 )
 
 // Tool:   hof
-// Name:   status
-// Usage:  status [name]
-// Parent: containers
+// Name:   push
+// Usage:  push [name]
+// Parent: container
 
-var StatusLong = `Get the status of your container.
-If name is not specified, the current directory is used.
-`
+var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
 
-var StatusCmd = &cobra.Command{
+var PushCmd = &cobra.Command{
 
-	Use: "status [name]",
+	Use: "push [name]",
 
-	Short: "Get the status of your container",
+	Short: "Send the latest version on Studios",
 
-	Long: StatusLong,
+	Long: PushLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In statusCmd", "args", args)
+		logger.Debug("In pushCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -44,12 +42,12 @@ var StatusCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof containers status:",
+			fmt.Println("hof containers push:",
 				name,
 			)
 		*/
 
-		err := crun.Status(name)
+		err := crun.Push(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

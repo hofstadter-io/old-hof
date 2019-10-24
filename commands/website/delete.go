@@ -1,8 +1,7 @@
-package websites
+package website
 
 import (
 	"fmt"
-	"strconv"
 
 	// custom imports
 
@@ -15,8 +14,8 @@ import (
 
 // Tool:   hof
 // Name:   delete
-// Usage:  delete <id>
-// Parent: websites
+// Usage:  delete <name or id>
+// Parent: website
 
 var DeleteLong = `Deletes a website by <id> and all associated data in Studios.
 You can find the id by running 'hof crun list'
@@ -24,7 +23,7 @@ You can find the id by running 'hof crun list'
 
 var DeleteCmd = &cobra.Command{
 
-	Use: "delete <id>",
+	Use: "delete <name or id>",
 
 	Short: "Deletes a website by <id>",
 
@@ -33,36 +32,29 @@ var DeleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   id
+		// [0]name:   name
 		//     help:
 		//     req'd:  true
 		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'id'\n")
+			fmt.Println("missing required argument: 'name'\n")
 			cmd.Usage()
 			os.Exit(1)
 		}
 
-		var id int
+		var name string
 
 		if 0 < len(args) {
-			idArg := args[0]
-			var err error
-			id_int64, err := strconv.ParseInt(idArg, 10, 64)
-			id = int(id_int64)
-			if err != nil {
-				fmt.Printf("argument of wrong type. expected: 'int' got error: %v", err)
-				cmd.Usage()
-				os.Exit(1)
-			}
+
+			name = args[0]
 		}
 
 		/*
 			fmt.Println("hof websites delete:",
-				id,
+				name,
 			)
 		*/
 
-		err := website.Delete(id)
+		err := website.Delete(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

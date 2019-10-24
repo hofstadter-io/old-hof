@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/hofstadter-io/hof/lib/util"
@@ -60,10 +61,13 @@ func Create(name, kitver, template string) error {
 		"version": kitver,
 	}
 
-	return util.SendRequest(appCreateQuery, appCreateOutput, vars)
+	retdata, err := util.SendRequest(appCreateQuery, vars)
 	if err != nil {
 		return err
 	}
 
-	return nil
+	output, err := util.RenderString(appCreateOutput, retdata)
+
+	fmt.Println(output)
+	return err
 }

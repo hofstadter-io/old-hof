@@ -1,4 +1,4 @@
-package websites
+package container
 
 import (
 	"github.com/spf13/viper"
@@ -8,7 +8,7 @@ import (
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.websites.default")
+	ldcfg := viper.GetStringMap("log-config.commands.container.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -41,7 +41,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.websites")
+	lcfg := viper.GetStringMap("log-config.commands.container")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l

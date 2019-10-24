@@ -23,6 +23,7 @@ var SecretCmd = &cobra.Command{
 	Use: "secret",
 
 	Aliases: []string{
+		"secrets",
 		"shh",
 	},
 

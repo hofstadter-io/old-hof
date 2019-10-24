@@ -1,4 +1,4 @@
-package websites
+package container
 
 import (
 	"fmt"
@@ -8,27 +8,27 @@ import (
 
 	// infered imports
 
-	"github.com/hofstadter-io/hof/lib/website"
+	"github.com/hofstadter-io/hof/lib/crun"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   push
-// Usage:  push [name]
-// Parent: websites
+// Name:   shutdown
+// Usage:  shutdown [name]
+// Parent: container
 
-var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
+var ShutdownLong = `Shutsdown a container by name or from the current directory`
 
-var PushCmd = &cobra.Command{
+var ShutdownCmd = &cobra.Command{
 
-	Use: "push [name]",
+	Use: "shutdown [name]",
 
-	Short: "Send the latest version on Studios",
+	Short: "Shutsdown a container",
 
-	Long: PushLong,
+	Long: ShutdownLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In pushCmd", "args", args)
+		logger.Debug("In shutdownCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -42,16 +42,17 @@ var PushCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof websites push:",
+			fmt.Println("hof containers shutdown:",
 				name,
 			)
 		*/
 
-		err := website.Push(name)
+		err := crun.Shutdown(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

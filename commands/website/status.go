@@ -1,4 +1,4 @@
-package websites
+package website
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   status
 // Usage:  status [name]
-// Parent: websites
+// Parent: website
 
 var StatusLong = `Get the status of your website.
 If name is not specified, the current directory is used.
@@ -54,7 +54,6 @@ var StatusCmd = &cobra.Command{
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 	},
 }
 

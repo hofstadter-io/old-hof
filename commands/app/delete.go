@@ -14,14 +14,14 @@ import (
 
 // Tool:   hof
 // Name:   delete
-// Usage:  delete <id>
+// Usage:  delete <name or id>
 // Parent: app
 
 var DeleteLong = `Delete an App and all associated data`
 
 var DeleteCmd = &cobra.Command{
 
-	Use: "delete <id>",
+	Use: "delete <name or id>",
 
 	Short: "Delete an App",
 
