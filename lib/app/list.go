@@ -9,12 +9,12 @@ import (
 const appListQuery = `
 query {
 	appGetManyFor(
-    offset:{{.after}}
-    limit:{{.limit}}
+    offset:{{after}}
+    limit:{{limit}}
 		{{#if filters}}
 		filters: {
-		  {{# filters.name}}name:"{{filters.name}}"
-		  {{# filters.state}}state:"{{filters.state}}"
+		  {{#if filters.name}}name:"{{filters.name}}{{/if}}"
+		  {{#if filters.state}}state:"{{filters.state}}{{/if}}"
 		}
 		{{/if}}
 	) {

@@ -1,10 +1,8 @@
 package util
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"html/template"
 
 	"github.com/hofstadter-io/dotpath"
 	"github.com/hofstadter-io/hof/lib/config"
@@ -18,18 +16,13 @@ func SendRequest(queryTemplate string, vars interface{}) (interface{}, error) {
 	host := ServerHost() + "/graphql"
 	acct, _ := GetAcctAndName()
 
-	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("QueryList").Parse(queryTemplate))
-
-	// Execute the template for each recipient.
-	var b bytes.Buffer
-	err := t.Execute(&b, vars)
+	query, err := RenderString(queryTemplate, vars)
 	if err != nil {
-		return nil, errors.Wrap(err, "error executing template\n")
+		return nil, err
 	}
 
 	send := map[string]interface{}{
-		"query":     b.String(),
+		"query":     query,
 		"variables": nil,
 	}
 

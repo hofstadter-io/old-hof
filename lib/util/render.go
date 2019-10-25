@@ -13,13 +13,16 @@ import (
 	"github.com/aymerick/raymond"
 )
 
+// Used somewhere in here?
 // https://blog.depado.eu/post/copy-files-and-directories-in-go [03-04-2-19]
 
-func RenderString(template string, data interface{}) (string, error) {
-
+func init() {
 	raymond.RegisterHelper("pw", func(content, width string) string {
 		return fmt.Sprintf("%-"+width+"s", content)
 	})
+}
+
+func RenderString(template string, data interface{}) (string, error) {
 
 	output, err := raymond.Render(template, data)
 	if err != nil {

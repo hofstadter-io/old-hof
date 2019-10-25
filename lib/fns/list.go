@@ -9,8 +9,14 @@ import (
 const fnListQuery = `
 query {
 	fnGetManyFor(
-    offset:{{.after}}
-    limit:{{.limit}}
+    offset:{{after}}
+    limit:{{limit}}
+		{{#if filters}}
+		filters: {
+		  {{#if filters.name}}name:"{{filters.name}}{{/if}}"
+		  {{#if filters.state}}state:"{{filters.state}}{{/if}}"
+		}
+		{{/if}}
 	) {
 		fnEverything {
 			id
