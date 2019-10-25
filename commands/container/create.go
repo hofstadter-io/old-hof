@@ -31,7 +31,7 @@ func init() {
 	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "", false, "create in the current directory (uses dir as name)")
 	viper.BindPFlag("here", CreateCmd.Flags().Lookup("here"))
 
-	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-functions#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
+	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-containers#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
 	viper.BindPFlag("template", CreateCmd.Flags().Lookup("template"))
 
 }

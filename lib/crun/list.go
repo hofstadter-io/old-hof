@@ -29,7 +29,7 @@ query {
 const crunListOutput = `
 Name                    Version     State       ID
 =======================================================================================
-{{#each data.crunGetManyFor.crunStatus as |CRUN|}}
+{{#each data.crunGetManyFor.crunEverything as |CRUN|}}
 {{pw CRUN.name 24 ~}}
 {{pw CRUN.version 12 ~}}
 {{pw CRUN.state 12 ~}}
@@ -51,4 +51,16 @@ func List() error {
 
 	fmt.Println(output)
 	return err
+}
+
+func FilterByName(name string) (interface{}, error) {
+	vars := map[string]interface{}{
+		"after": "0",
+		"limit": "25",
+		"filters": map[string]string{
+			"name": name,
+		},
+	}
+
+	return util.SendRequest(crunListQuery, vars)
 }

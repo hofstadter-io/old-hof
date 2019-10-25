@@ -38,11 +38,8 @@ Name                    Version     State       ID
 `
 
 func List() error {
-	vars := map[string]interface{}{
-		"after": "0",
-		"limit": "25",
-	}
-	data, err := util.SendRequest(websiteListQuery, vars)
+
+	data, err := GetList()
 	if err != nil {
 		return err
 	}
@@ -51,4 +48,25 @@ func List() error {
 
 	fmt.Println(output)
 	return err
+}
+
+func GetList() (interface{}, error) {
+	vars := map[string]interface{}{
+		"after": "0",
+		"limit": "25",
+	}
+
+	return util.SendRequest(websiteListQuery, vars)
+}
+
+func FilterByName(name string) (interface{}, error) {
+	vars := map[string]interface{}{
+		"after": "0",
+		"limit": "25",
+		"filters": map[string]string{
+			"name": name,
+		},
+	}
+
+	return util.SendRequest(websiteListQuery, vars)
 }

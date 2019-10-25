@@ -50,3 +50,15 @@ func List() error {
 	fmt.Println(output)
 	return err
 }
+
+func FilterByName(name string) (interface{}, error) {
+	vars := map[string]interface{}{
+		"after": "0",
+		"limit": "25",
+		"filters": map[string]string{
+			"name": name,
+		},
+	}
+
+	return util.SendRequest(secretListQuery, vars)
+}

@@ -49,7 +49,7 @@ func Create(name string, here bool, template string) error {
 		url, version, subpath := extern.SplitParts(template)
 
 		data := map[string]interface{}{}
-		data["FuncName"] = name
+		data["ContainerName"] = name
 
 		var dir string
 
@@ -82,11 +82,17 @@ func Create(name string, here bool, template string) error {
 
 	data, err := util.SendRequest(crunCreateQuery, vars)
 	if err != nil {
+		fmt.Println("Error", err)
+		return err
+	}
+	fmt.Println("DATA", data)
+
+	output, err := util.RenderString(crunCreateOutput, data)
+	if err != nil {
+		fmt.Println("Error", err)
 		return err
 	}
 
-	output, err := util.RenderString(crunCreateOutput, data)
-
-	fmt.Println(output)
+	fmt.Println("OUTPUT", output)
 	return err
 }

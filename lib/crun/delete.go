@@ -1,23 +1,15 @@
 package crun
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"html/template"
 
-	"github.com/parnurzeal/gorequest"
-	"github.com/pkg/errors"
-
-	"github.com/hofstadter-io/dotpath"
-	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const crunDeleteTemplate = `
+const crunDeleteQuery = `
 mutation {
-  crunDelete(id:{{.id}}) {
-    crun {
+  crunDeleteOneFor(id:"{{.id}}") {
+    crunEverything {
       name
       id
       version
@@ -32,76 +24,55 @@ mutation {
 }
 `
 
-func Delete(name string) error {
-	err := SendDeleteRequest(name)
+const crunDeleteOutput = `
+{{{data}}}
+`
+
+func Delete(input string) error {
+
+	var data interface{}
+	var err error
+
+	if util.IsValidUUID(input) {
+		data, err = DeleteById(input)
+	} else {
+		data, err = DeleteByName(input)
+	}
+
 	if err != nil {
 		return err
 	}
 
-	return nil
+	output, err := util.RenderString(crunDeleteOutput, data)
+
+	fmt.Println(output)
+	return err
 }
 
-func SendDeleteRequest(name string) error {
-	ctx := config.GetCurrentContext()
-	apikey := ctx.APIKey
-	host := util.ServerHost() + "/graphql"
-	acct, _ := util.GetAcctAndName()
-
-	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("crunDelete").Parse(crunDeleteTemplate))
-
-	// Create Template Data
-	data := map[string]interface{}{
-		"name": name,
+func DeleteById(id string) (interface{}, error) {
+	fmt.Println("DeleteById:", id)
+	vars := map[string]interface{}{
+		"id": id,
 	}
 
-	// Execute the template for each recipient.
-	var b bytes.Buffer
-	err := t.Execute(&b, data)
-	if err != nil {
-		return errors.Wrap(err, "error executing template\n")
-	}
-
-	send := map[string]interface{}{
-		"query":     b.String(),
-		"variables": nil,
-	}
-
-	req := gorequest.New().Post(host).
-		Query("account="+acct).
-		Set("apikey", apikey).
-		Send(send)
-
-	resp, body, errs := req.End()
-
-	if len(errs) != 0 || resp.StatusCode >= 500 {
-		return errors.New("Internal Error: " + body)
-	}
-	if resp.StatusCode >= 400 {
-		return errors.New("Bad Request: " + body)
-	}
-
-	printDeleteSuccess(body)
-	return nil
+	return util.SendRequest(crunDeleteQuery, vars)
 }
 
-func printDeleteSuccess(body string) error {
-	// body is a json object as a string
-	data := map[string]interface{}{}
-	err := json.Unmarshal([]byte(body), &data)
+func DeleteByName(name string) (interface{}, error) {
+	fmt.Println("DeleteByName:", name)
+	res, err := FilterByName(name)
 	if err != nil {
-		return err
+		return nil, err
 	}
+	fmt.Println("Result:", res)
 
-	query := "data.crunDelete.crun.name"
-	ni, err := dotpath.Get(query, data, false)
+	basePath := "data.crunGetManyFor.crunEverything"
+
+	id, err := util.FindIdFromName(basePath, name, crunListOutput, res)
 	if err != nil {
-		return err
+		return nil, err
 	}
+	fmt.Println("ID:", id)
 
-	name := ni.(string)
-
-	fmt.Printf("Function '%s' successfully deleted", name)
-
-	return nil
+	return DeleteById(id)
 }

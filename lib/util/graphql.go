@@ -3,8 +3,10 @@ package util
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"html/template"
 
+	"github.com/hofstadter-io/dotpath"
 	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
@@ -52,4 +54,38 @@ func SendRequest(queryTemplate string, vars interface{}) (interface{}, error) {
 	}
 
 	return data, nil
+}
+
+func FindIdFromName(basePath, name, listOutput string, res interface{}) (string, error) {
+	path := fmt.Sprintf("%s.[name==%s]", basePath, name)
+	elem, err := dotpath.Get(path, res, false)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Println("Elem:", path, elem)
+
+	if elem == nil || len(elem.([]interface{})) == 0 {
+		fmt.Println("not found, see results:")
+		output, err := RenderString(listOutput, res)
+		if err != nil {
+			return "", err
+		}
+		fmt.Println(output)
+		fmt.Println("--- end results ---")
+		return "", errors.New("not found")
+	}
+
+	path = fmt.Sprintf("%s.[name==%s].id", basePath, name)
+	id, err := dotpath.Get(path, res, false)
+	if err != nil {
+		return "", err
+	}
+
+	ID, ok := id.(string)
+	if !ok {
+		return "", errors.New("ID Not String")
+	}
+
+	return ID, nil
 }
