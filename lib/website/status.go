@@ -1,33 +1,30 @@
-package app
+package website
 
 import (
+	"errors"
 	"fmt"
+
+	"github.com/parnurzeal/gorequest"
 
 	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
-	"github.com/parnurzeal/gorequest"
-	"github.com/pkg/errors"
 )
 
 func Status(name string) error {
+
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/app/status"
-
-	acct, appname := util.GetAcctAndName()
+	host := util.ServerHost() + "/studios/crun/status"
+	acct, fname := util.GetAcctAndName()
 	if name == "" {
-		name = appname
+		name = fname
 	}
 
-	// Change to custom domain / *.hof-apps.com
-	fmt.Printf("https://%s.%s.live.hofstadter.io\n", name, acct)
-
-	req := gorequest.New().Get(host).
-		Query("name="+name).
+	resp, body, errs := gorequest.New().Get(host).
 		Query("account="+acct).
-		Set("apikey", apikey)
-
-	resp, body, errs := req.End()
+		Query("name="+name).
+		Set("apikey", apikey).
+		End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)

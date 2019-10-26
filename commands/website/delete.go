@@ -1,4 +1,4 @@
-package secret
+package website
 
 import (
 	"fmt"
@@ -8,23 +8,29 @@ import (
 	// infered imports
 	"os"
 
-	"github.com/hofstadter-io/hof/lib/secret"
+	"github.com/hofstadter-io/hof/lib/website"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
-// Name:   push
-// Usage:  push
-// Parent: secret
+// Name:   delete
+// Usage:  delete <name or id>
+// Parent: website
 
-var PushCmd = &cobra.Command{
+var DeleteLong = `Deletes a website by <id> and all associated data in Studios.
+You can find the id by running 'hof crun list'
+`
 
-	Use: "push",
+var DeleteCmd = &cobra.Command{
 
-	Short: "Push secrets",
+	Use: "delete <name or id>",
+
+	Short: "Deletes a website by <id>",
+
+	Long: DeleteLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In pushCmd", "args", args)
+		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
@@ -42,29 +48,13 @@ var PushCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		// [1]name:   file
-		//     help:
-		//     req'd:  true
-		if 1 >= len(args) {
-			fmt.Println("missing required argument: 'file'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
+		/*
+			fmt.Println("hof websites delete:",
+				name,
+			)
+		*/
 
-		var file string
-
-		if 1 < len(args) {
-
-			file = args[1]
-		}
-
-		fmt.Println("hof secret push:",
-			name,
-
-			file,
-		)
-
-		err := secret.Push(name, file)
+		err := website.Delete(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

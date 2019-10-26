@@ -1,137 +1,71 @@
 package crun
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"html/template"
 
-	"github.com/parnurzeal/gorequest"
-	"github.com/pkg/errors"
-
-	"github.com/hofstadter-io/dotpath"
-
-	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const crunListTemplate = `
+const crunListQuery = `
 query {
-	crunPage(
-    after:{{.after}}
-    limit:{{.limit}}
+	crunGetManyFor(
+    offset:{{after}}
+    limit:{{limit}}
+		{{#if filters}}
+		filters: {
+		  {{#if filters.search}}search:"{{filters.search}}"{{/if}}
+		}
+		{{/if}}
 	) {
-		edges {
-			node {
-				name
-				id
-				userId
-				user {
-					id
-					username
-					email
-				}
-				version
-				type
-				createdAt
-				state
-			}
+		crunEverything {
+			id
+			createdAt
+			name
+			version
+			state
+		}
+		errors {
+		  message
 		}
   }
 }
 `
 
+const crunListOutput = `
+Name                    Version     State       ID
+=======================================================================================
+{{#each data.crunGetManyFor.crunEverything as |CRUN|}}
+{{pw CRUN.name 24 ~}}
+{{pw CRUN.version 12 ~}}
+{{pw CRUN.state 12 ~}}
+{{CRUN.id}}
+{{/each}}
+`
+
 func List() error {
-	after := "0"
-	limit := "10"
-	return SendListRequest(after, limit)
-}
-
-func SendListRequest(after, limit string) error {
-	ctx := config.GetCurrentContext()
-	apikey := ctx.APIKey
-	host := util.ServerHost() + "/graphql"
-	acct, _ := util.GetAcctAndName()
-
-	// Create a new template and parse the letter into it.
-	t := template.Must(template.New("crunList").Parse(crunListTemplate))
-
-	// Create Template Data
-	data := map[string]interface{}{
-		"after": after,
-		"limit": limit,
+	vars := map[string]interface{}{
+		"after": "0",
+		"limit": "25",
 	}
-
-	// Execute the template for each recipient.
-	var b bytes.Buffer
-	err := t.Execute(&b, data)
+	data, err := util.SendRequest(crunListQuery, vars)
 	if err != nil {
-		return errors.Wrap(err, "error executing template\n")
+		return err
 	}
 
-	send := map[string]interface{}{
-		"query":     b.String(),
-		"variables": nil,
-	}
+	output, err := util.RenderString(crunListOutput, data)
 
-	req := gorequest.New().Post(host).
-		Query("account="+acct).
-		Set("apikey", apikey).
-		Send(send)
-
-	resp, body, errs := req.EndBytes()
-
-	if len(errs) != 0 || resp.StatusCode >= 500 {
-		return errors.New("Internal Error: " + string(body))
-	}
-	if resp.StatusCode >= 400 {
-		return errors.New("Bad Request: " + string(body))
-	}
-
-	err = printListSuccess(body)
-	if err != nil {
-		fmt.Println("ERROR:", err)
-	}
-
+	fmt.Println(output)
 	return err
 }
 
-func printListSuccess(body []byte) error {
-	// body is a json object as a string
-	data := map[string]interface{}{}
-	err := json.Unmarshal(body, &data)
-	if err != nil {
-		return err
+func FilterByName(name string) (interface{}, error) {
+	vars := map[string]interface{}{
+		"after": "0",
+		"limit": "25",
+		"filters": map[string]string{
+			"name": name,
+		},
 	}
 
-	/*
-		fmt.Println(string(body))
-		fmt.Println(data)
-		fmt.Println("\n")
-	*/
-
-	query := "data.crunPage.edges.[:].node"
-	fsi, err := dotpath.Get(query, data, false)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("ID   Name")
-	switch fs := fsi.(type) {
-	case []interface{}:
-		for _, fi := range fs {
-			fm := fi.(map[string]interface{})
-			fmt.Printf("%v    %v\n", fm["id"], fm["name"])
-		}
-
-	case map[string]interface{}:
-		fmt.Printf("%v    %v\n", fs["id"], fs["name"])
-	}
-
-	/*
-		fmt.Println(fs)
-		fmt.Println("\n")
-	*/
-
-	return nil
+	return util.SendRequest(crunListQuery, vars)
 }

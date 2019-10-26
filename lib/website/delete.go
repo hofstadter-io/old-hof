@@ -1,4 +1,4 @@
-package fns
+package website
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const fnDeleteQuery = `
+const websiteDeleteQuery = `
 mutation {
-  fnDeleteOneFor(id:"{{id}}") {
-    fnEverything {
+  websiteDeleteOneFor(id:"{{id}}") {
+    websiteEverything {
       name
       id
       version
@@ -24,7 +24,7 @@ mutation {
 }
 `
 
-const fnDeleteOutput = `
+const websiteDeleteOutput = `
 {{{data}}}
 `
 
@@ -43,7 +43,7 @@ func Delete(input string) error {
 		return err
 	}
 
-	output, err := util.RenderString(fnDeleteOutput, data)
+	output, err := util.RenderString(websiteDeleteOutput, data)
 
 	fmt.Println(output)
 	return err
@@ -55,7 +55,7 @@ func DeleteById(id string) (interface{}, error) {
 		"id": id,
 	}
 
-	return util.SendRequest(fnDeleteQuery, vars)
+	return util.SendRequest(websiteDeleteQuery, vars)
 }
 
 func DeleteByName(name string) (interface{}, error) {
@@ -66,9 +66,9 @@ func DeleteByName(name string) (interface{}, error) {
 	}
 	fmt.Println("Result:", res)
 
-	basePath := "data.fnGetManyFor.fnEverything"
+	basePath := "data.websiteGetManyFor.websiteStatus"
 
-	id, err := util.FindIdFromName(basePath, name, fnListOutput, res)
+	id, err := util.FindIdFromName(basePath, name, websiteListOutput, res)
 	if err != nil {
 		return nil, err
 	}

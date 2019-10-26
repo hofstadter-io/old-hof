@@ -1,4 +1,4 @@
-package containers
+package website
 
 import (
 	"fmt"
@@ -8,16 +8,16 @@ import (
 
 	// infered imports
 
-	"github.com/hofstadter-io/hof/lib/crun"
+	"github.com/hofstadter-io/hof/lib/website"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   status
 // Usage:  status [name]
-// Parent: containers
+// Parent: website
 
-var StatusLong = `Get the status of your container.
+var StatusLong = `Get the status of your website.
 If name is not specified, the current directory is used.
 `
 
@@ -25,7 +25,7 @@ var StatusCmd = &cobra.Command{
 
 	Use: "status [name]",
 
-	Short: "Get the status of your container",
+	Short: "Get the status of your website",
 
 	Long: StatusLong,
 
@@ -44,17 +44,16 @@ var StatusCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof containers status:",
+			fmt.Println("hof websites status:",
 				name,
 			)
 		*/
 
-		err := crun.Shutdown(name)
+		err := website.Status(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 	},
 }
 

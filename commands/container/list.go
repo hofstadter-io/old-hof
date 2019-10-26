@@ -1,4 +1,4 @@
-package containers
+package container
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   list
 // Usage:  list
-// Parent: containers
+// Parent: container
 
 var ListLong = `List your containers`
 

@@ -1,4 +1,4 @@
-package containers
+package container
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ import (
 // Tool:   hof
 // Name:   deploy
 // Usage:  deploy [name]
-// Parent: containers
+// Parent: container
 
 var DeployLong = `Deploys a container by name or from the current directory`
 

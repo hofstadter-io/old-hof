@@ -1,4 +1,4 @@
-package app
+package website
 
 import (
 	"fmt"
@@ -6,9 +6,9 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const appListQuery = `
+const websiteListQuery = `
 query {
-	appGetManyFor(
+	websiteGetManyFor(
     offset:{{after}}
     limit:{{limit}}
 		{{#if filters}}
@@ -17,7 +17,7 @@ query {
 		}
 		{{/if}}
 	) {
-		appStatus {
+		websiteStatus {
 			id
 			createdAt
 			name
@@ -31,14 +31,14 @@ query {
 }
 `
 
-const appListOutput = `
+const websiteListOutput = `
 Name                    Version     State       ID
 =======================================================================================
-{{#each data.appGetManyFor.appStatus as |APP|}}
-{{pw APP.name 24 ~}}
-{{pw APP.version 12 ~}}
-{{pw APP.state 12 ~}}
-{{APP.id}}
+{{#each data.websiteGetManyFor.websiteStatus as |WEBSITE|}}
+{{pw WEBSITE.name 24 ~}}
+{{pw WEBSITE.version 12 ~}}
+{{pw WEBSITE.state 12 ~}}
+{{WEBSITE.id}}
 {{/each}}
 `
 
@@ -49,7 +49,7 @@ func List() error {
 		return err
 	}
 
-	output, err := util.RenderString(appListOutput, data)
+	output, err := util.RenderString(websiteListOutput, data)
 
 	fmt.Println(output)
 	return err
@@ -61,7 +61,7 @@ func GetList() (interface{}, error) {
 		"limit": "25",
 	}
 
-	return util.SendRequest(appListQuery, vars)
+	return util.SendRequest(websiteListQuery, vars)
 }
 
 func FilterByName(name string) (interface{}, error) {
@@ -69,9 +69,9 @@ func FilterByName(name string) (interface{}, error) {
 		"after": "0",
 		"limit": "25",
 		"filters": map[string]string{
-			"name": name,
+			"search": name,
 		},
 	}
 
-	return util.SendRequest(appListQuery, vars)
+	return util.SendRequest(websiteListQuery, vars)
 }

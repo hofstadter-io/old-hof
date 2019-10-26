@@ -1,4 +1,4 @@
-package containers
+package website
 
 import (
 	"fmt"
@@ -8,14 +8,14 @@ import (
 
 	// infered imports
 
-	"github.com/hofstadter-io/hof/lib/crun"
+	"github.com/hofstadter-io/hof/lib/website"
 	"github.com/spf13/cobra"
 )
 
 // Tool:   hof
 // Name:   push
 // Usage:  push [name]
-// Parent: containers
+// Parent: website
 
 var PushLong = `Uploads the local copy and makes it the latest copy in Studios`
 
@@ -42,17 +42,16 @@ var PushCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof containers push:",
+			fmt.Println("hof websites push:",
 				name,
 			)
 		*/
 
-		err := crun.Push(name)
+		err := website.Push(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 	},
 }
 

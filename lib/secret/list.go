@@ -1,4 +1,4 @@
-package app
+package secret
 
 import (
 	"fmt"
@@ -6,9 +6,9 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const appListQuery = `
+const secretListQuery = `
 query {
-	appGetManyFor(
+	secretGetManyFor(
     offset:{{after}}
     limit:{{limit}}
 		{{#if filters}}
@@ -17,12 +17,11 @@ query {
 		}
 		{{/if}}
 	) {
-		appStatus {
+		secretEverything {
 			id
 			createdAt
 			name
-			version
-			state
+			description
 		}
 		errors {
 		  message
@@ -31,37 +30,30 @@ query {
 }
 `
 
-const appListOutput = `
-Name                    Version     State       ID
+const secretListOutput = `
+Name                    ID                                      Description
 =======================================================================================
-{{#each data.appGetManyFor.appStatus as |APP|}}
-{{pw APP.name 24 ~}}
-{{pw APP.version 12 ~}}
-{{pw APP.state 12 ~}}
-{{APP.id}}
+{{#each data.secretGetManyFor.secretEverything as |SECRET|}}
+{{pw SECRET.name 24 ~}}
+{{pw SECRET.id 40 ~}}
+{{SECRET.description}}
 {{/each}}
 `
 
 func List() error {
-
-	data, err := GetList()
-	if err != nil {
-		return err
-	}
-
-	output, err := util.RenderString(appListOutput, data)
-
-	fmt.Println(output)
-	return err
-}
-
-func GetList() (interface{}, error) {
 	vars := map[string]interface{}{
 		"after": "0",
 		"limit": "25",
 	}
+	data, err := util.SendRequest(secretListQuery, vars)
+	if err != nil {
+		return err
+	}
 
-	return util.SendRequest(appListQuery, vars)
+	output, err := util.RenderString(secretListOutput, data)
+
+	fmt.Println(output)
+	return err
 }
 
 func FilterByName(name string) (interface{}, error) {
@@ -69,9 +61,9 @@ func FilterByName(name string) (interface{}, error) {
 		"after": "0",
 		"limit": "25",
 		"filters": map[string]string{
-			"name": name,
+			"search": name,
 		},
 	}
 
-	return util.SendRequest(appListQuery, vars)
+	return util.SendRequest(secretListQuery, vars)
 }

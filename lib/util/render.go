@@ -2,16 +2,35 @@ package util
 
 import (
 	// "fmt"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
+
 	// "path/filepath"
 	"strings"
 
 	"github.com/aymerick/raymond"
 )
 
+// Used somewhere in here?
 // https://blog.depado.eu/post/copy-files-and-directories-in-go [03-04-2-19]
+
+func init() {
+	raymond.RegisterHelper("pw", func(content, width string) string {
+		return fmt.Sprintf("%-"+width+"s", content)
+	})
+}
+
+func RenderString(template string, data interface{}) (string, error) {
+
+	output, err := raymond.Render(template, data)
+	if err != nil {
+		return "", err
+	}
+
+	return output, nil
+}
 
 // File copies a single file from src to dst
 func RenderFile(src, dst string, data interface{}) error {
@@ -103,7 +122,6 @@ func RenderDirNameSub(src string, dst string, data interface{}) error {
 	var fds []os.FileInfo
 	var srcinfo os.FileInfo
 
-
 	srcinfo, err = os.Stat(src)
 	if err != nil {
 		return err
@@ -149,7 +167,7 @@ var names = []string{
 	"TypeName",
 	"PageName",
 	"ComponentName",
-  "FuncName",
+	"FuncName",
 }
 
 func subNames(name string, data interface{}) string {
@@ -165,4 +183,3 @@ func subNames(name string, data interface{}) string {
 
 	return name
 }
-

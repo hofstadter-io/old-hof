@@ -1,39 +1,40 @@
-package secret
+package website
 
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"os"
+
+	"github.com/parnurzeal/gorequest"
 
 	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
-	"github.com/parnurzeal/gorequest"
 )
 
-func Push(name, file string) error {
-	if _, err := os.Stat(file); os.IsNotExist(err) {
-		fmt.Println("Error: file " + file + " does not exist")
-		return nil
-	}
-
-	contents, err := ioutil.ReadFile(file)
+func Push(name string) error {
+	data, err := util.TarFiles(CrunFiles, "./")
 	if err != nil {
+		fmt.Println("err", err)
 		return err
 	}
 
 	ctx := config.GetCurrentContext()
 	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/secrets/push"
-	acct := config.GetCurrentContext().Account
+	host := util.ServerHost() + "/studios/crun/push"
+	acct, fname := util.GetAcctAndName()
+	if name == "" {
+		name = fname
+	}
 
-	resp, body, errs := gorequest.New().Post(host).
+	fmt.Println("Pushing:", name)
+
+	req := gorequest.New().Post(host).
 		Query("account="+acct).
 		Query("name="+name).
 		Set("apikey", apikey).
-		Type("text").
-		Send(string(contents)).
-		End()
+		Type("multipart").
+		SendFile(data)
+
+	resp, body, errs := req.End()
 
 	if len(errs) != 0 || resp.StatusCode >= 500 {
 		return errors.New("Internal Error: " + body)
@@ -43,6 +44,5 @@ func Push(name, file string) error {
 	}
 
 	fmt.Println(body)
-
 	return nil
 }

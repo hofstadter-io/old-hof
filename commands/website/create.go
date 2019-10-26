@@ -1,26 +1,25 @@
-package function
+package website
 
 import (
 	"fmt"
+	"os"
 
 	// custom imports
 
 	// infered imports
-	"os"
 
+	"github.com/hofstadter-io/hof/lib/website"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
-
-	"github.com/hofstadter-io/hof/lib/fns"
 )
 
 // Tool:   hof
 // Name:   create
 // Usage:  create [path/to]<name> <template>[@version][#template-subpath]
-// Parent: function
+// Parent: website
 
-var CreateLong = `Create a new function from a template. The path prefix says where, the last part will be the name`
+var CreateLong = `Create a new crun from a template. The path prefix says where, the last part will be the name`
 
 var (
 	CreateHereFlag bool
@@ -32,7 +31,7 @@ func init() {
 	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "", false, "create in the current directory (uses dir as name)")
 	viper.BindPFlag("here", CreateCmd.Flags().Lookup("here"))
 
-	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-functions#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
+	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-websites#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
 	viper.BindPFlag("template", CreateCmd.Flags().Lookup("template"))
 
 }
@@ -41,7 +40,7 @@ var CreateCmd = &cobra.Command{
 
 	Use: "create [path/to]<name> <template>[@version][#template-subpath]",
 
-	Short: "Create a new function",
+	Short: "Create a new crun",
 
 	Long: CreateLong,
 
@@ -50,12 +49,7 @@ var CreateCmd = &cobra.Command{
 		// Argument Parsing
 		// [0]name:   name
 		//     help:
-		//     req'd:  true
-		if 0 >= len(args) {
-			fmt.Println("missing required argument: 'name'\n")
-			cmd.Usage()
-			os.Exit(1)
-		}
+		//     req'd:
 
 		var name string
 
@@ -65,19 +59,16 @@ var CreateCmd = &cobra.Command{
 		}
 
 		/*
-			fmt.Println("hof function create:",
+			fmt.Println("hof websites create:",
 				name,
-
-				template,
 			)
 		*/
 
-		err := fns.Create(name, CreateHereFlag, CreateTemplateFlag)
+		err := website.Create(name, CreateHereFlag, CreateTemplateFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 	},
 }
 

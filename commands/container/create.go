@@ -1,14 +1,14 @@
-package containers
+package container
 
 import (
 	"fmt"
 	"os"
 
 	// custom imports
-	"github.com/hofstadter-io/hof/lib/crun"
 
 	// infered imports
 
+	"github.com/hofstadter-io/hof/lib/crun"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -17,7 +17,7 @@ import (
 // Tool:   hof
 // Name:   create
 // Usage:  create [path/to]<name> <template>[@version][#template-subpath]
-// Parent: containers
+// Parent: container
 
 var CreateLong = `Create a new crun from a template. The path prefix says where, the last part will be the name`
 
@@ -31,7 +31,7 @@ func init() {
 	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "", false, "create in the current directory (uses dir as name)")
 	viper.BindPFlag("here", CreateCmd.Flags().Lookup("here"))
 
-	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-functions#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
+	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-containers#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
 	viper.BindPFlag("template", CreateCmd.Flags().Lookup("template"))
 
 }

@@ -1,4 +1,4 @@
-package containers
+package container
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   shutdown
 // Usage:  shutdown [name]
-// Parent: containers
+// Parent: container
 
 var ShutdownLong = `Shutsdown a container by name or from the current directory`
 

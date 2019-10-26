@@ -1,4 +1,4 @@
-package containers
+package container
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 // Tool:   hof
 // Name:   call
 // Usage:  call <name> [data]
-// Parent: containers
+// Parent: container
 
 var CallLong = `Call the container <name> with json <data>
 data may be a JSON string or @filename.json

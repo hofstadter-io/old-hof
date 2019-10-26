@@ -1,36 +1,75 @@
 package secret
 
 import (
-	"errors"
 	"fmt"
 
-	"github.com/hofstadter-io/hof/lib/config"
 	"github.com/hofstadter-io/hof/lib/util"
-	"github.com/parnurzeal/gorequest"
 )
 
-func Delete(name string) error {
+const secretDeleteQuery = `
+mutation {
+  secretDeleteOneFor(id:"{{id}}") {
+    secretEverything {
+      id
+      name
+    }
+		message
+		errors {
+		  message
+		}
+  }
+}
+`
 
-	ctx := config.GetCurrentContext()
-	apikey := ctx.APIKey
-	host := util.ServerHost() + "/studios/secrets/delete"
-	acct := config.GetCurrentContext().Account
+const secretDeleteOutput = `
+{{{data}}}
+`
 
-	req := gorequest.New().Post(host).
-		Query("account="+acct).
-		Query("name="+name).
-		Set("apikey", apikey)
+func Delete(input string) error {
 
-	resp, body, errs := req.End()
+	var data interface{}
+	var err error
 
-	if len(errs) != 0 || resp.StatusCode >= 500 {
-		return errors.New("Internal Error: " + body)
+	if util.IsValidUUID(input) {
+		data, err = DeleteById(input)
+	} else {
+		data, err = DeleteByName(input)
 	}
-	if resp.StatusCode >= 400 {
-		return errors.New("Bad Request: " + body)
+
+	if err != nil {
+		return err
 	}
 
-	fmt.Println(body)
+	output, err := util.RenderString(secretDeleteOutput, data)
 
-	return nil
+	fmt.Println(output)
+	return err
+}
+
+func DeleteById(id string) (interface{}, error) {
+	fmt.Println("DeleteById:", id)
+	vars := map[string]interface{}{
+		"id": id,
+	}
+
+	return util.SendRequest(secretDeleteQuery, vars)
+}
+
+func DeleteByName(name string) (interface{}, error) {
+	fmt.Println("DeleteByName:", name)
+	res, err := FilterByName(name)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Result:", res)
+
+	basePath := "data.secretGetManyFor.secretEverything"
+
+	id, err := util.FindIdFromName(basePath, name, secretListOutput, res)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("ID:", id)
+
+	return DeleteById(id)
 }

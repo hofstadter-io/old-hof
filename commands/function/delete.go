@@ -14,7 +14,7 @@ import (
 
 // Tool:   hof
 // Name:   delete
-// Usage:  delete
+// Usage:  delete <name or id>
 // Parent: function
 
 var DeleteLong = `Deletes the function <id> and all associated data in Hofstadter Studios.
@@ -23,7 +23,7 @@ You can get the id with "hof function list"
 
 var DeleteCmd = &cobra.Command{
 
-	Use: "delete",
+	Use: "delete <name or id>",
 
 	Short: "Deletes the function by id",
 
@@ -32,15 +32,15 @@ var DeleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		logger.Debug("In deleteCmd", "args", args)
 		// Argument Parsing
-		// [0]name:   id
+		// [0]name:   name
 		//     help:
 		//     req'd:  false
 
-		var id string
+		var name string
 
 		if 0 < len(args) {
 
-			id = args[0]
+			name = args[0]
 		}
 
 		/*
@@ -49,11 +49,12 @@ var DeleteCmd = &cobra.Command{
 			)
 		*/
 
-		err := fns.Delete(id)
+		err := fns.Delete(name)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

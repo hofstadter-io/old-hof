@@ -1,23 +1,14 @@
-package commands
+package container
 
 import (
 	"github.com/spf13/viper"
 	log "gopkg.in/inconshreveable/log15.v2"
-
-	"github.com/hofstadter-io/hof/commands/app"
-	"github.com/hofstadter-io/hof/commands/config"
-	"github.com/hofstadter-io/hof/commands/container"
-	"github.com/hofstadter-io/hof/commands/db"
-	"github.com/hofstadter-io/hof/commands/dsl"
-	"github.com/hofstadter-io/hof/commands/function"
-	"github.com/hofstadter-io/hof/commands/secret"
-	"github.com/hofstadter-io/hof/commands/website"
 )
 
 var logger = log.New()
 
 func SetLogger(l log.Logger) {
-	ldcfg := viper.GetStringMap("log-config.commands.default")
+	ldcfg := viper.GetStringMap("log-config.commands.container.default")
 	if ldcfg == nil || len(ldcfg) == 0 {
 		logger = l
 	} else {
@@ -50,7 +41,7 @@ func SetLogger(l log.Logger) {
 	setSubLoggers(logger)
 
 	// possibly override locally
-	lcfg := viper.GetStringMap("log-config.commands.hof")
+	lcfg := viper.GetStringMap("log-config.commands.container")
 
 	if lcfg == nil || len(lcfg) == 0 {
 		logger = l
@@ -83,12 +74,4 @@ func SetLogger(l log.Logger) {
 }
 
 func setSubLoggers(logger log.Logger) {
-	app.SetLogger(logger)
-	config.SetLogger(logger)
-	container.SetLogger(logger)
-	db.SetLogger(logger)
-	dsl.SetLogger(logger)
-	function.SetLogger(logger)
-	secret.SetLogger(logger)
-	website.SetLogger(logger)
 }

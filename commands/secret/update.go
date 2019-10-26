@@ -13,26 +13,23 @@ import (
 )
 
 // Tool:   hof
-// Name:   delete
-// Usage:  delete <name or id>
+// Name:   update
+// Usage:  update <name> <env-file>
 // Parent: secret
 
-var DeleteLong = `Delete a secret file`
+var UpdateLong = `Update a secret file that can be injected as environment variables`
 
-var DeleteCmd = &cobra.Command{
+var UpdateCmd = &cobra.Command{
 
-	Use: "delete <name or id>",
+	Use: "update <name> <env-file>",
 
-	Short: "Delete a secret",
+	Short: "Update a secret",
 
-	Long: DeleteLong,
+	Long: UpdateLong,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		logger.Debug("In deleteCmd", "args", args)
+		logger.Debug("In updateCmd", "args", args)
 		// Argument Parsing
-
-		fmt.Println("hof secret delete:")
-
 		// [0]name:   name
 		//     help:
 		//     req'd:  true
@@ -49,17 +46,36 @@ var DeleteCmd = &cobra.Command{
 			name = args[0]
 		}
 
+		// [1]name:   file
+		//     help:
+		//     req'd:  true
+		if 1 >= len(args) {
+			fmt.Println("missing required argument: 'file'\n")
+			cmd.Usage()
+			os.Exit(1)
+		}
+
+		var file string
+
+		if 1 < len(args) {
+
+			file = args[1]
+		}
+
 		/*
-			fmt.Println("hof secret delete:",
+			fmt.Println("hof secret update:",
 				name,
+
+				file,
 			)
 		*/
 
-		err := secret.Delete(name)
+		err := secret.Update(name, file)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 	},
 }
 

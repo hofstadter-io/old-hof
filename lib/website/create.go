@@ -1,4 +1,4 @@
-package crun
+package website
 
 import (
 	"fmt"
@@ -9,25 +9,29 @@ import (
 	"github.com/hofstadter-io/hof/lib/util"
 )
 
-const crunCreateQuery = `
+const websiteCreateQuery = `
 mutation {
-  crunCreateOneFor(values:{
+  websiteCreateOneFor(values:{
     name:"{{name}}"
     version:"{{version}}"
     type:"{{type}}"
   }) {
-    crunEverything {
+    websiteEverything {
       name
       id
       version
       type
 			createdAt
     }
+		message
+		errors {
+		  message
+		}
   }
 }
 `
 
-const crunCreateOutput = `
+const websiteCreateOutput = `
 {{{data}}}
 `
 
@@ -43,13 +47,13 @@ func Create(name string, here bool, template string) error {
 	if template != "none" {
 
 		if template == "" || template[0] == '#' || template[0] == '@' {
-			template = "https://github.com/hofstadter-io/studios-containers" + template
+			template = "https://github.com/hofstadter-io/studios-websites" + template
 		}
 
 		url, version, subpath := extern.SplitParts(template)
 
 		data := map[string]interface{}{}
-		data["ContainerName"] = name
+		data["WebsiteName"] = name
 
 		var dir string
 
@@ -80,19 +84,13 @@ func Create(name string, here bool, template string) error {
 		"version": version,
 	}
 
-	data, err := util.SendRequest(crunCreateQuery, vars)
+	data, err := util.SendRequest(websiteCreateQuery, vars)
 	if err != nil {
-		fmt.Println("Error", err)
-		return err
-	}
-	fmt.Println("DATA", data)
-
-	output, err := util.RenderString(crunCreateOutput, data)
-	if err != nil {
-		fmt.Println("Error", err)
 		return err
 	}
 
-	fmt.Println("OUTPUT", output)
+	output, err := util.RenderString(websiteCreateOutput, data)
+
+	fmt.Println(output)
 	return err
 }
