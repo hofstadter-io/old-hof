@@ -70,7 +70,7 @@ var UpdateCmd = &cobra.Command{
 			)
 		*/
 
-		err := secret.Create(name, file)
+		err := secret.Update(name, file)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
