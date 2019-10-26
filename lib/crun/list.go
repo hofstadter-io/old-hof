@@ -13,8 +13,7 @@ query {
     limit:{{limit}}
 		{{#if filters}}
 		filters: {
-		  {{#if filters.name}}name:"{{filters.name}}{{/if}}"
-		  {{#if filters.state}}state:"{{filters.state}}{{/if}}"
+		  {{#if filters.search}}search:"{{filters.search}}"{{/if}}
 		}
 		{{/if}}
 	) {

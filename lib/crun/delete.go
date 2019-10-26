@@ -8,7 +8,7 @@ import (
 
 const crunDeleteQuery = `
 mutation {
-  crunDeleteOneFor(id:"{{.id}}") {
+  crunDeleteOneFor(id:"{{id}}") {
     crunEverything {
       name
       id

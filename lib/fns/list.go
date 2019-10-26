@@ -13,8 +13,7 @@ query {
     limit:{{limit}}
 		{{#if filters}}
 		filters: {
-		  {{#if filters.name}}name:"{{filters.name}}{{/if}}"
-		  {{#if filters.state}}state:"{{filters.state}}{{/if}}"
+		  {{#if filters.search}}search:"{{filters.search}}"{{/if}}
 		}
 		{{/if}}
 	) {
@@ -65,7 +64,7 @@ func FilterByName(name string) (interface{}, error) {
 		"after": "0",
 		"limit": "25",
 		"filters": map[string]string{
-			"name": name,
+			"search": name,
 		},
 	}
 

@@ -8,13 +8,10 @@ import (
 
 const secretDeleteQuery = `
 mutation {
-  secretDeleteOneFor(id:"{{.id}}") {
+  secretDeleteOneFor(id:"{{id}}") {
     secretEverything {
-      name
       id
-      version
-      type
-			createdAt
+      name
     }
 		message
 		errors {
@@ -66,7 +63,7 @@ func DeleteByName(name string) (interface{}, error) {
 	}
 	fmt.Println("Result:", res)
 
-	basePath := "data.secretGetManyFor.secretStatus"
+	basePath := "data.secretGetManyFor.secretEverything"
 
 	id, err := util.FindIdFromName(basePath, name, secretListOutput, res)
 	if err != nil {

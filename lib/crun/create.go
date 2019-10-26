@@ -12,9 +12,9 @@ import (
 const crunCreateQuery = `
 mutation {
   crunCreateOneFor(values:{
-    name:"{{.name}}"
-    version:"{{.version}}"
-    type:"{{.type}}"
+    name:"{{name}}"
+    version:"{{version}}"
+    type:"{{type}}"
   }) {
     crunEverything {
       name

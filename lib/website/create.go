@@ -12,9 +12,9 @@ import (
 const websiteCreateQuery = `
 mutation {
   websiteCreateOneFor(values:{
-    name:"{{.name}}"
-    version:"{{.version}}"
-    type:"{{.type}}"
+    name:"{{name}}"
+    version:"{{version}}"
+    type:"{{type}}"
   }) {
     websiteEverything {
       name

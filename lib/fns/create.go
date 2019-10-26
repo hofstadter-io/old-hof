@@ -12,9 +12,9 @@ import (
 const fnCreateQuery = `
 mutation {
   fnCreateOneFor(values:{
-    name:"{{.name}}"
-    version:"{{.version}}"
-    type:"{{.type}}"
+    name:"{{name}}"
+    version:"{{version}}"
+    type:"{{type}}"
   }) {
     fnEverything {
       name

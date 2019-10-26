@@ -8,7 +8,7 @@ import (
 
 const appDeleteQuery = `
 mutation {
-  appDeleteOneFor(id:"{{.id}}") {
+  appDeleteOneFor(id:"{{id}}") {
     appEverything {
       name
       id

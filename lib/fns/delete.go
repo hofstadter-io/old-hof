@@ -8,7 +8,7 @@ import (
 
 const fnDeleteQuery = `
 mutation {
-  fnDeleteOneFor(id:"{{.id}}") {
+  fnDeleteOneFor(id:"{{id}}") {
     fnEverything {
       name
       id

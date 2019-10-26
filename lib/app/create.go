@@ -10,9 +10,9 @@ import (
 const appCreateQuery = `
 mutation {
   appCreateOneFor(values:{
-    name:"{{.name}}"
-    version:"{{.version}}"
-    type:"{{.type}}"
+    name:"{{name}}"
+    version:"{{version}}"
+    type:"{{type}}"
   }) {
     appEverything {
       name

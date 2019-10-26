@@ -8,7 +8,7 @@ import (
 
 const websiteDeleteQuery = `
 mutation {
-  websiteDeleteOneFor(id:"{{.id}}") {
+  websiteDeleteOneFor(id:"{{id}}") {
     websiteEverything {
       name
       id

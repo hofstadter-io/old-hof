@@ -9,7 +9,7 @@ import (
 const secretCreateQuery = `
 mutation {
   secretCreateOneFor(values:{
-    name:"{{.name}}"
+    name:"{{name}}"
   }) {
     secretEverything {
       id
