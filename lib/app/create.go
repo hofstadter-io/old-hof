@@ -33,34 +33,27 @@ const appCreateOutput = `
 {{{data}}}
 `
 
-func Create(name, kitver, template string) error {
-	var version string
+func Create(name, template string, here bool) error {
 
-	parts := strings.Split(template, "@")
-	if len(parts) == 2 {
-		template = parts[0]
-		version = parts[1]
+	if !here {
+		err := CreateLocal(name, template)
+		if err != nil {
+			return err
+		}
 	}
 
-	data := map[string]interface{}{}
-	data["AppName"] = name
+	return CreateRemote(name)
+}
 
-	dir, err := util.CloneRepo(template, version)
-	if err != nil {
-		return err
-	}
-
-	err = util.RenderDirNameSub(dir, name, data)
-	if err != nil {
-		return err
-	}
+func CreateRemote(name string) error {
+	// TODO read hof.yaml
 
 	vars := map[string]interface{}{
-		"name":    name,
-		"type":    "starter",
-		"version": kitver,
+		"name": name,
+		"type": "starter",
 	}
 
+	// REMOTE CREATION
 	retdata, err := util.SendRequest(appCreateQuery, vars)
 	if err != nil {
 		return err
@@ -70,4 +63,32 @@ func Create(name, kitver, template string) error {
 
 	fmt.Println(output)
 	return err
+}
+
+func CreateLocal(name, template string) error {
+	var url, version, dir string
+	var err error
+
+	parts := strings.Split(template, "@")
+	if len(parts) == 2 {
+		url = parts[0]
+		version = parts[1]
+	} else {
+		url = template
+	}
+
+	data := map[string]interface{}{}
+	data["AppName"] = name
+
+	if strings.HasPrefix(url, "https") {
+		dir, err = util.CloneRepo(url, version)
+		if err != nil {
+			return err
+		}
+	} else {
+		// assume local, just copy, so working copy
+		dir = url
+	}
+
+	return util.RenderDirNameSub(dir, name, data)
 }

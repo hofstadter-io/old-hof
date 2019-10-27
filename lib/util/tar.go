@@ -15,25 +15,38 @@ import (
 
 var tarfile = "studios.tar.gz"
 
-func TarFiles(files []string, src string) (data []byte, err error) {
+func TarBallFiles(files []string, src, tarFile string) (err error) {
 
-	if _, err := os.Stat(tarfile); !os.IsNotExist(err) {
+	if _, err := os.Stat(tarFile); !os.IsNotExist(err) {
 		// path/to/whatever does not exist
-		err = os.RemoveAll(tarfile)
+		err = os.RemoveAll(tarFile)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
 
 	var paths []string
 	// ensure the src actually exists before trying to tar it
 	for _, path := range files {
-		if _, lerr := os.Stat(filepath.Join(src, path)); lerr == nil {
-			paths = append(paths, path)
+		lpath := filepath.Join(src, path)
+		if _, lerr := os.Stat(lpath); lerr == nil {
+			paths = append(paths, lpath)
 		}
 	}
 
-	err = archiver.Archive(paths, tarfile)
+	fmt.Println("TarBallFiles", src, files, tarFile, paths)
+	err = archiver.Archive(paths, tarFile)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func TarFiles(files []string, src string) (data []byte, err error) {
+	fmt.Println("TarFiles", src, files)
+
+	err = TarBallFiles(files, src, tarfile)
 	if err != nil {
 		return nil, err
 	}
@@ -44,10 +57,10 @@ func TarFiles(files []string, src string) (data []byte, err error) {
 	}
 
 	/*
-	err = os.RemoveAll(tarfile)
-	if err != nil {
-		return data, err
-	}
+		err = os.RemoveAll(tarfile)
+		if err != nil {
+			return data, err
+		}
 	*/
 
 	return data, err
@@ -125,4 +138,3 @@ func OldTarFiles(files []string, src string, writers ...io.Writer) error {
 
 	return nil
 }
-

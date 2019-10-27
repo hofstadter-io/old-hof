@@ -98,17 +98,31 @@ func RenderFileNameSub(src, dst string, data interface{}) error {
 	dst = subNames(dst, data)
 	// fmt.Println(src, "->", filepath.Join(dst))
 
-	content, err := ioutil.ReadFile(src)
+	c, err := ioutil.ReadFile(src)
 	if err != nil {
 		return err
 	}
 
-	output, err := raymond.Render(string(content), data)
+	content := string(c)
+
+	swapped := SwapDelimits(
+		content,
+		"{{{", "}}}", "{{", "}}",
+		"{%%", "%%}", "{%", "%}",
+	)
+
+	output, err := raymond.Render(swapped, data)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(dst, []byte(output), 0644)
+	final := SwapDelimits(
+		output,
+		"{%%", "%%}", "{%", "%}",
+		"{{{", "}}}", "{{", "}}",
+	)
+
+	err = ioutil.WriteFile(dst, []byte(final), 0644)
 	if err != nil {
 		return err
 	}
@@ -182,4 +196,28 @@ func subNames(name string, data interface{}) string {
 	}
 
 	return name
+}
+
+func SwapDelimits(content, fromLL, fromLR, fromSL, fromSR, toLL, toLR, toSL, toSR string) string {
+	tmpLL, tmpLR, tmpSL, tmpSR := "{@@", "@@}", "{@", "@}"
+
+	// Change "to" -> "tmp"
+	content = strings.Replace(content, toLL, tmpLL, -1)
+	content = strings.Replace(content, toLR, tmpLR, -1)
+	content = strings.Replace(content, toSL, tmpSL, -1)
+	content = strings.Replace(content, toSR, tmpSR, -1)
+
+	// Change "from" -> "to"
+	content = strings.Replace(content, fromLL, toLL, -1)
+	content = strings.Replace(content, fromLR, toLR, -1)
+	content = strings.Replace(content, fromSL, toSL, -1)
+	content = strings.Replace(content, fromSR, toSR, -1)
+
+	// Change "to" (now tmp) -> "from"
+	content = strings.Replace(content, tmpLL, fromLL, -1)
+	content = strings.Replace(content, tmpLR, fromLR, -1)
+	content = strings.Replace(content, tmpSL, fromSL, -1)
+	content = strings.Replace(content, tmpSR, fromSR, -1)
+
+	return content
 }

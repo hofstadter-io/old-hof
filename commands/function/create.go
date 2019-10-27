@@ -29,7 +29,7 @@ var (
 )
 
 func init() {
-	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "", false, "create in the current directory (uses dir as name)")
+	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "h", false, "create in the current directory (uses dir as name)")
 	viper.BindPFlag("here", CreateCmd.Flags().Lookup("here"))
 
 	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/studios-functions#custom-default", "create with a template, set to empty '-t' to omit dir/file creation")
@@ -72,7 +72,7 @@ var CreateCmd = &cobra.Command{
 			)
 		*/
 
-		err := fns.Create(name, CreateHereFlag, CreateTemplateFlag)
+		err := fns.Create(name, CreateTemplateFlag, CreateHereFlag)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

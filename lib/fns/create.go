@@ -31,7 +31,7 @@ const fnCreateOutput = `
 {{{data}}}
 `
 
-func Create(name string, here bool, template string) error {
+func Create(name, template string, here bool) error {
 	var version string
 	var err error
 
