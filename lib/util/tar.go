@@ -34,7 +34,6 @@ func TarBallFiles(files []string, src, tarFile string) (err error) {
 		}
 	}
 
-	fmt.Println("TarBallFiles", src, files, tarFile, paths)
 	err = archiver.Archive(paths, tarFile)
 	if err != nil {
 		return err
@@ -44,7 +43,6 @@ func TarBallFiles(files []string, src, tarFile string) (err error) {
 }
 
 func TarFiles(files []string, src string) (data []byte, err error) {
-	fmt.Println("TarFiles", src, files)
 
 	err = TarBallFiles(files, src, tarfile)
 	if err != nil {
