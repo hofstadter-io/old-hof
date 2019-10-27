@@ -31,7 +31,7 @@ func init() {
 	CreateCmd.Flags().BoolVarP(&CreateHereFlag, "here", "", false, "create in the current directory (uses dir as name)")
 	viper.BindPFlag("here", CreateCmd.Flags().Lookup("here"))
 
-	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/hof-starter-app@master", "create with a template, specifiying the 'here' flag will omit intial code creation")
+	CreateCmd.Flags().StringVarP(&CreateTemplateFlag, "template", "t", "https://github.com/hofstadter-io/hof-starter-app", "create with a template, specifiying the 'here' flag will omit intial code creation")
 	viper.BindPFlag("template", CreateCmd.Flags().Lookup("template"))
 
 }
